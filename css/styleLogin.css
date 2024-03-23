@@ -1,5 +1,6 @@
 body{
-    background: url(IMG/11-a84.jpg) ;
+    
+    background: url(/IMG/11-a84.jpg);
    /* background-size: contain ;*/
    background-position-y: center ;  
     background-position-x: no-repeat ;
