@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style1.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Load font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>SẢN PHẨM</title>
+</head>
+
+<body>
+    <div class="background">
+        <img src="IMG/logo2.jpg" alt="">
+        <div class="menu">
+            <a href="product.html?Bàn-trà">Bàn Trà</a>
+            <a href="product.html?Gương">Gương</a>
+            <a href="product.html?Bàn-trang-điểm">Bàn trang điểm</a>
+            <a href="product.html?Đèn-cây">Đèn cây</a>
+            <div class="login">
+                <a href="login.html"><i class="fa fa-user"></i>Đăng nhập</a>
+                <div class="member hide">
+                    <a href="">Lịch sử đơn hàng</a>
+                    <a href="" id="logoutButton">Đăng xuất</a>
+                </div>
+            </div>
+            <a href="giohang.html"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span>
+                <span class="cart-number"></span>
+            </a>
+        </div>
+    </div>
+    <hr style="border: 2px solid black;">
+    <h1 style="margin-top: 3rem;">Sắm đồ trang trí phòng ở đây nè!</h1>
+    <div class="body">
+        <div class="left">
+            <div class="search">
+                <div class="list">
+                    <input type="text" id="menu-search" placeholder="Nhập từ cần tìm kiếm" name="menu-search">
+                    <ul class="menu-list">
+                        <li class="menu-item"><a href="product.html?Đèn-cây">Đèn cây</a></li>
+                        <li class="menu-item"><a href="product.html?Bàn-trà">Bàn Trà</a></li>
+                        <li class="menu-item"><a href="product.html?Gương">Gương</a></li>
+                        <li class="menu-item"><a href="product.html?Bàn-trang-điểm">Bàn Trang Điểm</a>
+                        </li>
+                    </ul>
+                </div>
+                <button id="search-btn"><i class='bx bx-search' style="color: white;margin: 4px 0 0 2px;"></i></button>
+            </div>
+            <div class="price">
+                <h2 style="margin-top: 30px;margin-left: 55px;">Lọc giá sản phẩm</h2>
+                <section name="price" class="list-price" onchange="getprice()">
+                    <input type="radio" name="price" value="0-500thousand"> 0đ — 500,000đ
+                    <br><input type="radio" name="price" value="500-1milion"> 500,000đ — 1,000,000đ
+                    <br><input type="radio" name="price" value="1-5milion"> 1,000,000đ — 5,000,000đ
+                    <br><input type="radio" name="price" value="5-7milion"> 5,000,000đ — 7,000,000đ
+                </section>
+            </div>
+            <div class="list-product">
+                <h2 style="margin-top: 30px;margin-left: 55px;">Lọc theo loại sản phẩm</h2>
+                <section name="company" id="list-company" onchange="getprice()">
+                    <input type="radio" name="company" value="Bàn Trà"> Bàn Trà
+                    <br><input type="radio" name="company" value="Gương"> Gương
+                    <br><input type="radio" name="company" value="Bàn trang điểm"> Bàn trang điểm
+                    <br><input type="radio" name="company" value="Đèn cây"> Đèn cây
+                </section>
+            </div>
+        </div>
+        <div class="right">
+            <div id="root"></div>
+        </div>
+
+    </div>
+    <div class="pagination">
+        <button id="prevPage">Trước</button>
+        <button id="nextPage">Sau</button>
+    </div>
+    <div class="address">
+        <div class="img-address">
+            <img src="IMG/logo.jpg" alt="">
+            <div class="icon-address">
+                <i class='bx bxs-home'> 273 An Dương Vương,Phường 3,Q.5,Tp.HCM</i>
+                <i class='bx bxs-phone'> 0123456789</i>
+                <i class='bx bxs-envelope'> noithatvn.com</i>
+                <i class='bx bxl-facebook-square'> facebook.com/noithatvn</i>
+            </div>
+        </div>
+
+        <div class="policy-left">
+            <ul>
+                <span style="font-weight: bolder;"> Chính sách bán hàng</span>
+                <li>Chính sách thanh toán</li>
+                <li>Chính sách vận chuyển</li>
+                <li>Chính sách bảo hành & đổi trả</li>
+            </ul>
+        </div>
+        <div class="policy-right">
+            <ul>
+                <span style="font-weight: bolder;"> Hỗ trợ khách hàng</span>
+                <li>Tại Showroom</li>
+                <li>Trở thành nhà phân phối</li>
+                <li>Tuyển dụng</li>
+            </ul>
+        </div>
+    </div>
+    <script src="javascripts/data.js"></script>
+    <script src="javascripts/search.js"></script>
+    <script src="javascripts/login.js"></script>
+</body>
+
+</html>

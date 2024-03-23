@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Sản phẩm chi tiết</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            /* box-sizing: border-box;*/
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: white;
+
+
+        }
+
+        .background {
+            height: 10%;
+            padding: 20px 50px;
+            display: flex;
+            align-items: center;
+
+            background: rgba(250, 247, 242, 0.696);
+
+        }
+
+        .background img {
+            max-height: 50px;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            font-size: 25px;
+        }
+
+        .menu a {
+
+            font-size: 1.5rem;
+            color: black;
+            cursor: pointer;
+            margin: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 40px;
+            text-decoration: none;
+        }
+
+        .menu a:hover {
+            color: orange;
+            border-bottom: .1rem solid orange;
+        }
+
+        .container {
+            margin-top: 150px;
+            width: 80%;
+            height: 100%;
+            padding-left: 10%;
+
+        }
+
+        .top {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            height: 500px;
+        }
+
+        .picture {
+            width: 100%;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .picture img {
+            height: 70%;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border: 1px solid gray;
+            border-radius: 10px;
+            cursor: zoom-in;
+        }
+
+        .picture-small {
+            width: 100%;
+            height: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .picture-small img {
+            width: 30%;
+            object-fit: cover;
+            object-position: center;
+            height: 80%;
+            margin: 0 .5rem;
+            border-radius: 0px;
+            cursor: default;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            font-size: 19px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 3rem;
+            margin-left: 3rem;
+        }
+
+        .content .info {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 110%;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            margin-left: 5rem;
+            list-style-type: square;
+
+        }
+
+        .content .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 3rem;
+        }
+
+        .availability {
+            margin-top: 20px;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid gray;
+            background-color: rgba(0, 0, 0, -0.6);
+        }
+
+
+        .button {
+            width: 200px;
+            height: 50px;
+            background: rgba(60, 58, 58, 0.992);
+
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            border: none;
+            text-align: center;
+            line-height: 45px;
+            margin-top: 4%;
+            list-style: none;
+        }
+
+        .button a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .button:hover {
+            background-color: rgba(202, 208, 163, 0.564);
+            font-size: 15px;
+            cursor: pointer;
+            color: black;
+        }
+
+        .address {
+            width: 100%;
+            background-color: rgb(38, 38, 38);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            color: white;
+        }
+
+        .img-address {
+            height: 100%;
+            width: 100%;
+            margin-bottom: 100px;
+        }
+
+        .img-address img {
+            height: 250px;
+            width: 70%;
+            margin-left: 80px;
+            margin-top: 50px;
+        }
+
+        .icon-address {
+            margin-left: 5rem;
+            display: flex;
+            flex-direction: column;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .icon-address i {
+            line-height: 30px;
+            font-size: 20px;
+        }
+
+        .policy-left {
+            width: 80%;
+            height: 100px;
+            margin-top: 20%;
+            margin-left: 9rem;
+            font-size: 19px;
+            line-height: 40px;
+        }
+
+        .policy-left ul li {
+            margin-left: 7%;
+        }
+
+        .policy-right {
+            width: 79%;
+            height: 100px;
+            margin-top: 20%;
+            margin-left: 6rem;
+            font-size: 19px;
+            line-height: 40px;
+        }
+
+        .policy-right ul li {
+            margin-left: 7%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background">
+        <a href="sanpham.html"><img src="IMG/logo2.jpg" alt=""></a>
+        <div class="menu">
+            <a href="product.html?Bàn-trà">Bàn Trà</a>
+            <a href="product.html?Gương">Gương</a>
+            <a href="product.html?Bàn-trang-điểm">Bàn trang điểm</a>
+            <a href="product.html?Đèn-cây">Đèn cây</a>
+            <div class="login" style="margin: 0 1rem;"><a href="login.html">Đăng nhập</a></div>
+            <a href="giohang.html"><i class='bx bx-cart-alt'></i></a>
+        </div>
+    </div>
+    <hr style="border: 2px solid black;">
+    <div class="container">
+        <div class="top">
+            <div class="picture">
+                <img src="" alt="" id="productImage">
+
+                <figure class="picture-small">
+                    <img src="" alt="">
+                    <img src="" alt="">
+                    <img src="" alt="">
+                </figure>
+            </div>
+            <div class="content">
+                <h2 class="name"></h2>
+                <h3 class="masp" style="display: none;"></h3>
+                <div class="info"></div>
+                <div class="price"></div>
+                <br>Availability: Còn hàng
+                <div class="button" onclick="them()"><a href="giohang.html">Thêm vào giỏ hàng</a></div>
+            </div>
+        </div>
+    </div>
+    <!--phần cuối cùng-->
+    <div class="address">
+        <div class="img-address">
+            <img src="./IMG/logo.jpg" alt="">
+            <div class="icon-address">
+                <i class='bx bxs-home'> 273 An Dương Vương,Phường 3,Q.5,Tp.HCM</i>
+                <i class='bx bxs-phone'> 0123456789</i>
+                <i class='bx bxs-envelope'> noithatvn.com</i>
+                <i class='bx bxl-facebook-square'> facebook.com/noithatvn</i>
+            </div>
+        </div>
+
+        <div class="policy-left">
+            <ul>
+                <i class='bx bx-poll'><span style="font-weight: bolder;"> Chính sách bán hàng</span></i>
+                <li>Chính sách thanh toán</li>
+                <li>Chính sách vận chuyển</li>
+                <li>Chính sách bảo hành & đổi trả</li>
+            </ul>
+        </div>
+        <div class="policy-right">
+            <ul>
+                <i class='bx bx-support'><span style="font-weight: bolder;"> Hỗ trợ khách hàng</span></i>
+                <li>Tại Showroom</li>
+                <li>Trở thành nhà phân phối</li>
+                <li>Tuyển dụng</li>
+            </ul>
+        </div>
+    </div>
+    <script src="javascripts/data.js"></script>
+    <script>
+        // get data từ localstorage
+        list_products = getListProducts() || list_products;
+        // Localstorage cho dssp: 'ListProducts
+        function setListProducts(newList) {
+            window.localStorage.setItem('ListProducts', JSON.stringify(newList));
+        }
+
+        function getListProducts() {
+            return JSON.parse(window.localStorage.getItem('ListProducts'));
+        }
+        function them() {
+            var user = getCurrentUser();
+            if (user && !user.off) {
+                alert('Bạn đã thêm sản phẩm vào giỏ hàng thành công !!!');
+            }
+
+            if (!user) {
+                alert('Bạn cần đăng nhập để mua hàng !');
+                return;
+            }
+            if (user.off) {
+                alert('Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!');
+
+            }
+            var name = document.querySelector(".name");
+            var masp = document.querySelector(".masp");
+            var t = new Date();
+            var daCoSanPham = false;
+            console.log("user.products:", user.products);
+            console.log("user:", user);
+            console.log("masp:", masp.innerHTML);
+            for (var i = 0; i < user.products.length; i++) { // check trùng sản phẩm
+                if (user.products[i].masp == masp.innerHTML) {
+                    user.products[i].soluong++;
+                    daCoSanPham = true;
+                    break;
+                }
+            }
+            if (!daCoSanPham) {
+                user.products.push({
+                    "masp": masp.innerHTML,
+                    "name": name.innerHTML,
+                    "soluong": 1,
+                    "date": t
+                });
+            }
+            setCurrentUser(user);
+            updateListUser(user);
+        }
+        function updateListUser(u, newData) {
+            var list = getListUser();
+            for (var i = 0; i < list.length; i++) {
+                if (equalUser(u, list[i])) {
+                    list[i] = (newData ? newData : u);
+                }
+            }
+            setListUser(list);
+        }
+
+        function phanTich_URL_chiTietSanPham() {
+            var  maProduct = window.location.href.split('?')[1];
+            // lấy tên
+           
+
+            // tách theo dấu '-' vào gắn lại bằng dấu ' ', code này giúp bỏ hết dấu '-' thay vào bằng khoảng trắng.
+            // code này làm ngược lại so với lúc tạo href cho sản phẩm trong file search.js
+            maProduct =  maProduct.split('-').join(' ');
+            console.log( maProduct);
+
+
+            function timKiemTheoTrang(products, maProduct) {
+                for (var i = 0; i < products.length; i++) {
+                    if (products[i].masp === maProduct) {
+                        return products[i];
+                    }
+                }
+                // Return null or handle the case where the product is not found.
+                return null;
+            }
+           /* for (var p of list_products) {
+                if (nameProduct === p.namesearch||nameProduct===p.name) {
+                    console.log(p);
+                    maProduct = p.masp;
+                    break;
+                }
+            }*/
+            console.log(maProduct);
+
+            function timKiemTheoMa(products, maProduct) {
+                for (var i = 0; i < products.length; i++) {
+                    if (products[i].masp === maProduct) {
+                        return products[i];
+                    }
+                }
+                // Return null or handle the case where the product is not found.
+                return null;
+            }
+            sanPhamHienTai = timKiemTheoMa(list_products, maProduct);
+            console.log(sanPhamHienTai);
+
+            var divChiTiet = document.getElementsByClassName('content')[0];
+
+            // Đổi title
+            document.title =sanPhamHienTai.name + ' - Nội Thất';
+
+            // Cập nhật tên h1
+            var h1 = divChiTiet.getElementsByClassName('name')[0];
+
+            h1.innerHTML = sanPhamHienTai.name;
+            var h2 = divChiTiet.querySelector(".masp")
+            h2.innerHTML = sanPhamHienTai.masp;
+
+            // Cập nhật sao
+
+
+
+
+            var price = divChiTiet.getElementsByClassName('price')[0];
+
+            price.innerHTML = `<strong>` + sanPhamHienTai.price + `₫</strong>`;
+
+            var info = document.getElementsByClassName('info')[0];
+            var s = '';
+
+            function addThongSo(label, value) {
+                if (value) {
+                    s += label + ': ' + value + '<br>';
+                }
+            }
+
+            addThongSo('Chất liệu ', sanPhamHienTai.detail.material);
+            addThongSo('Kích thước ', sanPhamHienTai.detail.size);
+            addThongSo('Khung viền ', sanPhamHienTai.detail.border);
+            addThongSo('Màu ', sanPhamHienTai.detail.color);
+            addThongSo('Kích thước bàn ', sanPhamHienTai.detail.surface);
+            addThongSo('Khác ', sanPhamHienTai.detail.more);
+            addThongSo('Chiều dài ', sanPhamHienTai.detail.height);
+            addThongSo('Chiều rộng ', sanPhamHienTai.detail.width);
+            addThongSo('Tính năng ', sanPhamHienTai.detail.feature);
+            addThongSo('Bộ sản phẩm ', sanPhamHienTai.detail.include);
+            addThongSo('Gương dày ', sanPhamHienTai.detail.thick);
+            addThongSo('Màu sắc khung ', sanPhamHienTai.detail.border_color);
+            addThongSo('Màu sắc mặt bàn ', sanPhamHienTai.detail.surface_color);
+            addThongSo('Sử dụng nguồn điện ', sanPhamHienTai.detail.voltage);
+            addThongSo('Bóng đèn ', sanPhamHienTai.detail.bulb);
+
+            if (s !== '') {
+                info.innerHTML = s;
+            }
+
+
+
+            var hinh = document.getElementsByClassName('picture')[0];
+            hinh = hinh.getElementsByTagName('img')[0];
+            hinh.src = sanPhamHienTai.img;
+            console.log(hinh.src);
+
+
+            var hinh = document.getElementById('productImage');
+
+            // Assuming sanPhamHienTai.img contains the image source
+            hinh.src = sanPhamHienTai.img;
+
+            hinh.addEventListener('mousemove', function (event) {
+                var rect = hinh.getBoundingClientRect();
+                var x = event.clientX - rect.left; // X coordinate within the element
+                var y = event.clientY - rect.top;  // Y coordinate within the element
+
+                var percentX = (x / rect.width) * 100;
+                var percentY = (y / rect.height) * 100;
+
+                hinh.style.objectPosition = percentX + '% ' + percentY + '%';
+            });
+
+            hinh.addEventListener('mouseleave', function () {
+                hinh.style.objectPosition = 'center center'; // Reset to the center position or any other default position you want
+            });
+
+
+            var anh1 = document.getElementsByClassName('picture-small')[0];
+            if (anh1) {
+                var img1 = anh1.getElementsByTagName('img')[0];
+                if (img1) {
+                    img1.src = sanPhamHienTai.img1;
+                    console.log(sanPhamHienTai.img1);
+                }
+            }
+
+            var anh2 = document.getElementsByClassName('picture-small')[0];
+            if (anh2) {
+                var img2 = anh2.getElementsByTagName('img')[1];
+                if (img2) {
+                    img2.src = sanPhamHienTai.img2;
+                    console.log(sanPhamHienTai.img2);
+                }
+            }
+
+            var anh3 = document.getElementsByClassName('picture-small')[0];
+            if (anh3) {
+                var img3 = anh3.getElementsByTagName('img')[2];
+                if (img3) {
+                    img3.src = sanPhamHienTai.img3;
+                    console.log(sanPhamHienTai.img3);
+                }
+            }
+
+
+        } phanTich_URL_chiTietSanPham();
+
+    </script>
+    <script src="javascripts/login.js"></script>
+</body>
+
+</html>

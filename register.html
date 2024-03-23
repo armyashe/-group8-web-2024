@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ĐĂNG KÝ</title>
+    <link rel="stylesheet" href="styleLogin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div id="login">
+        <h2>ĐĂNG KÝ</h2>
+        <form onsubmit="getuser()">
+            <input type="email" name="email" placeholder="enter email"  class="email" required autocomplete="off" />
+            <input type="text" name="username" placeholder="enter username" class="username" required autocomplete="off" />
+            <input type="password" name="password" placeholder="enter password" class="password" required autocomplete="off" />
+            <input type="password" name="enter password again" placeholder="enter password again" class="pass form-control" required autocomplete="off" />
+            <button type="submit" class="btn-primary">Đăng kí</button>
+        </form>
+        <div class="register">
+            <p>Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a></p>
+        </div>
+    </div>
+    <script src="javascripts/login.js"></script>
+</body>
+
+</html>

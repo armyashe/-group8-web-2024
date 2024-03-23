@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style1.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>SẢN PHẨM</title>
+</head>
+
+<body>
+    <div class="background">
+        <a href="sanpham.html"><img src="IMG/logo2.jpg" alt=""></a>
+        <div class="menu">
+            <a href="product.html?Bàn-trà">Bàn Trà</a>
+            <a href="product.html?Gương">Gương</a>
+            <a href="product.html?Bàn-trang-điểm">Bàn trang điểm</a>
+            <a href="product.html?Đèn-cây">Đèn Cây</a>
+            <a href="login.html">Đăng nhập</a>
+            <a href=""><i class='bx bx-cart-alt'></i></a>
+        </div>
+    </div>
+    <hr style="border: 2px solid black;">
+    <h1 style="margin-top: 3rem;">Sắm đồ trang trí phòng ở đây nè!</h1>
+    <div class="body">
+        <div class="left">
+            <div class="search">
+                <div class="list">
+                    <input type="text" id="menu-search" placeholder="Nhập từ cần tìm kiếm" name="menu-search">
+                    <ul class="menu-list">
+                        <li class="menu-item"><a href="product.html?Đèn-cây">Đèn cây</a></li>
+                        <li class="menu-item"><a href="product.html?Bàn-trà">Bàn Trà</a></li>
+                        <li class="menu-item"><a href="product.html?Gương">Gương</a></li>
+                        <li class="menu-item"><a href="product.html?Bàn-trang-điểm">Bàn Trang Điểm</a></li>
+                    </ul>
+                </div>
+                <button id="search-btn"><i class='bx bx-search' style="color: white;margin: 4px 0 0 2px;"></i></button>
+            </div>
+            <div class="price">
+                <h2 style="margin-top: 30px;margin-left: 55px;">Lọc giá sản phẩm</h2>
+                <section name="price" class="list-price" onchange="getprice()">
+                    <input type="radio" name="price" value="0-500thousand"> 0đ — 500,000đ
+                    <br><input type="radio" name="price" value="500-1milion"> 500,000đ — 1,000,000đ
+                    <br><input type="radio" name="price" value="1-5milion"> 1,000,000đ — 5,000,000đ
+                    <br><input type="radio" name="price" value="5-7milion"> 5,000,000đ — 7,000,000đ
+                </section>
+            </div>
+            <div class="list-product">
+                <h2 style="margin-top: 30px;margin-left: 55px;">Lọc theo loại sản phẩm</h2>
+                <section name="company" id="list-company" onchange="getprice()">
+                    <input type="radio" name="company" value="Bàn Trà"> Bàn Trà
+                    <br><input type="radio" name="company" value="Gương"> Gương
+                    <br><input type="radio" name="company" value="Bàn trang điểm"> Bàn trang điểm
+                    <br><input type="radio" name="company" value="Đèn cây"> Đèn cây
+                </section>
+            </div>
+        </div>
+        <div class="right">
+            <div id="root"></div>
+        </div>
+    </div>
+    <div class="pagination">
+        <button id="prevPage">Trước</button>
+        <button id="nextPage">Sau</button>
+    </div>
+    <div class="reveal address">
+        <div class="img-address">
+            <img src="IMG/logo.jpg" alt="">
+            <div class="icon-address">
+                <i class='bx bxs-home'> 273 An Dương Vương,Phường 3,Q.5,Tp.HCM</i>
+                <i class='bx bxs-phone'> 0123456789</i>
+                <i class='bx bxs-envelope'> noithatvn.com</i>
+                <i class='bx bxl-facebook-square'> facebook.com/noithatvn</i>
+            </div>
+        </div>
+
+        <div class="policy-left">
+            <ul>
+                <span style="font-weight: bolder;"> Chính sách bán hàng</span>
+                <li>Chính sách thanh toán</li>
+                <li>Chính sách vận chuyển</li>
+                <li>Chính sách bảo hành & đổi trả</li>
+            </ul>
+        </div>
+        <div class="policy-right">
+            <ul>
+                <span style="font-weight: bolder;"> Hỗ trợ khách hàng</span>
+                <li>Tại Showroom</li>
+                <li>Trở thành nhà phân phối</li>
+                <li>Tuyển dụng</li>
+            </ul>
+        </div>
+    </div>
+    <script src="javascripts/data.js"></script>
+    <script>
+        var namePage;
+        list_products = getListProducts() || list_products;
+        // Localstorage cho dssp: 'ListProducts
+        function setListProducts(newList) {
+            window.localStorage.setItem('ListProducts', JSON.stringify(newList));
+        }
+
+        function getListProducts() {
+            return JSON.parse(window.localStorage.getItem('ListProducts'));
+        }
+        const itemsPerPage = 9;
+        let currentPage = 1;
+        var filteredSearchData;
+        function phantich_URL_page() {
+            namePage = window.location.href.split('?')[1];
+            namePage = namePage.split('-').join(' ');
+            console.log(namePage);
+        }
+        phantich_URL_page();
+
+        // Assuming list_products is defined and contains your product data
+        const categories = list_products;
+
+        var filteredData = categories.filter((item) => {
+            return (
+                item.companysearch && item.companysearch.includes(namePage)
+            );
+        });
+
+        console.log(filteredData);
+
+        document.getElementById('menu-search').addEventListener('keyup', (e) => {
+            const searchData = e.target.value.toLowerCase();
+            filteredSearchData = categories.filter((item) => {
+                return (
+                    item.name.toLowerCase().includes(searchData)
+                );
+            });
+
+            displayProductsOnPageSearch(currentPage)
+        });
+
+        function getprice() {
+            const selectedInputprice = document.querySelector('input[name="price"]:checked');
+            const searchDatacompany = namePage; // Assuming namePage is used for company filtering
+
+            var searchData;
+            if (selectedInputprice) {
+                searchData = selectedInputprice.value.toLowerCase();
+                filteredData = categories.filter((item) => {
+                    return (
+                        item.listprice && item.listprice.toLowerCase().includes(searchData) && item.companysearch && item.companysearch.includes(searchDatacompany)
+                    );
+                });
+                console.log(filteredData);
+                displayItem(filteredData);
+            }
+        }
+
+        const displayItem = (items) => {
+            document.getElementById('root').innerHTML = items.map((item) => {
+                var { img, name, price, masp } = item;
+                var chitietSp = 'chitietsanpham.html?' + masp;
+
+                return (
+                    `<div class='box'>
+                <a href="${chitietSp}">
+                    <div class='img-box'>
+                        <img class='images' src="${img}" alt="${name}">
+                    </div> 
+                    <div class='bottom'>
+                        <h2>${name}</h2>
+                        <h2>${price}đ</h2>
+                    </div>
+                </a>
+            </div>`
+                );
+            }).join('');
+        };
+
+        displayProductsOnPage(currentPage)
+
+
+
+
+        function displayProductsOnPage(pageNumber) {
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const productsToDisplay = filteredData.slice(startIndex, endIndex);
+            console.log(productsToDisplay)
+            displayItem(productsToDisplay);
+            updatePaginationButtons();
+        }
+
+        function displayProductsOnPageSearch(pageNumber) {
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const productsToDisplay = filteredSearchData.slice(startIndex, endIndex);
+
+            console.log(productsToDisplay);
+
+            if (productsToDisplay.length > 0) {
+                displayItem(productsToDisplay);
+            } else {
+                // Display a message indicating that no products were found
+                document.getElementById('root').innerHTML = '<p>No products found</p>';
+            }
+
+            console.log(productsToDisplay)
+            displayItem(productsToDisplay);
+            updatePaginationButtons();
+        }
+
+        // Event listener for Next and Previous buttons
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (filteredSearchData && currentPage * itemsPerPage < filteredSearchData.length) {
+                currentPage++;
+                displayProductsOnPageSearch(currentPage);
+                updatePaginationButtons();
+            }
+        });
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (filteredSearchData && currentPage > 1) {
+                currentPage--;
+                displayProductsOnPageSearch(currentPage);
+                updatePaginationButtons();
+            }
+        });
+
+        // Hàm cập nhật trạng thái của nút phân trang
+        function updatePaginationButtons() {
+            // Cập nhật trạng thái của nút "prevPage" và "nextPage"
+            const prevPageButton = document.getElementById('prevPage');
+            const nextPageButton = document.getElementById('nextPage');
+            console.log(currentPage);
+
+            if (currentPage === 1) {
+                // Tắt "prevPage" nếu ở trang đầu tiên
+                prevPageButton.disabled = true;
+            } else {
+                // Bật "prevPage" nếu không có trên trang đầu tiên
+                prevPageButton.disabled = false;
+            }
+
+            if (!filteredSearchData || currentPage * itemsPerPage >= filteredSearchData.length) {
+                // Tắt "nextPage" nếu không có dữ liệu tìm kiếm hoặc nếu ở trang cuối cùng
+                nextPageButton.disabled = true;
+            } else {
+                // Bật "nextPage" nếu có nhiều dữ liệu hơn để hiển thị
+                nextPageButton.disabled = false;
+            }
+        }
+
+        // Initialize pagination buttons
+        updatePaginationButtons();
+
+    </script>
+
+</body>
+
+</html>
