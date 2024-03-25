@@ -281,7 +281,7 @@ body
 {
     width: 100%;
     height: 450px;
-    background-image:url(/IMG/camket.png) ;
+    background-image:url(../IMG/camket.png);
 }
 .text-center
 {
@@ -428,7 +428,7 @@ body
 {
     width: 100%;
     height: 700px;
-    background-image: url(/IMG/bg-why-choose-7a1.png);
+    background-image: url(../IMG/bg-why-choose-7a1.png);
     display: flex;
 }
 .feedback-left
@@ -438,7 +438,7 @@ body
     padding: 20% 1rem 0 1rem;
     width: 28%;
     height: 400px;
-    background-image: url(/IMG/6-97b-crop-400-400.jpg);
+    background-image: url(../IMG/6-97b-crop-400-400.jpg);
 
 }
 .feedback-right
