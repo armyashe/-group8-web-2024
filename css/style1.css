@@ -130,7 +130,6 @@ h1 {
 
 .search {
     display: flex;
-    margin-left: 3rem;
 }
 
 #menu-search {
@@ -194,7 +193,7 @@ h1 {
 }
 
 section {
-    margin-left: 55px;
+    margin-left: 36px;
     line-height: 30px;
     margin-top: 10px;
 }
@@ -206,6 +205,25 @@ section {
     flex-wrap: wrap;
     gap: 20px;
     width: 70%;
+}
+
+.result_print
+{
+    margin-top: 30px;
+}
+.result_print button {
+    background-color: #4CAF50; /* Màu nền */
+    color: white; /* Màu chữ */
+    padding: 15px 56px; /* Kích thước nút */
+    border: none; /* Không có viền */
+    border-radius: 4px; /* Bo tròn góc */
+    font-size: 16px; /* Kích thước chữ */
+    cursor: pointer; /* Con trỏ khi di chuột vào nút */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+.result_print button:hover {
+    background-color: #45a049; /* Màu nền khi di chuột vào */
 }
 
 .right {
@@ -290,15 +308,33 @@ section {
     display: flex;
 }
 
-.pagination
-{
-    text-align: end;
+.pagination {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 20px; 
+    
 }
-.pagination button
-{
-    margin-right: 20px;
-    width: 20%;
-    height: 40px;
+
+
+.pagination button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+    background-color: #333; 
+}
+
+.pagination button a {
+    text-decoration: none;
+    color: white;
+    list-style: none;
 }
 .address {
     background-color: rgb(38, 38, 38);
