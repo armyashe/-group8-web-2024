@@ -1,0 +1,92 @@
+body{
+    background: url(../IMG/11-a84.jpg) ;
+   /* background-size: contain ;*/
+   background-position-y: center ;  
+    background-position-x: no-repeat ;
+}
+#login{
+    width: 400px;
+    height: 450px;
+    border-radius: 10px;
+    text-align: center;
+    margin: auto;
+    margin-top: 150px;
+    background-color: rgba(0, 0, 0, 0.5) ;
+}
+
+#login h2{
+    padding-top: 30px;
+    color: rgba(255, 255, 255, 0.729);
+    font-family:  sans-serif;
+
+}
+   
+
+#login input{
+    width: 250px;
+    height: 40px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding-left: 20px;
+    margin-bottom: 1px;
+}
+
+.btn-primary{
+    display: flex;
+    width: 275px;
+    height: 50px;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: rgba(90, 100, 0, 0.296);
+    color: white;
+    font-weight: bold;
+    border: none;
+    margin-left: 64px;
+    line-height: 50px;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.btn-primary:hover{
+    background-color: rgba(202, 208, 163, 0.564);
+    font-size: 15px;
+    cursor: pointer;
+}
+.btn-primary-login{
+    display: flex;
+    width: 275px;
+    height: 50px;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: rgba(90, 100, 0, 0.296);
+    color: white;
+    font-weight: bold;
+    border: none;
+    margin-left: 64px;
+    line-height: 50px;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.btn-primary-login:hover{
+    background-color: rgba(202, 208, 163, 0.564);
+    font-size: 15px;
+    cursor: pointer;
+}
+.register{
+    color: rgba(167, 173, 100, 0.858);
+    font-style: italic;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 35px;
+}
+.register a{
+    
+    color: rgba(167, 173, 100, 0.858);
+}
+form i {
+    margin-left: -36px;
+    cursor: pointer;
+}

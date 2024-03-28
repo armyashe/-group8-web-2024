@@ -1,17 +1,17 @@
 -- Active: 1698821848605@@127.0.0.1@3306@showroom
 -- Cấu trúc bảng cho bảng `khachhang`
---
+
 CREATE DATABASE showroom_db CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci;
 USE showroom_db;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
---
--- Cơ sở dữ liệu: `laclacshoes`
---
--- Cấu trúc bảng cho bảng `khachhang`
---
+
+/*  Cơ sở dữ liệu: `laclacshoes`
+
+ Cấu trúc bảng cho bảng `khachhang`
+ */
 
 CREATE TABLE `khachhang` (
   `id` int(10) NOT NULL,
@@ -28,39 +28,47 @@ CREATE TABLE `sanpham` (
   `gia` int(10) NOT NULL,
   `soluong` int(10) NOT NULL,
   `mota` text NOT NULL,
+  `mota2` text NOT NULL,
+  `mota3` text NOT NULL,
+  `mota4` text NOT NULL,
   `hinhanh` varchar(100) NOT NULL,
+  `hinh2` varchar(100) NOT NULL,
+  `hinh3` varchar(100) NOT NULL,
+  `hinh4` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
 
--- Đổ dữ liệu cho bảng `sanpham`
-INSERT INTO `sanpham` (`id`, `tensanpham`,`loaisanpham`, `gia`, `soluong`, `mota`, `hinhanh`) VALUES
-(1, 'Bàn Trang Điểm TC22','makeup_table', 799000, 10, 'Gỗ công nghiệp chống ẩm, 100x120x80cm, Kim loại,Trắng, Đen, màu tùy chọn', 'Ban_trang_diem_TC22.jpg'), 
-(2, 'Bàn Trang Điểm TC56','makeup_table',1199000,5,'Gỗ công nghiệp chống ẩm MDF,120x40x75cm, 160x40x75cm,Kim loại,Trắng, Đen, màu tuỳ chọn','Ban_Trang_Điem_TC56.jpg'),
-(3, 'Bàn Trang Điểm TC17','makeup_table',1399000,6,'Gỗ công nghiệp chống ẩm 100x120x80cm, Kim loại,Trắng, Đen, màu tùy chọn','Ban_trang_diem_TC17.jpg'),
-(4, 'Bàn Trang Điểm TC23','makeup_table', 399000, 7, 'Gỗ công nghiệp chống ẩm, 100x120x80cm, Kim loại,Trắng, Đen, màu tùy chọn', 'Ban_trang_diem_TC23.jpg'),
-(5, 'Bàn Trang Điểm TC10','makeup_table', 799000, 8, 'Gỗ công nghiệp chống ẩm, 100x120x80cm, Kim loại,Trắng, Đen, màu tùy chọn', 'Ban_trang_diem_TC10.jpg'),
-(6, 'Bàn Trang Điểm BTD01','makeup_table', 4199000, 9, 'Gỗ công nghiệp chống ẩm, 120x40x75cm, 160x40x75cm, kim loại/Da/Nỉ/Gỗ,Cam/Xanh/Ghi/Trắng,Phù hợp cho các không gian', 'Ban_trang_diem_BTD01.jpg'),
-(7, 'Bàn Trang Điểm BTD09','makeup_table', 4399000, 10, '(80-100-120 - 140 - 160 - 180)cm,kim loại/Da/Nỉ/Gỗ,Cam/Xanh/Ghi/Trắng,Phù hợp cho các không gian', 'Ban_trang_điem_BTD09.jpg'),
-(8, 'Bàn Trang Điểm BTD05','makeup_table', 2250000, 4, 'Kính/Gỗ,(80-100-120 - 140 - 160 - 180)cm,kim loại/Da/Nỉ/Gỗ,Cam/Xanh/Ghi/Trắng,Phù hợp cho các không gian', 'Ban_trang_diem_BTD05.jpg'),
-(9, 'Gương trang trí treo tường GTT03','mirror', 750000, 5, 'Soi mặt, trang trí decor treo tường,gồm khung gương, mặt gương, dây treo, đinh vít ,Gỗ công nghiệp chống ẩm MDF,30x30x4CM,Vàng, Đen,Gương Việt Nhật hoặc Bỉ dày 5mm Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT03.jpg'),
-(10, 'Gương trang trí treo tường GTT04','mirror', 740000, 4, 'Soi mặt, trang trí decor treo tường,gồm khung gương, mặt gương, dây treo, đinh vít ,Gỗ công nghiệp chống ẩm MDF,54x47cm,Vàng, Đen,Gương Việt Nhật hoặc Bỉ dày 5mm Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT04.jpg'),
-(11, 'Gương trang trí treo tường GTT17 D50','mirror', 1090000, 3, 'Soi mặt, trang trí decor treo tường,gồm khung gương, mặt gương, dây treo, đinh vít ,54cm,Vàng, Đen,Gương Việt Nhật hoặc Bỉ dày 5mm Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT17_D50.jpg'),
-(12, 'Gương trang trí treo tường GTT17 D40','mirror', 1500000, 5, 'Soi mặt, trang trí decor treo tường,gồm khung gương, mặt gương, dây treo, đinh vít ,40CM,Vàng, Đen,Gương Việt Nhật hoặc Bỉ dày 5mm Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT17_D40.jpg'),
-(13, 'Gương trang trí treo tường GTT10','mirror', 650000, 5, 'Soi mặt, trang trí decor treo tường,gồm mặt gương khoan lỗ, đinh vít,60x90cm,Trắng,Vàng,Đen, cổ điển,Gương Việt Nhật hoặc Bỉ dày 5mm Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Guong_trang_tri_GTT10.jpg'),
-(14, 'Gương trang trí treo tường GTT07 D60','mirror', 450000, 2, 'Soi mặt, trang trí decor treo tường,gồm mặt gương khoan lỗ, đinh vít,60x90cm,Trắng,Vàng,Đen, cổ điển,Gương Việt Nhật hoặc Bỉ dày 5mm Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Guong_trang_tri_GTT07_D60.jpg'),
-(15, 'Bàn trà vuông mặt kính BT07','tea_table', 6090000, 4, 'Kim loại sơn từ tính / Đá,70x70x45x45CM  /60x60x38CM,Vàng/Đen/Trắng,Trắng / Đen ','Ban_tra_BT07.jpg'),
-(16, 'Bàn trà hộp chữ nhật mặt kính BT18','tea_table', 4599000, 6, 'Gỗ/Kim loại/Kính,100x42x50cm,Trắng,Trắng/Đen, Khung viền gỗ có hộc đựng đồ','Ban_tra_BT18.jpg'),
-(17, 'Bàn trà mặt đá chân mạ PVD có hộc chứa đồ BT21','tea_table', 5799000, 3, 'Đá/Kim loại/Kính,135x70x48cm,Màu đen, chân mạ PVD vàng,Trắng / Đen, Khung chân kim loại sơn từ tính','Ban_tra_BT21.jpg'),
-(18, 'Bàn trà Tab BPT10','tea_table', 2899000, 5, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay, Đá/Kim loại, 50x65cm, Đen / Vàng, Trắng / Đen, Khung chân kim loại sơn từ tính','Ban_Tab_BPT10.jpg'),
-(19, 'Bàn trà 2 tầng mặt gỗ BT23','tea_table', 2500000, 5, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay, Gỗ/Kim loại, 80x45cm, Màu tự nhiên/ Sơn nâu đậm, Nâu nhạt, Khung chân kim loại sơn từ tính','Ban_tra_BT23.jpg'),
-(20, 'Bàn trà Tab BPT08','tea_table', 2000000, 4, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay, Gỗ/Kim loại, 50x55cm, Màu tự nhiên/ Sơn nâu đậm, Nâu nhạt, Khung chân kim loại sơn từ tính','Ban_Tab_BPT08.jpg'),
-(21, 'Bàn trà 2 mặt kính viền mạ PVD BT25','tea_table', 5300000, 4, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay, Kính/Kim loại, (120 - 50)x45cm", Đen/ Đen mờ, Khung chân kim loại sơn từ tính','Ban_tra_BT25.jpg'),
-(22, 'Đèn cây DC04','tree_lights', 1400000, 5, ' 220V, LED, Kim loại, 180cm, Hiện đại, Công tắc ở dây đoạn thân đèn','Den_cay_DC04.jpg'),
-(23, 'Đèn cây DC07','tree_lights', 490000, 3, ' 220V, LED, Kim loại sơn từ tính,  tối đa 182 CM - có thế thay đổi, đường kính chân đèn: 28CM,  Hiện đại đa dụng, Đen,  Công tắc núm xoay thay đổi độ sáng Tiện ích:  Làm việc, giải trí, đọc sách...','Den_cay_DC07.jpg'),
-(24, 'Đèn cây DC10','tree_lights', 1360000, 5, ' 220V, LED, Kim loại, 175cm, Hiện đại, độc đáo, decor, Công tắc ở dây đoạn thân đèn','Den_cay_DC10.jpg'),
-(25, 'Đèn cây DC12','tree_lights', 989000, 7, ' 220V, LED, Kim loại, 190  cm, Độc đáo, decor,  Công tắc dây  Khu vực sử dụng :  Phòng khách, phòng làm việc, phòng ngủ,...','Den_cay_DC12.jpg'),
-(26, 'Đèn cây DC13','tree_lights', 1090000, 6, ' 220V, LED, Kim loại, 175cm, Hiện đại, độc đáo, decor, Công tắc ở dây đoạn thân đèn','Den_cay_DC13.jpg'),
-(27, 'Đèn cây DC15','tree_lights', 999000, 9, '220V, LED, Kim loại, 180CM, từ chụp đèn đến thân : 64cm, đường kính chân 27cm, đường kính chụp đèn 34cm, Thiết kế dạng vòm tiện lợi để đọc sách ','Den_cay_DC15.jpg'),
-(28, 'Đèn cây DC20','tree_lights', 450000, 5, ' 220V, LED, Kim Loại, 182cm, Hiện đại, độc đáo, Công tắc dây Tiện ích: Có sạc không dây và ở cắm USB riêng','Den_cay_DC20.jpg');
+
+INSERT INTO `sanpham` (`id`, `tensanpham`,`loaisanpham`, `gia`, `soluong`, `mota`,`mota2`,`mota3`,`mota4`, `hinhanh`,`hinh2`,`hinh3`,`hinh4`) VALUES
+(1, 'Bàn Trang Điểm TC22','makeup_table', 799000, 10, 'Chất liệu:Gỗ công nghiệp chống ẩm', 'Kích thước:100x120x80cm', 'Viền:Kim loại','Màu:Trắng, Đen', 'Ban_trang_diem_TC22.jpg','screenshot_1699523625.png','screenshot_1699523705.png','screenshot_1699523720.png'), 
+(2, 'Bàn Trang Điểm TC56','makeup_table',1199000,5,'Chất liệu:Gỗ công nghiệp chống ẩm MDF','Kích thước:120x40x75cm, 160x40x75cm','Viền:Kim loại','Màu:Trắng, Đen','Ban_Trang_Điem_TC56.jpg','screenshot_1699524101.png','screenshot_1699524125.png','screenshot_1699524159.png'),
+(3, 'Bàn Trang Điểm TC17','makeup_table',1399000,6,'Chất liệu:Gỗ công nghiệp chống ẩm ','Kích thước:100x120x80cm', 'Viền:Kim loại','Màu:Trắng, Đen','Ban_trang_diem_TC17.jpg','screenshot_1699523961.png','screenshot_1699523981.png','screenshot_1699523989.png'),
+(4, 'Bàn Trang Điểm TC23','makeup_table', 399000, 7, 'Chất liệu:Gỗ công nghiệp chống ẩm', 'Kích thước:100x120x80cm', 'Viền:Kim loại','Màu:Trắng, Đen', 'Ban_trang_diem_TC23.jpg','screenshot_1699523740.png','screenshot_1699524058.png','screenshot_1699524073.png'),
+(5, 'Bàn Trang Điểm TC10','makeup_table', 799000, 8, 'Chất liệu:Gỗ công nghiệp chống ẩm', 'Kích thước:100x120x80cm', 'Viền:Kim loại','Màu:Trắng, Đen', 'Ban_trang_diem_TC10.jpg','Ban_trang_diem_TC10.jpg','screenshot_1699523457.png','screenshot_1699523497.png'),
+(6, 'Bàn Trang Điểm BTD01','makeup_table', 4199000, 9, 'Chất liệu:Gỗ công nghiệp chống ẩm', 'Kích thước:120x40x75cm, 160x40x75cm', 'Viền:kim loại','Màu:Cam,Xanh', 'Ban_trang_diem_BTD01.jpg','screenshot_1699523273.png','screenshot_1699523288.png','screenshot_1699523296.png'),
+(7, 'Bàn Trang Điểm BTD09','makeup_table', 4399000, 10, 'Chất liệu:Gỗ công nghiệp chống ẩm', 'Kích thước:120x40x75cm, 160x40x75cm', 'Viền:kim loại','Màu:Cam,Xanh', 'Ban_trang_điem_BTD09.jpg','Ban_trang_điem_BTD09.jpg','bid09.jpg','screenshot_1699523553.png'),
+(8, 'Bàn Trang Điểm BTD05','makeup_table', 2250000, 4, 'Chất liệu:Gỗ công nghiệp chống ẩm', 'Kích thước:120x40x75cm, 160x40x75cm', 'Viền:kim loại','Màu:Cam,Xanh', 'Ban_trang_diem_BTD05.jpg','Ban_trang_diem_BTD05.jpg','Ban_trang_diem_BTD05(1).jpg','Ban_trang_diem_BTD05(2).jpg'),
+(9, 'Gương trang trí treo tường GTT03','mirror', 750000, 5, 'Công dụng:Soi mặt, trang trí decor treo tường','Chất liệu:Gỗ công nghiệp chống ẩm MDF','Kích thước:30x30x4CM','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT03.jpg','screenshot_1699525417.png','screenshot_1699525425.png','screenshot_1699525434.png'),
+(10, 'Gương trang trí treo tường GTT04','mirror', 740000, 4, 'Công dụng:Soi mặt, trang trí decor treo tường','Chất liệu:Gỗ công nghiệp chống ẩm MDF','Kích thước:54x47cm','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT04.jpg','screenshot_1699525491.png','screenshot_1699525513.png','screenshot_1699525522.png'),
+(11, 'Gương trang trí treo tường GTT17 D50','mirror', 1090000, 3, 'Công dụng:Soi mặt, trang trí decor treo tường','Chất liệu:Gỗ công nghiệp chống ẩm MDF','Kích thước:54x47cm','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT17_D50.jpg','screenshot_1699526107.png','screenshot_1699526101.png','screenshot_1699526115.png'),
+(12, 'Gương trang trí treo tường GTT17 D40','mirror', 1500000, 5, 'Công dụng:Soi mặt, trang trí decor treo tường','Chất liệu:Gỗ công nghiệp chống ẩm MDF','Kích thước:54x47cm','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc', 'Guong_trang_tri_GTT17_D40.jpg','Guong_trang_tri_GTT17_D40.jpgg','screenshot_1699526218.png','screenshot_1699526239.png'),
+(13, 'Gương trang trí treo tường GTT10','mirror', 650000, 5, 'Công dụng:Soi mặt, trang trí decor treo tường','Kích thước:60x90cm','Màu:Trắng,Vàng,Đen','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Guong_trang_tri_GTT10.jpg','screenshot_1699525847.png','screenshot_1699525855.png','screenshot_1699525881.png'),
+(14, 'Gương trang trí treo tường GTT07 D60','mirror', 450000, 2, 'Công dụng:Soi mặt, trang trí decor treo tường','Kích thước:60x90cm','Màu:Trắng,Vàng,Đen','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Guong_trang_tri_GTT07_D60.jpg','screenshot_1699525973.png','screenshot_1699526033.png','Guong_trang_tri_GTT07_D60.jpg'),
+(15, 'Bàn trà vuông mặt kính BT07','tea_table', 6090000, 4, 'Chất liệu:Kim loại sơn từ tính /Đá','Kích thước:70x70x45x45CM /60x60x38CM','Màu:Vàng/Đen/Trắng','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Ban_tra_BT07.jpg','screenshot_1699522883.png','screenshot_1699522900.png','screenshot_1699522909.png'),
+(16, 'Bàn trà hộp chữ nhật mặt kính BT18','tea_table', 4599000, 6, 'Chất liệu:Gỗ/Kim loại/Kính','Kích thước:100x42x50cm','Màu:Trắng,Trắng/Đen', 'Khung viền gỗ có hộc đựng đồ','Ban_tra_BT18.jpg','screenshot_1699522769.png','screenshot_1699522787.png','screenshot_1699522798.png'),
+(17, 'Bàn trà mặt đá chân mạ PVD có hộc chứa đồ BT21','tea_table', 5799000, 3, 'Chất liệu:Đá/Kim loại/Kính','Kích thước:135x70x48cm','Màu đen, chân mạ PVD vàng',' Khung chân kim loại sơn từ tính','Ban_tra_BT21.jpg','screenshot_1699523001.png','screenshot_1699523019.png','screenshot_1699523029.png'),
+(18, 'Bàn trà Tab BPT10','tea_table', 2899000, 5, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay', 'Chất liệu:Đá/Kim loại', 'Kích thước:50x65cm','Khung chân kim loại sơn từ tính','Ban_Tab_BPT10.jpg','screenshot_1699522324.png','screenshot_1699522363.png','screenshot_1699522384.png'),
+(19, 'Bàn trà 2 tầng mặt gỗ BT23','tea_table', 2500000, 5, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay', 'Chất liệu:Gỗ/Kim loại', 'Kích thước:80x45cm','Khung chân kim loại sơn từ tính','Ban_tra_BT23.jpg','screenshot_1699523100.png','screenshot_1699523117.png','screenshot_1699523125.png'),
+(20, 'Bàn trà Tab BPT08','tea_table', 2000000, 4, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay', 'Chất liệu:Gỗ/Kim loại', 'Kích thước:50x55cm','Khung chân kim loại sơn từ tính','Ban_Tab_BPT08.jpg','Ban_Tab_BPT08.jpg','screenshot_1699522481.png','screenshot_1699522447.png'),
+(21, 'Bàn trà 2 mặt kính viền mạ PVD BT25','tea_table', 5300000, 4, 'Đây là mẫu bàn tab cao cấp được rất nhiều công trình sang trọng lựa chọn hiện nay', 'Chất liệu:Kính/Kim loại', 'Kích thước:50x55cm', 'Khung chân kim loại sơn từ tính','Ban_tra_BT25.jpg','screenshot_1699523194.png','screenshot_1699523207.png','screenshot_1699523214.png'),
+(22, 'Đèn cây DC04','tree_lights', 1400000, 5, 'Công suất: 220V, đèn LED','kích thước:Kim loại, 180cm','Hiện đại, Công tắc ở dây đoạn thân đèn','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Den_cay_DC04.jpg','screenshot_1699524346.png','screenshot_1699524354.png','screenshot_1699524362.png'),
+(23, 'Đèn cây DC07','tree_lights', 490000, 3, ' Công suất:220V,đèn LED','kích thước: Kim loại sơn từ tính,tối đa 182 CM ', 'đường kính chân đèn: 28CM', 'Hiện đại đa dụng,Công tắc núm xoay thay đổi độ sáng','Den_cay_DC07.jpg','screenshot_1699524426.png','screenshot_1699524406.png','screenshot_1699524419.png'),
+(24, 'Đèn cây DC10','tree_lights', 1360000, 5, ' Công suất:220V,đèn LED','kích thước: Kim loại, 175cm','Hiện đại, độc đáo, decor, Công tắc ở dây đoạn thân đèn','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Den_cay_DC10.jpg','screenshot_1699524553.png','screenshot_1699524567.png','screenshot_1699524575.png'),
+(25, 'Đèn cây DC12','tree_lights', 989000, 7, ' Công suất:220V,đèn LED','kích thước: Kim loại, 190cm',' Độc đáo, decor,Công tắc dây','Khu vực sử dụng :  Phòng khách, phòng làm việc, phòng ngủ,...','Den_cay_DC12.jpg','screenshot_1699524682.png','screenshot_1699524641.png','screenshot_1699524674.png'),
+(26, 'Đèn cây DC13','tree_lights', 1090000, 6, ' Công suất:220V,đèn LED','kích thước:Kim loại, 175cm',' Hiện đại, độc đáo, decor, Công tắc ở dây đoạn thân đèn','Hàng đóng kiện chắc chắn, vận chuyển toàn quốc','Den_cay_DC13.jpg','screenshot_1699524983.png','screenshot_1699524973.png','screenshot_1699525003.png'),
+(27, 'Đèn cây DC15','tree_lights', 999000, 9, 'Công suất:220V,đèn LED','kích thước:Kim loại, 180CM','Từ chụp đèn đến thân : 64cm, đường kính chân 27cm, đường kính chụp đèn 34cm', 'Thiết kế dạng vòm tiện lợi để đọc sách ','Den_cay_DC15.jpg','screenshot_1699524756.png','screenshot_1699524773.png','screenshot_1699524779.png'),
+(28, 'Đèn cây DC20','tree_lights', 450000, 5, ' Công suất:220V,đèn LED','kích thước: Kim Loại, 182cm','Hiện đại, độc đáo, Công tắc dây','Tiện ích: Có sạc không dây và ở cắm USB riêng','Den_cay_DC20.jpg','Den_cay_DC20.jpg','screenshot_1699524885.png','screenshot_1699524878.png');
+
+
 

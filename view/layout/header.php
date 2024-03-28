@@ -25,7 +25,7 @@
     <div class="background">
         <a href=""><img src="../IMG/logo2.jpg" alt=""></a>
         <div class="menu">
-            <a href="">Bàn Trà</a>
+            <a href="../view/home.php">Bàn Trà</a>
             <a href="">Gương</a>
             <a href="">Bàn trang điểm</a>
             <a href="">Đèn cây</a>
@@ -53,6 +53,7 @@
                     <?php endif; ?>
                 </div>
             </div>
+            
             <?php
                 if (isset($_SESSION['username'])) {
                     echo '<a href="../view/cart.php"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span>
@@ -66,4 +67,5 @@
             ?>
         </div>
     </div>
+    <hr style="border: 2px solid black;">
     
