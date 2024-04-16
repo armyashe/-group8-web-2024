@@ -1,10 +1,11 @@
 <?php
-    session_start();
+    session_start();//start session
 
+    // Check if user is logged in using the session variable - kiểm tra xem người dùng đã đăng nhập bằng biến session không
     if(isset($_GET['logout'])) {
-        session_destroy();
-        unset($_SESSION['username']);
-        header('location: ../view/home.php');
+        session_destroy(); // xóa session - người dùng đăng xuất khỏi hệ thống
+        unset($_SESSION['username']); //  go bien session username
+        header('location: ../view/home.php'); // chuyển hướng người dùng đến trang chủ - redirect to the home page
     }
 
 ?>
@@ -15,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cửa hàng nội thất</title>
     <link rel="stylesheet" href="../css/style1.css">
+   
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Load font awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -31,8 +33,8 @@
             <a href="">Đèn cây</a>
             <div class="login">
             <?php
-                if (isset($_SESSION['username'])) {
-                echo '<a href="" style="margin-top: 6px;">' . $_SESSION['username'] . '</a>';
+                if (isset($_SESSION['user'])) {
+                echo '<a href="" style="margin-top: 6px;">' . $_SESSION['user']['user_name'] . '</a>';
                 } 
                 else {
                 echo '<a href="../view/login.php"><i class="fa fa-user"></i>Đăng nhập</a>';
@@ -40,7 +42,7 @@
             ?>
                 <div class="member hide">
                     <?php
-                        if(isset($_SESSION['username'])) {
+                        if(isset($_SESSION['user'])) {
                             echo '<a href="">Lịch sử đơn hàng</a>';
                         }
                         else 
@@ -48,14 +50,14 @@
                             echo '<a href="javascript:void(0);" onclick="showLoginAlertHistory()">Lịch sử đơn hàng</a>';
                         }
                     ?>
-                    <?php if (isset($_SESSION['username'])) : ?>
+                    <?php if (isset($_SESSION['user'])) : ?>
                         <a href="?logout=true" id="logoutButton">Đăng xuất</a>
                     <?php endif; ?>
                 </div>
             </div>
             
             <?php
-                if (isset($_SESSION['username'])) {
+                if (isset($_SESSION['user'])) {
                     echo '<a href="../view/cart.php"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span>
                     <span class="cart-number"></span></a>';
                 } 

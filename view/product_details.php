@@ -1,23 +1,3 @@
-<?php
-include_once ('layout/header.php');
-include_once ('../database/productDAL.php');
-
-include_once ('../database/connect.php');
-include_once ('../database/productDAL.php');
-
-if (!isset($_REQUEST['idProduct'])) {
-    // Nếu không có idProduct được cung cấp,có thể chuyển hướng người dùng hoặc hiển thị một thông báo lỗi.
-    header("Location: error.php");
-    exit;
-}
-
-$id = $_REQUEST['idProduct'];
-$detail = getProductById($id);
-// Định dạng giá sản phẩm dưới dạng "700.000đ"
-// detail['gia'] gia can dinh dang - 0 so se duoc lam tron den so nguyen gan nhat - "," la dau thap phan - "." la dau cach hang nghin
-$price_formatted = number_format($detail['gia'], 0, ",", ".") . "đ";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +6,89 @@ $price_formatted = number_format($detail['gia'], 0, ",", ".") . "đ";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product details</title>
     <link rel="stylesheet" href="../css/product_details.css">
-    <!-- Add your CSS styles here -->
+    <?php
+
+    include_once ('layout/header.php');
+
+    include_once ('../database/connect.php');
+    include_once ('../database/productDAL.php');
+
+
+    // Check if product ID is provided in the request
+    if (!isset($_REQUEST['idProduct'])) {
+        // chuyen huong nguoi dung den trang loi - redirect user to error page
+        header("Location: error.php");
+        exit;
+    }
+
+    // Get product details by ID
+    $id = $_REQUEST['idProduct'];
+    $detail = getProductById($id);
+
+    // Function to add item to cart
+    function addToCart($productId, $productName, $productPrice)
+    {
+        /* unset($_SESSION['cart']);
+          return; */
+
+        $id = $_REQUEST['idProduct'];
+        $detail = getProductById($id);
+
+        // khoi tao gio hang neu chua co
+        // ham isset kiem tra xem bien da dinh nghia co gia tri hay chua
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
+        $flag = 0; // 0 is can be found, 1 is can found
+        // Add item to cart array
+    
+        for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+            if ($_SESSION['cart'][$i]['id'] == $productId) {
+                $flag = 1;
+                $_SESSION['cart'][$i]['quantity'] += 1;
+                break;
+            }
+        }
+
+        if ($flag == 0) {
+            $_SESSION['cart'][] = array(
+                'id' => $productId,
+                'name' => $productName,
+                'price' => $productPrice,
+                'quantity' => 1,
+            );
+        } else {
+            if ($_SESSION['cart'][$i]['quantity'] <= $detail['soluong']) {
+                
+                
+                $_SESSION['cart'][$i]['quantity'] += 1;
+                echo "<script>alert('Sản phẩm đã có trong giỏ hàng')</script>";
+            } else {
+                echo "<script>alert('Số lượng sản phẩm không đủ')</script>";
+            }
+
+        }
+
+    }
+
+    // Format product price
+    $price_formatted = number_format($detail['gia'], 0, ",", ".") . "đ";
+
+    // Check if 'add_to_cart' form is submitted
+    if (isset($_POST['add_to_cart'])) {
+        // Check if 'add_to_cart' form is submitted
+        $product_id = $_POST['product_id'];
+        $product_name = $_POST['product_name'];
+        $product_price = $_POST['product_price'];
+
+        // Add item to cart
+        addToCart($product_id, $product_name, $product_price);
+    }
+/*     if (isset($_SESSION['cart']))
+        echo count($_SESSION['cart']); */
+
+    ?>
+
 </head>
 
 <body>
@@ -35,7 +97,6 @@ $price_formatted = number_format($detail['gia'], 0, ",", ".") . "đ";
             <div class="picture">
                 <!-- Thay đổi src của ảnh sản phẩm để hiển thị từ URL trong cơ sở dữ liệu -->
 
-            
                 <img src="../IMG/<?php echo $detail['hinhanh']; ?>" alt="Product Image" id="productImage">
 
                 <figure class="picture-small">
@@ -60,19 +121,33 @@ $price_formatted = number_format($detail['gia'], 0, ",", ".") . "đ";
                     <br><?php echo $detail['mota4']; ?>
 
                 </div>
-                <div class="price">
-                    <?php echo $price_formatted; ?>
+
+                <div class="price"><?php echo $price_formatted; ?></div>
+                <!--  <br>Availability: Còn hàng -->
+                <div class="quantity">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1">
+                    <p><?php echo $detail['soluong']; ?> hàng có sẵn</p>
                 </div>
-                <br>Availability: Còn hàng
-                <div class="button" onclick="them()"><a href="giohang.html">Thêm vào giỏ hàng</a></div>
+
+                <div class="content_1">
+
+                    <!-- Form to add product to cart -->
+                    <form method="post">
+                        <input type="hidden" name="product_id" value="<?php echo $detail['id']; ?>">
+                        <input type="hidden" name="product_name" value="<?php echo $detail['tensanpham']; ?>">
+                        <input type="hidden" name="product_price" value="<?php echo $detail['gia']; ?>">
+                        <button class="button" type="submit" name="add_to_cart">Thêm vào giỏ hàng</button>
+
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
 </body>
 <footer>
-    <?php
-    include_once ('layout/footer.php');
-    ?>
+    <?php include_once ('layout/footer.php'); ?>
 </footer>
 
 </html>

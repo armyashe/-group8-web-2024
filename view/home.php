@@ -4,7 +4,13 @@
 
     include_once ('../database/connect.php');
     include_once ('layout/header.php');
+    if(isset($_REQUEST['loginSuccessful'])) // đăng nhập sai nó vô đây
+        echo "<script> alert('Đăng nhập thành công')</script>"
+    
+   
     ?>
+
+
 </header>
 
 <body>
@@ -220,10 +226,11 @@
             root.innerHTML = products.map(product => {
                 return `
         <div class='box'>
-            <a href="">
+        <a href='http://localhost/web-24/view/product_details.php?idProduct=${product.id}'>
                 <div class='img-box'>
-                    <img class='images' src="../IMG/${product.hinhanh}"></img>
+                    <img class='images' src="../IMG/${product.hinhanh}">
                 </div>
+                </a>
                 <div class='bottom'>
                 <!-- mỗi sản phẩm có id thì mình truyền id vào đây  -->
                 
@@ -232,7 +239,7 @@
                     <h2>${product.gia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</h2>
                 </div>
             </a>
-            <button>Thêm vào giỏ hàng</button>
+           
         </div>
         `;
             }).join('')
@@ -283,9 +290,7 @@
 
 </body>
 <footer>
-    <?php
-    include_once ('layout/footer.php');
-    ?>
+    <?php include_once ('layout/footer.php'); ?>
 </footer>
 
 </html>

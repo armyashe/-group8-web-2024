@@ -60,11 +60,11 @@
         }
 
         .content .info {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: 110%;
             margin-top: 1rem;
             margin-bottom: 1rem;
-           /*  margin-left: 2rem; */
+            margin-left: 2rem;
             list-style-type: square;
 
         }
@@ -75,38 +75,75 @@
             margin-top: 3rem;
         }
 
-        .availability {
-            margin-top: 20px;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            border: 1px solid gray;
-            background-color: rgba(0, 0, 0, -0.6);
-        }
 
-
-        .button {
-            width: 200px;
-            height: 50px;
-            background: rgba(60, 58, 58, 0.992);
-
-            font-size: 20px;
+        .content_1 {
+            width: 200px; /* Độ rộng của content_1 */
+            height: 150px; /* Chiều cao của content_1 */
+            font-size: 16px;
             font-family: 'Times New Roman', Times, serif;
-            border: none;
             text-align: center;
-            line-height: 45px;
-            margin-top: 4%;
-            list-style: none;
         }
-
-        .button a {
-            text-decoration: none;
+        
+        .content_1 form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 30%; /* Chiều cao của form sẽ căn giữa theo chiều dọc */
+        }
+        
+        .content_1 button {
+            border: none;
             color: white;
-        }
-
-        .button:hover {
-            background-color: rgba(202, 208, 163, 0.564);
-            font-size: 15px;
+            padding: 5px 20px; /* Padding bên trong nút */
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
             cursor: pointer;
-            color: black;
+            background-color: #04AA6D;
+            border-radius: 10px;
+            width: 180px; /* Độ rộng của nút */
+            height: 50px; /* Chiều cao của nút */
         }
+        
+        .content_1 button:hover {
+            background-color: #008CBA;
+        }
+        
+        .quantity {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            width: 100px;
+            margin-right: 10px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            margin-right: 10px; /* Khoảng cách giữa input và số lượng có sẵn */
+        }
+        
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        
+
+        
+       
