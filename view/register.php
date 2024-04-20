@@ -1,6 +1,10 @@
 <?php 
 include_once ('../database/userDAL.php');
+if(isset($_REQUEST['registerFail'])) // đăng nhập sai nó vô đây
+echo "<script>alert('Tài khoản đã tồn tại')</script>";
 
+if(isset($_REQUEST['registerFail_pass'])) // đăng nhập sai nó vô đây
+echo "<script>alert('Mật khẩu không trùng khớp')</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,10 +20,10 @@ include_once ('../database/userDAL.php');
     <div id="login">
         <h2>ĐĂNG KÝ</h2>
         <form action="registerHandle.php" method="post">
-            <input type="email" name="email" placeholder="enter email"  class="email" required autocomplete="off" />
-            <input type="text" name="username" placeholder="enter username" class="username" required autocomplete="off" />
-            <input type="password" name="password" placeholder="enter password" class="password" required autocomplete="off" />
-            <input type="password" name="pass" placeholder="enter password again" class="pass form-control" required autocomplete="off" />
+            <input type="email" name="email" placeholder="enter email" value="<?php if(isset($_REQUEST['email'])) echo $_REQUEST['email'] ?> " class="email" required autocomplete="off" />
+            <input type="text" name="username" placeholder="enter username" value="<?php if(isset($_REQUEST['username'])) echo $_REQUEST['username'] ?> " class="username" required autocomplete="off" />
+            <input type="password" name="password" placeholder="enter password" value="<?php if(isset($_REQUEST['password'])) echo $_REQUEST['password'] ?> " class="password" required autocomplete="off" />
+            <input type="password" name="pass" placeholder="enter password again"  class="pass form-control" required autocomplete="off" />
             <button type="submit" class="btn-primary">Đăng kí</button>
         </form>
         <div class="register">

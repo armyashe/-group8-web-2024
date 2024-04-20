@@ -1,7 +1,7 @@
 <?php
 include 'connectDB.php';
 
-include_once('../view/registerHandle.php');
+include_once ('../view/registerHandle.php');
 
 
 # cái connectDB vs connect khác nhau gì dị. ko phải nó giống nhau hả. em tưởng có file connect ròi
@@ -43,12 +43,12 @@ function checkUserLogin($username, $password)
     $stmt = $conn->prepare($sql); // Chuẩn bị câu truy vấn - prepare statement dùng để ngăn chặn SQL Injection
     $stmt->bind_param("ss", $username, $password); // Bind dữ liệu vào câu truy vấn - bind_param dùng để ngăn chặn SQL Injection
     $stmt->execute(); // Thực thi câu truy vấn
-    
+
     $result = $stmt->get_result(); // Lấy kết quả trả về từ câu truy vấn
 
     if ($result->num_rows > 0) {
         // Truy vấn thành công, lấy dữ liệu người dùng
-        $row = $result->fetch_assoc();
+        $row = $result->fetch_assoc(); // Lấy dữ liệu người dùng
         $conn->close(); // Đóng kết nối sau khi sử dụng
 
         return $row; // Trả về dữ liệu người dùng
@@ -63,17 +63,39 @@ function addUser($email, $username, $password)
 {
     $conn = connect(); // Kết nối đến CSDL
 
-    // Sử dụng Prepared Statement để tránh lỗ hổng SQL Injection
-    $sql = "INSERT INTO users ( user_name, password,user_email) VALUES (?,?, ?, ?)";
-    $stmt = $conn->prepare($sql); // Chuẩn bị câu truy vấn
-    $stmt->bind_param("sss",$username , $password, $email); // Bind dữ liệu vào câu truy vấn
-    
-    if ($stmt->execute()) {
+    $sql = "INSERT INTO `user` (`id`, `user_name`, `password`,`user_email`) VALUES ('" . uniqid() . "','" . $email . "','" . $username . "','" . $password . "') ";
+
+
+    echo $sql;
+
+    if ($conn->query($sql) === TRUE) {
         // Thêm người dùng thành công
         $conn->close();
         return true;
     } else {
+   
         // Thêm người dùng thất bại
+        $conn->close();
+        return null;
+    }
+}
+
+function getUserId($username) {
+    $conn = connect();
+
+    $sql = "SELECT id FROM user WHERE user_name = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $stmt->close();
+        $conn->close();
+        return $row['id'];
+    } else {
+        $stmt->close();
         $conn->close();
         return null;
     }

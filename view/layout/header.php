@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="../templates/js/bootstrap.min.js">
     <script src="../javascripts/search.js"></script>
 </head>
-<body>
+
     <div class="background">
         <a href=""><img src="../IMG/logo2.jpg" alt=""></a>
         <div class="menu">

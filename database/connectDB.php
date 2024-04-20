@@ -1,5 +1,7 @@
 <?php
 
+// Define the connect function only if it doesn't already exist
+if (!function_exists('connect')) {
 function connect(){
     // Database credentials
     $servername = "localhost"; // Or your server name
@@ -8,7 +10,7 @@ function connect(){
     $dbname = "showroom_db"; // Your database name
 
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $password,$dbname);
 
     // Check connection
     if ($conn->connect_error) {
@@ -17,5 +19,5 @@ function connect(){
     #echo "Connected successfully"; // Display message upon successful connection
     return $conn;
 }
-
+}
 ?>

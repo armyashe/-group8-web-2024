@@ -6,42 +6,14 @@ include_once ('layout/header.php');
 include_once ('../database/productDAL.php');
 include_once ('../database/connect.php');
 
-
-// Xử lý xóa giỏ hàng nếu người dùng yêu cầu
-if (isset($_GET['clear'])) {
+if(isset($_REQUEST['orderIDSuccessful'])){
+    echo '<p>Đơn hàng của bạn đã được đặt thành công. Mã đơn hàng của bạn là: '.$_REQUEST['orderIDSuccessful'].'</p>';
     unset($_SESSION['cart']);
+
 }
 
-// Kiểm tra nếu có sản phẩm được thêm vào giỏ hàng từ trang product_details.php
-if (isset($_POST['add_to_cart'])) {
-    $product_id = $_POST['product_id'];
-    $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_price'];
 
-    // Thêm thông tin sản phẩm vào giỏ hàng
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = array();
-    }
 
-    // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
-    $product_exists = false;
-    foreach ($_SESSION['cart'] as &$item) {
-        if ($item['id'] == $product_id) {
-            $item['quantity'] += 1;
-            $product_exists = true;
-            break;
-        }
-    }
-
-    if (!$product_exists) {
-        $_SESSION['cart'][] = array(
-            'id' => $product_id,
-            'name' => $product_name,
-            'price' => $product_price,
-            'quantity' => 1,
-        );
-    }
-}
 
 // Hiển thị nội dung giỏ hàng (nếu có)
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
@@ -53,6 +25,8 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     echo '<th>Đơn giá</th>';
     echo '<th>Số lượng</th>';
     echo '<th>Số tiền</th>';
+    echo '<th>Ngày thêm</th>';
+    echo '<th>Trạng thái</th>';
     //echo '<th>Ngày thêm</th>';
     echo '</tr>';
 
@@ -83,6 +57,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     echo '<tr>';
     echo '<td colspan="4">Tổng tiền (' . $total_items . ' sản phẩm):</td>';
     echo '<td>' . number_format($total_amount, 0, ",", ".") . 'đ</td>';
+    
     echo '</tr>';
 
     echo '</table>';
