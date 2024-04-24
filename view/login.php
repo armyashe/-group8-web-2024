@@ -7,9 +7,10 @@ if(isset($_REQUEST['errorLogin'])){ // đăng nhập sai nó vô đây
 }
 if(isset($_REQUEST['registerSuccessful'])){ // đăng nhập sai nó vô đây
     echo "<script>alert('Đăng ký thành công')</script>";
+    
 }
 
-    
+
 
 ?>
 <!DOCTYPE html>

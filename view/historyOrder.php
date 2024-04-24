@@ -3,95 +3,69 @@
 <html>
 <?php
 include_once ('layout/header.php');
-include_once ('../database/productDAL.php');
 include_once ('../database/connect.php');
+include_once ('../database/orderDAL.php');
 
-if(isset($_REQUEST['orderIDSuccessful'])){
-    echo '<p>Đơn hàng của bạn đã được đặt thành công. Mã đơn hàng của bạn là: '.$_REQUEST['orderIDSuccessful'].'</p>';
-    unset($_SESSION['cart']);
+$idUser = $_SESSION['user']['id']; // lấy id user từ session
+$donhang = getOrder($idUser); // lấy thông tin đơn hàng
 
-}
-
-
-
-
-// Hiển thị nội dung giỏ hàng (nếu có)
-if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-
-    echo '<table class="list-cart">';
-    echo '<tr>';
-    echo '<th>ID</th>';
-    echo '<th>Tên sản phẩm</th>';
-    echo '<th>Đơn giá</th>';
-    echo '<th>Số lượng</th>';
-    echo '<th>Số tiền</th>';
-    echo '<th>Ngày thêm</th>';
-    echo '<th>Trạng thái</th>';
-    //echo '<th>Ngày thêm</th>';
-    echo '</tr>';
-
-    $total_items = 0;
-    $total_amount = 0;
-
-    foreach ($_SESSION['cart'] as $item) {
-        $price_formatted = number_format($item['price'], 0, ",", ".") . "đ";
-        $sum = $item['price'] * $item['quantity'];
-        $sum_formatted = number_format($sum, 0, ",", ".") . "đ";
-
-        echo '<tr>';
-        echo '<td>' . $item['id'] . '</td>';
-        echo '<td>' . $item['name'] . '</td>';
-        echo '<td>' . $price_formatted . '</td>';
-        echo '<td>' . $item['quantity'] . '</td>';
-        echo '<td>' . $sum_formatted . '</td>';
-        
-
-       // echo'<td>'.date("Y-m-d H:i:sa",$item['date']) .'</td>';
-
-        echo '</tr>';
-
-        $total_items += $item['quantity'];
-        $total_amount += $sum;
-    }
-
-    echo '<tr>';
-    echo '<td colspan="4">Tổng tiền (' . $total_items . ' sản phẩm):</td>';
-    echo '<td>' . number_format($total_amount, 0, ",", ".") . 'đ</td>';
-    
-    echo '</tr>';
-
-    echo '</table>';
-
-
-} else {
-    echo '<p>Giỏ hàng của bạn đang trống.</p>';
-}
+echo '<script>console.log('.json_encode($donhang).')</script> ';
+echo '<script>console.log('.json_encode($idUser).')</script> ';
+echo '<script>';
+echo 'document.title = "LỊCH SỬ MUA HÀNG";';
+echo '</script>';
 ?>
  <head>
-        <title>Giỏ hàng</title>
-        <link rel="stylesheet" href="../css/styleGH.css">
+        <link rel="stylesheet" href="../css/history.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../templates/js/bootstrap.min.js">
         <script src="../javascripts/search.js"></script>
  </head>
 
+ <main style="margin-top:4%;">
+        <aside>
+            <?php echo '<span><i class="fa fa-user"></i>'. $_SESSION['user']['user_name'].' </span>'?>
+            <a class="active" href="#" class="link"><i class='bx bxs-receipt'></i>Lịch sử mua hàng</a>
+            <a href="cart.php" style="cursor: pointer"><i class="fa fa-shopping-cart"></i>Giỏ hàng</a>
+        </aside>
+        <section>
+            <?php
+            if($donhang != null)
+            {
+                foreach($donhang as $dh)
+                {
+                    // Lấy thông tin chi tiết đơn hàng
+                    $orderDetails = getOrderDetail($dh['idOrder']);
 
-    <div class="body">
-        <div class="row">
-            <table class="list-cart">
-                <!-- Bảng hiển thị danh sách sản phẩm trong giỏ hàng (nếu có) -->
-            </table>
+                    if($orderDetails != null)
+                    {
+                        foreach($orderDetails as $item)
+                        {
+                            // lấy thông tin sản phẩm từ bảng products
+                            $product = getProduct($item['idProduct']);
+                            foreach($product as $item_product)
+                            {
+                                echo '<div class="product">';
+                                echo '<img src="../IMG/'.$item_product['hinhanh'].'" alt="">';
+                                echo '<div class="info">';
+                                echo '<p class="name">'.$item_product['tensanpham'].'</p>';
+                                echo '<p>Giá : '.number_format($item['price'], 0, ",", ".") .'₫</p>';
+                                echo '</div>';
+                                echo '<div class="confirm"><i class="bx bxs-truck"></i></div>';
+                                echo '<div style="margin-top: 40px;">Số lượng : '.$item['quantity'].'</div>';
+                                echo '</div>';
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                echo '<h1>Chưa có đơn hàng nào</h1>';
+            } 
+            ?>
+        </section>
+    </main>
 
-        </div>
-
-        <div id="button-container">
-            <!-- Nút chức năng -->
-            <button class="btn btn-primary"><a href="checkout.php" >Thanh toán</a></button>        
-            <button class="btn btn-danger"><a href="cart.php?clear" >Xóa giỏ hàng</a></button>
-            <p><a href="home.php" class="btn btn-primary">Tiếp tục mua hàng</a></p>
-    </div>
-
-    </div>
 <footer>
     <?php include_once ('layout/footer.php'); ?>
 </footer> 

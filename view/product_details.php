@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="../css/product_details.css">
     <?php
 
-    include_once ('layout/header.php');
-
     include_once ('../database/connect.php');
     include_once ('../database/productDAL.php');
+    include_once ('layout/header.php'); 
+    
 
 
     // Check if product ID is provided in the request
@@ -20,6 +20,7 @@
         header("Location: error.php");
         exit;
     }
+    
 
     // Get product details by ID
     $id = $_REQUEST['idProduct'];
@@ -31,8 +32,10 @@
         /* unset($_SESSION['cart']);
           return; */
 
-        $id = $_REQUEST['idProduct'];
+        $id = $_REQUEST['idProduct'];  
         $detail = getProductById($id);
+
+        $soluong = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 
         // khoi tao gio hang neu chua co
         // ham isset kiem tra xem bien da dinh nghia co gia tri hay chua
@@ -43,11 +46,27 @@
         // Add item to cart array
     
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-            if ($_SESSION['cart'][$i]['id'] == $productId) {
-                $flag = 1;
-                $_SESSION['cart'][$i]['quantity'] += 1;
-                break;
+            if ($_SESSION['cart'][$i]['id'] == $productId ) {
+                if($soluong <= $detail['soluong'] && (($_SESSION['cart'][$i]['quantity'] + $soluong) <= $detail['soluong']))
+                {
+                    $flag = 1;
+                    $_SESSION['cart'][$i]['quantity'] += $soluong;
+                }
+                else {
+                    echo "<script>alert('Số lượng sản phẩm không đủ')</script>";
+                    return;
+                }
             }
+            else if ($_SESSION['cart'][$i]['id'] == $productId && $soluong > $detail['soluong']) {
+                echo "<script>alert('Số lượng sản phẩm không đủ')</script>";
+                return;
+            }
+        }
+
+        if($soluong > $detail['soluong'])
+        {
+            echo "<script>alert('Số lượng sản phẩm không đủ')</script>";
+            return;
         }
 
         if ($flag == 0) {
@@ -55,19 +74,18 @@
                 'id' => $productId,
                 'name' => $productName,
                 'price' => $productPrice,
-                'quantity' => 1,
+                'quantity' => $soluong,
             );
         } else {
-            if ($_SESSION['cart'][$i]['quantity'] <= $detail['soluong']) {
-                
-                
-                $_SESSION['cart'][$i]['quantity'] += 1;
-                echo "<script>alert('Sản phẩm đã có trong giỏ hàng')</script>";
-            } else {
-                echo "<script>alert('Số lượng sản phẩm không đủ')</script>";
+            foreach ($_SESSION['cart'] as $item) {
+                if ($item['id'] == $productId) {
+                    $item['quantity'] += $soluong;
+                    break;
+                }
             }
 
         }
+        echo "<script>alert('Thêm vào giỏ hàng thành công')</script>";
 
     }
 
@@ -123,7 +141,8 @@
                 </div>
 
                 <div class="price"><?php echo $price_formatted; ?></div>
-                <!--  <br>Availability: Còn hàng -->
+                <!-- Form to add product to cart -->
+                <form method="post">
                 <div class="quantity">
                     <label for="quantity">Số lượng:</label>
                     <input type="number" id="quantity" name="quantity" min="1" value="1">
@@ -132,12 +151,21 @@
 
                 <div class="content_1">
 
-                    <!-- Form to add product to cart -->
-                    <form method="post">
+                    
                         <input type="hidden" name="product_id" value="<?php echo $detail['id']; ?>">
                         <input type="hidden" name="product_name" value="<?php echo $detail['tensanpham']; ?>">
                         <input type="hidden" name="product_price" value="<?php echo $detail['gia']; ?>">
-                        <button class="button" type="submit" name="add_to_cart">Thêm vào giỏ hàng</button>
+                        <?php
+                            if(isset($_SESSION['user']['user_name']))
+                            {
+                                echo '<button class="button" type="submit" name="add_to_cart">Thêm vào giỏ hàng</button>';
+                                echo '<script>alert("'.$_SESSION['user']['user_name'].'")</script>';
+                            }
+                            else
+                            {
+                                echo '<button class="button" onclick="showPaymentAlert(event)">Thêm vào giỏ hàng</button>';
+                            }
+                        ?>
 
                     </form>
 

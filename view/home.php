@@ -5,9 +5,7 @@
     include_once ('../database/connect.php');
     include_once ('layout/header.php');
     if(isset($_REQUEST['loginSuccessful'])) // đăng nhập sai nó vô đây
-        echo "<script> alert('Đăng nhập thành công')</script>"
-    
-   
+        echo "<script> alert('Đăng nhập thành công')</script>";
     ?>
 
 
@@ -157,7 +155,7 @@
     </div>
 
     <script>
-        const itemsPerPage = 9;
+        const itemsPerPage = 6;
         let currentPage = <?php echo $page; ?>;
         console.log(currentPage);
         var filteredData = <?php echo json_encode($result->fetch_all(MYSQLI_ASSOC)); ?>;
@@ -226,7 +224,7 @@
             root.innerHTML = products.map(product => {
                 return `
         <div class='box'>
-        <a href='http://localhost/web-24/view/product_details.php?idProduct=${product.id}'>
+        <a href='product_details.php?idProduct=${product.id}'>
                 <div class='img-box'>
                     <img class='images' src="../IMG/${product.hinhanh}">
                 </div>
@@ -234,7 +232,7 @@
                 <div class='bottom'>
                 <!-- mỗi sản phẩm có id thì mình truyền id vào đây  -->
                 
-                    <h2><a href='http://localhost/web-24/view/product_details.php?idProduct=${product.id}'>${product.tensanpham}</a></h2>
+                    <h2><a href='product_details.php?idProduct=${product.id}'>${product.tensanpham}</a></h2>
 
                     <h2>${product.gia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</h2>
                 </div>
@@ -245,47 +243,18 @@
             }).join('')
         };
 
-        function updateTotal() {
-            // Check if any price input is selected
-            const priceSelected = Array.from(priceInputs).some(input => input.checked);
-
-            // Check if any company input is selected
-            const companySelected = Array.from(companyInputs).some(input => input.checked);
-
-            // If neither price nor company input is selected, hide the total
-            if (!priceSelected && !companySelected) {
-                document.querySelector('.total-reloading').style.display = 'none';
-                return; // Exit the function early
-            }
-
-            // Calculate the total number of products based on the filtered data
-            const totalProducts = filteredData.length;
-
-            // Update the total displayed on the button
-            document.querySelector('.total-reloading').textContent = totalProducts;
-            document.querySelector('.total-reloading').style.display = 'inline'; // Show the total
+        window.onload = function() {
+        <?php
+        if ($priceRange !== null) {
+            echo "document.querySelector('input[name=\"price\"][value=\"$priceRange\"]').checked = true;";
         }
-
-        // Event listeners for radio inputs
-        const priceInputs = document.querySelectorAll('input[name="price"]');
-        const companyInputs = document.querySelectorAll('input[name="company"]');
-
-        // Add event listener for price inputs
-        priceInputs.forEach(input => {
-            input.addEventListener('click', () => {
-                updateTotal();
-            });
-        });
-
-        // Add event listener for company inputs
-        companyInputs.forEach(input => {
-            input.addEventListener('click', () => {
-                updateTotal();
-            });
-        });
-
-        // Call the updateTotal function initially to set the initial total
-        updateTotal();
+        
+        
+        if ($category !== null) {
+            echo "document.querySelector('input[name=\"company\"][value=\"$category\"]').checked = true;";
+        }
+        ?>
+    };
     </script>
 
 </body>

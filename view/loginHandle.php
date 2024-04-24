@@ -7,7 +7,6 @@ if (isset($_POST['username']) && isset($_POST['password']))
     checkLogin();
 function checkLogin()
 {
-
     // Kiểm tra xem người dùng đã nhập thông tin đăng nhập chưa
     if (!isset($_POST['username']) && !isset($_POST['password']))
         return; // Nếu chưa thì không làm gì cả

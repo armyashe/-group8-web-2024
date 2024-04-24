@@ -236,7 +236,7 @@ section {
 #root {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 2.3%;
 }
 #root p
@@ -252,6 +252,7 @@ section {
     align-items: center;
     height: 100%;
     position: relative;
+    margin-bottom: 5%;
 }
 .box a
 {
@@ -282,7 +283,7 @@ section {
 .bottom
 {
     text-align: center;
-    margin-top: 8%;
+    margin-top: 3%;
 }
 .box button {
     position: absolute;

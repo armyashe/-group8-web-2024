@@ -13,6 +13,12 @@ function showLoginAlert() {
     window.location.href = "../view/login.php";
   }
   
+  function showPaymentAlert(event) {
+    event.preventDefault(); // Ngăn chặn hành động mặc định của form
+    alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+    // Chuyển hướng người dùng đến trang đăng nhập
+    window.location.href = "login.php";
+  }
   
   // hàm để gửi form lên server
   function submitForm() {

@@ -44,7 +44,7 @@ function checkRegister()
             header("Location: register.php?registerFail_pass=1&email=$email&username=$username");
             
         }else{
-            $resultUser = addUser($email, $username, $password);
+            $resultUser = addUser($username, $password,$email);
             if($resultUser){
                 header("Location: login.php?registerSuccessful=1");
 

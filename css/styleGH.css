@@ -129,6 +129,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    text-align: center;
 }
 
 .list-cart th,
@@ -152,6 +153,7 @@ body {
     cursor: pointer;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     margin-right: 10px;
+    text-align: center;
 }
 
 .btn-primary {
@@ -186,4 +188,32 @@ p {
 {
     text-decoration: none;
     color: white;
+}
+/* Số lượng */
+.soluong {
+    text-align: center;
+}
+
+.soluong button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.soluong button:hover {
+    background-color: #4CAF50;
+}
+
+.soluong input {
+    border: none;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    width: 5em;
+    height: 2em;
 }

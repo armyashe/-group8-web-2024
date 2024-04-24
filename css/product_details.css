@@ -66,6 +66,7 @@
             margin-bottom: 1rem;
             margin-left: 2rem;
             list-style-type: square;
+            
 
         }
 
@@ -135,6 +136,7 @@
             font-size: 16px;
             outline: none;
             margin-right: 10px; /* Khoảng cách giữa input và số lượng có sẵn */
+            text-align: center;
         }
         
         p {

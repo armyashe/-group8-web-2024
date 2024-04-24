@@ -4,10 +4,9 @@
     // Check if user is logged in using the session variable - kiểm tra xem người dùng đã đăng nhập bằng biến session không
     if(isset($_GET['logout'])) {
         session_destroy(); // xóa session - người dùng đăng xuất khỏi hệ thống
-        unset($_SESSION['username']); //  go bien session username
+        unset($_SESSION['user']); //  go bien session username
         header('location: ../view/home.php'); // chuyển hướng người dùng đến trang chủ - redirect to the home page
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,21 +19,20 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Load font awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../templates/js/bootstrap.min.js">
     <script src="../javascripts/search.js"></script>
 </head>
 
     <div class="background">
-        <a href=""><img src="../IMG/logo2.jpg" alt=""></a>
+        <a href="../view/home.php"><img src="../IMG/logo2.jpg" alt=""></a>
         <div class="menu">
-            <a href="../view/home.php">Bàn Trà</a>
-            <a href="">Gương</a>
-            <a href="">Bàn trang điểm</a>
-            <a href="">Đèn cây</a>
+            <a href="home.php?keyword=Bàn+trà+">Bàn Trà</a>
+            <a href="home.php?keyword=Gương">Gương</a>
+            <a href="home.php?keyword=Bàn+trang+điểm">Bàn trang điểm</a>
+            <a href="home.php?keyword=Đèn+cây">Đèn cây</a>
             <div class="login">
             <?php
                 if (isset($_SESSION['user'])) {
-                echo '<a href="" style="margin-top: 6px;">' . $_SESSION['user']['user_name'] . '</a>';
+                echo '<a href="" style="margin-top: 6px;"><i class="fa fa-user"></i>' . $_SESSION['user']['user_name'] . '</a>';
                 } 
                 else {
                 echo '<a href="../view/login.php"><i class="fa fa-user"></i>Đăng nhập</a>';
@@ -43,11 +41,11 @@
                 <div class="member hide">
                     <?php
                         if(isset($_SESSION['user'])) {
-                            echo '<a href="">Lịch sử đơn hàng</a>';
+                            echo '<a href="../view/historyOrder.php">Lịch sử mua hàng</a>';
                         }
                         else 
                         {
-                            echo '<a href="javascript:void(0);" onclick="showLoginAlertHistory()">Lịch sử đơn hàng</a>';
+                            echo '<a href="javascript:void(0);" onclick="showLoginAlertHistory()">Lịch sử mua hàng</a>';
                         }
                     ?>
                     <?php if (isset($_SESSION['user'])) : ?>

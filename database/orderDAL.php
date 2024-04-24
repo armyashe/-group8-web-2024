@@ -84,14 +84,16 @@ function getOrderItems($order_id)
     return $items;
 } */
 
-
 include 'connectDB.php';
 include_once 'userDAL.php';
+// echo '<pre>';
+// print_r($_SESSION['cart']);
+// echo '</pre>';
 function insertOrder($user_id, $name, $phone, $address, $payment, $cart)
 {
     $conn = connect(); // Database connection
 
-    $order_id = uniqid();
+    $order_id = uniqid(); 
     $total_amount = 0;
 
     // Calculate total amount from cart items
@@ -128,32 +130,21 @@ function insertOrder($user_id, $name, $phone, $address, $payment, $cart)
     return $order_id;
 }
 
+function insertOrderDetails($order_id, $product_id, $quantity, $price, $note)
+{
+    $conn = connect(); // Kết nối tới cơ sở dữ liệu
 
-function insertOrderDetails($order_id,$cart) {
-    $conn = connect();
+    // Thêm chi tiết đơn hàng vào bảng 'order_details'
+    $sql = "INSERT INTO order_detail (idOrder, idProduct, quantity, price, note) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $order_id, $product_id, $quantity, $price, $note);
+    $stmt->execute();
+    $stmt->close();
 
-    $note = 'đã giao';
+    $conn->close(); // Đóng kết nối cơ sở dữ liệu
+} 
 
-    $result = getOrderItems($order_id);
-    if ($result) {
-        foreach ($cart as $item) {
-            $product_id = $item['id'];
-            $quantity = $item['quantity'];
-            $price = $item['price'];
-
-            $sql = "INSERT INTO order_details (idOrder, idProduct, quantity, price, note) VALUES (?, ?, ?, ?, ?)";}
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("siiis", $order_id, $product_id, $quantity, $price, $note);
-            $stmt->execute();
-            $stmt->close();
-            $conn->close();
-            return true;
-    } else {
-        return false;
-    }
-
-}
-
+// lay thong tin don hang tu idOrder
 function getOrderItems($order_id) {
     $conn = connect();
     $sql = "SELECT * FROM orders WHERE idOrder = ?";
@@ -173,6 +164,59 @@ function getOrderItems($order_id) {
     return $items;
 }
 
+// lấy thông tin đơn hàng từ idUser
+function getOrder($idUser)
+{
+    $conn = connect();
+    $sql = "SELECT * FROM orders WHERE idUser = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $idUser);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $orders = [];
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $orders;
+}
+
+//lấy thông tin chi tiết đơn hàng từ idOrder
+function getOrderDetail($idOrder)
+{
+    $conn = connect();
+    $sql = "SELECT * FROM order_detail WHERE idOrder = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $idOrder);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $orderDetails = [];
+    while ($row = $result->fetch_assoc()) {
+        $orderDetails[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $orderDetails;
+}
+
+// lấy sản phẩm từ idProduct
+function getProduct($idProduct)
+{
+    $conn = connect();
+    $sql = "SELECT * FROM sanpham WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $idProduct);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $productID = [];
+    while ($row = $result->fetch_assoc()) {
+        $productID[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $productID;
+}
 
 
 ?>

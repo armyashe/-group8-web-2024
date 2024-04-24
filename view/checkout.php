@@ -7,7 +7,7 @@
     <title>Thanh toán</title>
     <link rel="stylesheet" href="../css/styleCheckout.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../templates/js/bootstrap.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <header>
     <?php
@@ -26,9 +26,9 @@
     <div class="container1">
 
         <div class="wrapper1">
-            <h3>KIỂM TRA LẠI ĐƠN HÀNG</h3>
+            <h3 style="text-align:center;">KIỂM TRA LẠI ĐƠN HÀNG</h3>
             <div class="row">
-                <table class="list-cart">
+                <table class="list-cart" >
                     <!-- Bảng hiển thị danh sách sản phẩm trong giỏ hàng (nếu có) -->
                     <?php    // Kiểm tra nếu có sản phẩm được thêm vào giỏ hàng từ trang product_details.php
                     if (isset($_POST['add_to_cart'])) {
@@ -41,7 +41,7 @@
                     // Hiển thị nội dung giỏ hàng (nếu có)
                     if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
-                        echo '<table class="list-cart">';
+                        echo '<table class="list-cart" style="text-align:center;">';
                         echo '<tr>';
                         echo '<th>Tên sản phẩm</th>';
                         echo '<th>Đơn giá</th>';
@@ -83,21 +83,18 @@
             </div>
         </div>
         <div class="left-checkout">
-            <h3>ĐỊA CHỈ GIAO HÀNG</h3>
-            <a href="../html/thanhtoan copy.html">
-                <p style="font-size: 17px; margin: 20px 0;">Chọn địa chỉ từ tài khoản</p>
+            <h3 style="text-align:center;">ĐỊA CHỈ GIAO HÀNG</h3>
+            <a href="" style="text-decoration: none;">
+            <p style="font-size: 17px; margin: 20px 0;"><i class="fa-solid fa-location-dot" style="margin-right:10px;"></i>Chọn địa chỉ từ tài khoản</p>
             </a>
             <form action="process_checkout.php" name="frmDangki" method="POST">
                 <label for="username">Họ và tên người nhận</label><br>
 
-                <input type="text" name="txtTendangnhap" id="tendangnhap" class="form-control" required
-                    placeholder="Nhập họ và tên người nhận">
+                <input type="text" name="txtTendangnhap" id="tendangnhap" class="form-control" required autocomplete="off"  placeholder="Nhập họ và tên người nhận">
                 <br><label for="phone-number">Số điện thoại</label></br>
-                <input type="text" name="txtDienthoai" id="sodienthoai" class="form-control" required
-                    placeholder="Ví dụ: 0934686xxx">
+                <input type="text" name="txtDienthoai" id="sodienthoai" class="form-control" required autocomplete="off" placeholder="Ví dụ: 0934686xxx">
                 <br><label for="address">Địa chỉ nhận hàng</label></br>
-                <input type="text" name="txtDiachi" id="diachi" class="form-control" required
-                    placeholder="Nhập địa chỉ nhận hàng">
+                <input type="text" name="txtDiachi" id="diachi" class="form-control" required autocomplete="off" placeholder="Nhập địa chỉ nhận hàng">
 
                 <br><label for="payment">Phương thức thanh toán</label></br>
                 <input type="radio" id="radiopayment1" name="radiopayment" value="ATM">
@@ -106,14 +103,14 @@
                 <input type="radio" id="radiopayment2" name="radiopayment" value="cash">
                 <label for="radiopayment2">Thanh toán bằng tiền mặt</label><br>
 
-                <button type="submit" name="confirm_order" onclick="">Xác nhận đặt hàng</button>
+                <button type="submit" name="confirm_order" onclick="" >Xác nhận đặt hàng</button>
 
             </form>
         </div>
 
         <div class="fixed-buttons-container">
             <div class="back-to-cart">
-                <a href="../view/home.php">
+                <a href="../view/home.php" style="text-decoration: none;">
                     <span>
                         <img src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/btn_back.svg?q=10354">
                     </span>

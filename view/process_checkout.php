@@ -29,11 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_order'])) {
         echo '<p>Giỏ hàng của bạn đang trống. Vui lòng chọn sản phẩm trước khi thanh toán.</p>';
     }
 }*/
-
+session_start();
 include_once('../database/orderDAL.php');
 include_once('../database/userDAL.php'); // File kết nối đến cơ sở dữ liệu
 include_once('../database/connectDB.php'); // File kết nối đến cơ sở dữ liệu
-session_start();
+
 // Xử lý thông tin đặt hàng khi người dùng gửi biểu mẫu thanh toán
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_order'])) {
     // Kiểm tra giỏ hàng có sản phẩm hay không
