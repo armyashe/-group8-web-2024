@@ -159,7 +159,6 @@
                             if(isset($_SESSION['user']['user_name']))
                             {
                                 echo '<button class="button" type="submit" name="add_to_cart">Thêm vào giỏ hàng</button>';
-                                echo '<script>alert("'.$_SESSION['user']['user_name'].'")</script>';
                             }
                             else
                             {

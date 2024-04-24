@@ -7,7 +7,6 @@ $customer->execute();
 $customer->store_result();
 $khachhang = $customer->num_rows;
 
-echo '<script>console.log("khach hang : '.$khachhang.'")</script>';
 
 
 $order = $conn->prepare("SELECT `idOrder` FROM `orders`");
@@ -15,7 +14,6 @@ $order->execute();
 $order->store_result();
 $donhang = $order->num_rows;
 
-echo '<script>console.log("don hang : '.$donhang.'")</script>';
 
 // nếu có đơn hàng thì tính cập nhật tổng tiền của tất cả các đơn hàng
 if($order->num_rows > 0){
@@ -27,7 +25,6 @@ if($order->num_rows > 0){
     while($order_amount->fetch()){
         $total += $tongtien;
     }
-    echo '<script>console.log("tong tien : '.$total.'")</script>';
 }
 else{
     $total = 0;
@@ -40,7 +37,7 @@ $product->execute();
 $product->store_result();
 $sanpham = $product->num_rows;
 
-echo '<script>console.log("san pham : '.$sanpham.'")</script>';
+
 
 
 

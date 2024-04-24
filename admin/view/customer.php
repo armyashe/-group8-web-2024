@@ -1,5 +1,5 @@
 <?php
-include_once('../controller/database.php');
+include_once ('../database/connect.php');
 include_once('../includes/header.php');
 
 $customer = $conn->prepare("SELECT * FROM `user`");
@@ -29,8 +29,9 @@ if(isset($_POST["submit"]))
     else
     {
         $trangthai = 'true';
-        $insert_user = $conn ->prepare("INSERT INTO `user`(`user_name`, `password`, `user_email`,`trangthai`) VALUES (?,?,?,?)");
-        $insert_user ->execute([$email, $name, $password, $trangthai]);
+        $id = uniqid();
+        $insert_user = $conn ->prepare("INSERT INTO `user`(`id`,`user_name`, `password`, `user_email`,`trangthai`) VALUES (?,?,?,?,?)");
+        $insert_user ->execute([$id,$name, $password, $email, $trangthai]);
         echo '<script>alert("Thêm người dùng thành công")</script>';
     }
 }
@@ -47,8 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitEdit"])) {
     $password = htmlspecialchars($_POST['passwordEdit'], ENT_QUOTES, 'UTF-8');
 
     // cập nhật thông tin người dùng
-    $password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
-    $update_user = $conn->prepare("UPDATE khachhang SET email = ?, username = ?, password = ? WHERE username = ?");
+    $update_user = $conn->prepare("UPDATE user SET user_email = ?, user_name = ?, password = ? WHERE user_name = ?");
     $update_user->bind_param("ssss", $email, $name, $password, $userNameEdit); // s là kiểu dữ liệu của biến (string)
     if ($update_user->execute()) {
         echo '<script>alert("Sửa người dùng '.$userNameEdit.' thành công")</script>';
@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userName"]) && isset($_
     $newLockStatus = $_POST["lock"]; // Lấy giá trị của checkbox (true/false)
     
     // Cập nhật trạng thái của người dùng trong cơ sở dữ liệu
-    $updateQuery = "UPDATE khachhang SET trangthai = ? WHERE username = ?";
+    $updateQuery = "UPDATE user SET trangthai = ? WHERE user_name = ?";
     $updateStmt = $conn->prepare($updateQuery);
     $updateStmt->bind_param("ss", $newLockStatus, $userName);
     if($updateStmt->execute()) 
@@ -83,19 +83,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userName"]) && isset($_
     $userName = $_POST["userName"];
 
     // Delete order details
-    $deleteProductDetailQuery = "DELETE FROM chitietdonhang WHERE iddonhang IN (SELECT id FROM donhang WHERE idkhachhang = (SELECT id FROM khachhang WHERE username = ?))";
+    $deleteProductDetailQuery = "DELETE FROM order_detail WHERE idOrder IN (SELECT idOrder FROM orders WHERE idOrder = (SELECT id FROM user WHERE user_name = ?))";
     $deleteProductDetailStmt = $conn->prepare($deleteProductDetailQuery);
     $deleteProductDetailStmt->bind_param("s", $userName);
     $deleteProductDetailStmt->execute();
 
     // Delete orders
-    $deleteOrderQuery = "DELETE FROM donhang WHERE idkhachhang = (SELECT id FROM khachhang WHERE username = ?)";
+    $deleteOrderQuery = "DELETE FROM orders WHERE idUser = (SELECT id FROM user WHERE user_name = ?)";
     $deleteOrderStmt = $conn->prepare($deleteOrderQuery);
     $deleteOrderStmt->bind_param("s", $userName);
     $deleteOrderStmt->execute();
 
     // Delete user
-    $deleteUserQuery = "DELETE FROM khachhang WHERE username = ?";
+    $deleteUserQuery = "DELETE FROM user WHERE user_name = ?";
     $deleteStmt = $conn->prepare($deleteUserQuery);
     $deleteStmt->bind_param("s", $userName);
     if($deleteStmt->execute()) 
@@ -109,7 +109,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "id" && isset($_POST
 {
     $search = $_POST['searchTerm'];
 
-    $customer = $conn->prepare("SELECT * FROM `khachhang` WHERE id = ?");
+    $customer = $conn->prepare("SELECT * FROM `user` WHERE id = ?");
     $customer->bind_param("i", $search);
     $customer->execute();
     $customer->store_result();
@@ -122,7 +122,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "email" && isset($_P
     $search = $_POST['searchTerm'];
     $searchTerm = '%' . $search . '%';
 
-    $customer = $conn->prepare("SELECT * FROM `khachhang` WHERE email LIKE ?");
+    $customer = $conn->prepare("SELECT * FROM `user` WHERE user_email LIKE ?");
     $customer->bind_param("s", $searchTerm);
     $customer->execute();
     $customer->store_result();
@@ -135,7 +135,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
     $search = $_POST['searchTerm'];
     $searchTerm = '%' . $search . '%';
 
-    $customer = $conn->prepare("SELECT * FROM `khachhang` WHERE username LIKE ?");
+    $customer = $conn->prepare("SELECT * FROM `user` WHERE user_name LIKE ?");
     $customer->bind_param("s", $searchTerm);
     $customer->execute();
     $customer->store_result();
@@ -155,14 +155,13 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
                 <th style="width: 15%">Hành động</th>
             </tr>
         </table>
-        <div class="table-content" style="box-shadow: 0 0 10px #989a9b;width:99.3%">
+        <div class="table-content" style="box-shadow: 0 0 10px #989a9b;width:99%">
             <?php
             if($khachhang > 0){
                 $stt = 1;
-                $customer->bind_result($id, $username, $email, $password , $trangthai);
+                $customer->bind_result($id, $username, $password, $email , $trangthai);
 
-                while($customer->fetch()){
-                    $password = '**********';   
+                while($customer->fetch()){ 
                     echo '<table class="table-outline hideImg">';
                     echo '<tr>';
                     echo '<td style="width: 5%">'.$stt.'</td>';
@@ -200,13 +199,13 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
                             </div>
                         </td>';
                     echo '</tr>';
-                    echo '</table>';
                     $stt++;
                 }
             }else{
-                echo '<tr><td colspan="7">Không có khách hàng nào trong kết quả tìm kiếm</td></tr>';
+                echo "<tr><td colspan='7' style='color:red;font-size:20px'>Không có khách hàng nào trong kết quả tìm kiếm</td></tr>";
             }
             ?>
+            </table>
         </div>
     </div>
     <div class="table-footer">
