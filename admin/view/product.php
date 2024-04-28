@@ -8,44 +8,10 @@ $product->store_result();
 $sanpham = $product->num_rows;
 
 
-// thêm sản phẩm
-if(isset($_POST['submit'])){
 
-    $id_product = $_POST['id_product'];
-    $name_product = $_POST['name_product'];
-    $price = $_POST['price'];
-    $loaisanpham = $_POST['product_type'];
-    $insert = $conn->prepare("INSERT INTO `sanpham`(`id`, `tensanpham`, `loaisanpham`, `gia`) VALUES (?, ?, ?, ?)");
-    $insert->bind_param("issi", $id_product, $name_product, $loaisanpham, $price);
-    $insert->execute();
-    $insert->close();
-}
 
-// xóa sản phẩm
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tensanpham"]) && isset($_POST["delete"])){
 
-    $name_product = $_POST['tensanpham'];
-    $delete = $conn->prepare("DELETE FROM `sanpham` WHERE  tensanpham = ?");
-    $delete->bind_param("s", $_POST['tensanpham']);
-    if($delete->execute()){
-        echo '<script>alert("Xóa sản phẩm '.$name_product .' thành công")</script>';
-    }
-}
 
-// sửa sản phẩm
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitEdit'])){
-    $productName = $_POST['productName'];
-    $id_product = $_POST['id_product'];
-    $name_product = $_POST['name_product'];
-    $price = $_POST['price'];
-    $loaisanpham = $_POST['product_type'];
-
-    $insert = $conn->prepare("UPDATE sanpham SET id= ? , tensanpham = ?, loaisanpham = ?, gia = ? WHERE tensanpham=?");
-    $insert->bind_param("issis",$id_product, $name_product, $loaisanpham, $price, $productName);
-    if($insert->execute()){
-        echo '<script>alert("Sửa sản phẩm '.$productName .' thành công")</script>';
-    }
-}
 
 // tìm kiếm sản phẩm theo mã
 if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ma' && isset($_POST['kieuTimSanPham'])){
@@ -153,14 +119,14 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 <tr>
                     <th colspan="2">Thêm Sản Phẩm</th>
                 </tr>
-                <form action="" method="post">
+                <form class="formAdd">
                 <tr>
                     <td>Mã sản phẩm:</td>
-                    <td><input type="text" name="id_product" id="maspThem" required autocomplete="off"></td>
+                    <td><input type="text" name="id_add" id="maspThem" required autocomplete="off"></td>
                 </tr>
                 <tr>
                     <td>Tên sản phẩm:</td>
-                    <td><input type="text" name="name_product" required autocomplete="off"></td>
+                    <td><input type="text" name="name_add" required autocomplete="off"></td>
                 </tr>
                 <tr>
                     <td>Hình:</td>
@@ -171,11 +137,11 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 </tr>
                 <tr>
                     <td>Giá tiền:</td>
-                    <td><input class="inputPrice" type="text" name="price" required autocomplete="off"></td>
+                    <td><input class="input_price" type="text" name="price_add" required autocomplete="off"></td>
                 </tr>
                 <tr>
                     <td>Loại sản phẩm:</td>
-                    <td><input type="text" name="product_type" required autocomplete="off"></td>
+                    <td><input type="text" class="product_type" name="type_add" required autocomplete="off"></td>
                 </tr>
                 <tr>
                     <th colspan="2">Thông số kĩ thuật</th>
@@ -210,7 +176,9 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 </tr>
                 <tr>
                     <td colspan="2" class="table-footer"> 
-                        <button type="submit" name="submit">Thêm</button>
+                        <button type="submit" >Thêm</button>
+                        <div id="successMessage" style="display: none; color: greenyellow;">Thêm sản phẩm thành công</div>
+                        <div id="errorMessage" style="display: none; color: red;">Vui lòng điền đầy đủ thông tin</div>
                     </td>
                 </tr>
                 </form>
@@ -222,14 +190,14 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 <tr>
                     <th colspan="2">Sửa Sản Phẩm</th>
                 </tr>
-                <form action="" method="post">
+                <form method="post" class="formEdit">
                 <tr>
                     <td>Mã sản phẩm: </td>
-                    <td><input type="text" name="id_product" id="maspSua" required autocomplete="off" ></td>
+                    <td><input type="text" class="id_product" name="id_product" id="maspSua" required autocomplete="off" ></td>
                 </tr>
                 <tr>
                     <td>Tên sản phẩm: </td>
-                    <td><input type="text" name="name_product" id="tenSua" required autocomplete="off" ><td>
+                    <td><input type="text" class="name_product" name="name_product" id="tenSua" required autocomplete="off" ><td>
                 </tr>
                 <tr>
                     <td>Hình:</td>
@@ -240,11 +208,11 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 </tr>
                 <tr>
                     <td>Giá tiền:</td>
-                    <td><input class="inputPrice" name="price" type="text" id="giaSua"></td>
+                    <td><input class="input_price" name="price" type="text" id="giaSua"></td>
                 </tr>
                 <tr>
                     <td>Loại sản phẩm:</td>
-                    <td><input type="text" name="product_type" required autocomplete="off" id="loaiSua"></td>
+                    <td><input type="text" class="product_type" name="product_type" required autocomplete="off" id="loaiSua"></td>
                 </tr>
                 <tr>
                     <th colspan="2">Thông số kĩ thuật</th>
@@ -280,7 +248,12 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 <tr>
                     <td colspan="2" class="table-footer"> 
                         <input type="hidden" name="productName" value="">
+                        <input type="hidden" name="productId" value="">
+                        <input type="hidden" name="productPrice" value="">
+                        <input type="hidden" name="productType" value="">
                         <button type="submit" name="submitEdit">Sửa</button> 
+                        <div id="successMessageExit" style="display: none; color: greenyellow;">Sửa sản phẩm thành công</div>
+                        <div id="errorMessageExit" style="display: none; color: red;">Vui lòng điền thông tin cần sửa</div>
                     </td>
                 </tr>
                 </form>
@@ -306,6 +279,9 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
 
         // Cập nhật giá trị của input hidden name="productName"
         document.querySelector('input[name="productName"]').value = name;
+        document.querySelector('input[name="productId"]').value = id;
+        document.querySelector('input[name="productPrice"]').value = price;
+        document.querySelector('input[name="productType"]').value = type;
 
         document.getElementById('khungSuaSanPham').style.transform = 'scale(1)';
         document.getElementById('maspSua').value = id;
@@ -319,15 +295,139 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
         document.getElementById('khungSuaSanPham').style.transform = 'scale(0)';
     }
 
-    // Hàm xác nhận xóa tất cả sản phẩm khỏi giỏ hàng
-    function confirmDelete() {
-        var result = confirm('Bạn có chắc chắn muốn xóa người dùng này không?');
-        if (result) {
-            // Nếu người dùng đồng ý, gửi dữ liệu form
-            return true;
-        } else {
-            // Nếu người dùng hủy, không gửi dữ liệu form
-            return false;
-        }
+    // sửa thông tin sản phẩm
+    $(document).ready(function() {
+        $('.formEdit').submit(function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
+
+            var idProduct = document.querySelector('.id_product').value;
+            var nameProduct = document.querySelector('.name_product').value;
+            var price = document.querySelector('.input_price').value;
+            var type = document.querySelector('.product_type').value;
+
+            var tencu = document.querySelector('input[name="productName"]').value;
+            var idcu = document.querySelector('input[name="productId"]').value;
+            var pricecu = document.querySelector('input[name="productPrice"]').value;
+            var loaicu = document.querySelector('input[name="productType"]').value;
+            var formData = $(this).serializeArray();
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                type: 'POST',
+                url: '../handler/functionHandler.php', // Thay 'update_user.php' bằng đường dẫn thực tế tới script PHP của bạn
+                data: 
+                {
+                    id_product: idProduct,
+                    name_product: nameProduct,
+                    price: price,
+                    product_type: type,
+                },
+                success: function(response) {
+                   
+                    console.log(response.status); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                    // Xử lý phản hồi thành công
+                    if (response.status === 'true') {
+
+                    if(idcu === response.id && tencu === response.name_product && pricecu === response.price && loaicu === response.loaisanpham){
+                        // Cập nhật hiển thị tin nhắn thành công
+                        $('#errorMessageExit').show();
+                        $('#successMessageExit').hide();
+                    }
+                    else{
+                            
+                        // Cập nhật hiển thị tin nhắn thành công
+                        $('#successMessageExit').show();
+                        $('#errorMessageExit').hide();
+                        
+
+                        // Cập nhật thông tin sản phẩm trên bảng
+                        document.querySelectorAll('.table-outline tr').forEach(row => {
+                            if (row.children[1].textContent === idcu) {
+                                row.children[2].textContent = nameProduct;
+                                row.children[3].textContent =  formatPrice(price)+ '₫';
+                            }
+                        });
+
+
+                    }
+
+                    } else {
+                        // Xử lý các trường hợp phản hồi khác (ví dụ: thông báo lỗi)
+                        $('#successMessageExit').hide();
+                        $('#errorMessageExit').show().text(response.message);
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+    });
+
+
+    // thêm sản phẩm
+    $(document).ready(function() {
+        $('.formAdd').submit(function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
+
+            var formData = $(this).serializeArray();
+            console.log(formData);
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                type: 'POST',
+                url: '../handler/functionHandler.php', // Thay 'update_user.php' bằng đường dẫn thực tế tới script PHP của bạn
+                data: formData,
+                success: function(response) {
+                    console.log(response.status); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                    // Xử lý phản hồi thành công
+                    if (response.status === 'true') {
+                        // Cập nhật hiển thị tin nhắn thành công
+                        $('#successMessage').show();
+                        $('#errorMessage').hide();
+                        // Thêm sản phẩm mới vào bảng
+                        var table = document.querySelector('.table-outline');
+                        var newRow = table.insertRow(table.rows.length - 1);
+                        newRow.innerHTML = `
+                            <td style="width: 5%">${table.rows.length - 2}</td>
+                            <td style="width: 12%">${response.id}</td>
+                            <td style="width: 40%">${response.name_product}</td>
+                            <td style="width: 15%">${formatPrice(response.price)}₫</td>
+                            <td style="width: 15%">
+                                <div class="tooltip">
+                                    <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-id="${response.id}" data-name="${response.name}" data-price="${response.price}" data-type="${response.loaisanpham}">
+                                        <i class="fa fa-wrench" style="font-size: 20px;margin: 0 15px;"></i>
+                                        <span class="tooltiptext">Sửa</span>
+                                    </button>
+                                </div>
+                                <div class="tooltip">
+                                    <form action="" method="post" onsubmit="return confirmDelete()">
+                                        <input type="hidden" name="tensanpham" value="${response.name}">
+                                        <input type="hidden" name="delete" value="true">
+                                        <button type="submit" style="border:none;background-color:transparent">
+                                            <i class="fa fa-trash" style="font-size: 20px;"></i>
+                                            <span class="tooltiptext">Xóa</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        `;
+                    } else {
+                        // Xử lý các trường hợp phản hồi khác (ví dụ: thông báo lỗi)
+                        $('#successMessage').hide();
+                        $('#errorMessage').show().text(response.message);
+                        alert(response.message);
+                    }
+
+                }
+            });
+        });
+    });
+
+    function formatPrice(price) {
+    if (price !== undefined && price !== null) {
+        // Nếu price không phải là undefined hoặc null, thực hiện định dạng giá cả
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    } else {
+        // Nếu price là undefined hoặc null, trả về chuỗi rỗng
+        return "";
     }
+}
+
 </script>

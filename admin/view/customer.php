@@ -1,124 +1,17 @@
 <?php
-include_once ('../database/connect.php');
+include_once('../database/connect.php');
 include_once('../includes/header.php');
+
+
 
 $customer = $conn->prepare("SELECT * FROM `user`");
 $customer->execute();
 $customer->store_result();
 $khachhang = $customer->num_rows;
 
-// Thêm người dùng
-if(isset($_POST["submit"]))
-{
-    $email = $_POST["email"];
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL); // kiểm tra địa chỉ email có hợp lệ ko
-    $name = $_POST["username"];
-    $name = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8'); 
-    $password = $_POST["password"];
-    $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
-
-    // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
-    $select_user = $conn ->prepare("SELECT * FROM `user` WHERE user_name = ? AND password = ?");
-    $select_user ->execute([$name, $password]);
-    $select_user->store_result();
-
-    if($select_user->num_rows >0)
-    {
-        echo '<script>alert("Tài khoản đã tồn tại")</script>';
-    }
-    else
-    {
-        $trangthai = 'true';
-        $id = uniqid();
-        $insert_user = $conn ->prepare("INSERT INTO `user`(`id`,`user_name`, `password`, `user_email`,`trangthai`) VALUES (?,?,?,?,?)");
-        $insert_user ->execute([$id,$name, $password, $email, $trangthai]);
-        echo '<script>alert("Thêm người dùng thành công")</script>';
-    }
-}
-
-// sửa thông tin người dùng
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitEdit"])) {
-    
-    $userNameEdit = $_POST["userNameEdit"];
-    $email = $_POST["emailEdit"];
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL); // Validate email address
-    $name = $_POST["usernameEdit"];
-    $name = htmlspecialchars($_POST['usernameEdit'], ENT_QUOTES, 'UTF-8'); 
-    $password = $_POST["passwordEdit"];
-    $password = htmlspecialchars($_POST['passwordEdit'], ENT_QUOTES, 'UTF-8');
-
-    // cập nhật thông tin người dùng
-    $update_user = $conn->prepare("UPDATE user SET user_email = ?, user_name = ?, password = ? WHERE user_name = ?");
-    $update_user->bind_param("ssss", $email, $name, $password, $userNameEdit); // s là kiểu dữ liệu của biến (string)
-    if ($update_user->execute()) {
-        echo '<script>alert("Sửa người dùng '.$userNameEdit.' thành công")</script>';
-    }
-}
-
-// Xử lý khóa/mở khóa tài khoản
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userName"]) && isset($_POST["lock"]))
-{
-    $userName = $_POST["userName"];
-    $newLockStatus = $_POST["lock"]; // Lấy giá trị của checkbox (true/false)
-    
-    // Cập nhật trạng thái của người dùng trong cơ sở dữ liệu
-    $updateQuery = "UPDATE user SET trangthai = ? WHERE user_name = ?";
-    $updateStmt = $conn->prepare($updateQuery);
-    $updateStmt->bind_param("ss", $newLockStatus, $userName);
-    if($updateStmt->execute()) 
-    {
-        if($newLockStatus == 'true') {
-            echo '<script>alert("Mở khóa tài khoản của '.$userName.' thành công")</script>';
-        } else {
-            echo '<script>alert("Khóa tài khoản của '.$userName.' thành công")</script>';
-        }
-    }
-
-}
-
-// xóa tài khoản
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userName"]) && isset($_POST["delete"]))
-{
-    $value = $_POST["delete"];
-    $userName = $_POST["userName"];
-
-    // Delete order details
-    $deleteProductDetailQuery = "DELETE FROM order_detail WHERE idOrder IN (SELECT idOrder FROM orders WHERE idOrder = (SELECT id FROM user WHERE user_name = ?))";
-    $deleteProductDetailStmt = $conn->prepare($deleteProductDetailQuery);
-    $deleteProductDetailStmt->bind_param("s", $userName);
-    $deleteProductDetailStmt->execute();
-
-    // Delete orders
-    $deleteOrderQuery = "DELETE FROM orders WHERE idUser = (SELECT id FROM user WHERE user_name = ?)";
-    $deleteOrderStmt = $conn->prepare($deleteOrderQuery);
-    $deleteOrderStmt->bind_param("s", $userName);
-    $deleteOrderStmt->execute();
-
-    // Delete user
-    $deleteUserQuery = "DELETE FROM user WHERE user_name = ?";
-    $deleteStmt = $conn->prepare($deleteUserQuery);
-    $deleteStmt->bind_param("s", $userName);
-    if($deleteStmt->execute()) 
-    {
-        echo '<script>alert("Xóa tài khoản của '.$userName.' thành công")</script>';
-    }   
-}
-
-// tìm kiếm người dùng theo stt
-if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "id" && isset($_POST["kieuTimKhachHang"]))
-{
-    $search = $_POST['searchTerm'];
-
-    $customer = $conn->prepare("SELECT * FROM `user` WHERE id = ?");
-    $customer->bind_param("i", $search);
-    $customer->execute();
-    $customer->store_result();
-    $khachhang = $customer->num_rows;
-}
 
 // tìm kiếm người dùng theo email
-if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "email" && isset($_POST["kieuTimKhachHang"]))
-{
+if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "email" && isset($_POST["kieuTimKhachHang"])) {
     $search = $_POST['searchTerm'];
     $searchTerm = '%' . $search . '%';
 
@@ -130,8 +23,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "email" && isset($_P
 }
 
 // tìm kiếm người dùng theo tài khoản
-if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset($_POST["kieuTimKhachHang"]))
-{
+if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset($_POST["kieuTimKhachHang"])) {
     $search = $_POST['searchTerm'];
     $searchTerm = '%' . $search . '%';
 
@@ -141,9 +33,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
     $customer->store_result();
     $khachhang = $customer->num_rows;
 }
-
 ?>
-
 <main>
     <div class="cards_customer">
         <table class="table-header">
@@ -156,34 +46,36 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
             </tr>
         </table>
         <div class="table-content" style="box-shadow: 0 0 10px #989a9b;width:99%">
+        <table class="table-outline hideImg">
             <?php
-            if($khachhang > 0){
+            if ($khachhang > 0) {
                 $stt = 1;
-                $customer->bind_result($id, $username, $password, $email , $trangthai);
+                $customer->bind_result($id, $username, $password, $email, $trangthai);
 
-                while($customer->fetch()){ 
-                    echo '<table class="table-outline hideImg">';
-                    echo '<tr>';
-                    echo '<td style="width: 5%">'.$stt.'</td>';
-                    echo '<td style="width: 20%">'.$email.'</td>';
-                    echo '<td style="width: 43%">'.$username.'</td>';
-                    echo '<td style="width: 18%">'.$password.'</td>';
+                while ($customer->fetch()) {    
+                    echo '<tr data-user="".>';
+                    echo '<td style="width: 5%" data-user="'.$stt.'">' . $stt . '</td>';
+                    echo '<td style="width: 20%" data-user="'.$email.'" class="email">' . $email . '</td>';
+                    echo '<td style="width: 43%"data-user="'.$username.'">' . $username . '</td>';
+                    echo '<td style="width: 18%"data-user="'.$password.'"class="pass">' . $password . '</td>';
                     echo '<td style="width: 15%">
                             <div class="tooltip">
-                                <form action="" method="post">
-                                    <script>console.log("'.$trangthai.'")</script>
-                                    <input type="hidden" name="userName" value="'. $username .'">
-                                    <input type="hidden" name="lock" value="'. ($trangthai == 'true' ? 'false' : 'true') .'" class="lockInput">
+                                <form method="post" class="lockForm">
+                                    <script>console.log("' . $trangthai . '")</script>
+                                    <input type="hidden" name="userName" value="' . $username . '">
+                                    <input type="hidden" name="lock" value="' . $trangthai . '" class="lockInput">
                                     <label class="switch">
-                                        <input type="checkbox" onclick="this.form.submit()" '. ($trangthai == 'true' ? 'checked' : '') .' class="lockCheckbox">
-                                        <span class="slider round"></span>
+                                        <button type="submit">
+                                            <input type="checkbox" class="lockCheckbox" >
+                                            <span class="slider round"></span>
+                                        </button>
                                     </label>
-                                    <span class="tooltiptext" id="lockStatusText">'. ($trangthai == 'true' ? 'Mở' : 'Khóa') .'</span>
+                                    <span class="tooltiptext" class="lockStatusText">' . ($trangthai == 'true' ? 'Mở' : 'Khóa') . '</span>
                                 </form>
                             </div>
                             <div class="tooltip" >
-                                <form action="" method="post" onsubmit="return confirmDelete()">
-                                    <input type="hidden" name="userName" value="'. $username .'">
+                                <form class="formDelete" >
+                                    <input type="hidden" name="userName" value="' . $username . '">
                                     <input type="hidden" name="delete" value="true">
                                     <button type="submit" style="border:none;background-color:transparent">
                                         <i class="fa fa-remove" style="font-size: 20px;"></i>
@@ -192,7 +84,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
                                 </form>
                             </div>
                             <div class="tooltip">
-                                <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-username="'.$username.'" data-email="'.$email.'" data-password="'.$password.'">
+                                <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-username="' . $username . '" data-email="' . $email . '" data-password="' . $password . '">
                                     <i class="fa fa-wrench" style="font-size: 20px;"></i>
                                     <span class="tooltiptext">Sửa</span>
                                 </button>
@@ -201,7 +93,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
                     echo '</tr>';
                     $stt++;
                 }
-            }else{
+            } else {
                 echo "<tr><td colspan='7' style='color:red;font-size:20px'>Không có khách hàng nào trong kết quả tìm kiếm</td></tr>";
             }
             ?>
@@ -216,24 +108,23 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
         <div class="timtheokhach" style="margin-top:2%;">
             <form action="" method="post">
                 <select name="kieuTimKhachHang">
-                    <option value="id">Tìm theo stt</option>
                     <option value="email">Tìm theo email</option>
                     <option value="taikhoan">Tìm theo tài khoản</option>
                 </select>
                 <input type="text" placeholder="Tìm kiếm..." name="searchTerm" autocomplete="off">
                 <button style="margin-left: 4px;" type="submit" name="search">
                     <i class="fa fa-search"></i>Tìm
-                </button> 
+                </button>
             </form>
         </div>
     </div>
     <div id="khungThemSanPham" class="overlay">
         <span class="close" onclick="closeOverlay1()">&times;</span>
-        <table class="overlayTable table-outline table-content table-header table-css">
+        <table class="overlayTable table-outline table-header table-css">
             <tr>
                 <th colspan="2">Thêm người dùng</th>
             </tr>
-            <form action="" method="post" id="userForm">
+            <form  class="formAdd" >
                 <tr>
                     <td>Tên : </td>
                     <td><input type="text" name="username" id="tenThem" required autocomplete="off"></td>
@@ -248,8 +139,7 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
                 </tr>
                 <tr>
                     <td colspan="2" class="table-footer">
-                        <input type="hidden" name="userName" value="<?php echo  $username ?>">
-                        <button id="submitButton" type="submit" name="submit">THÊM</button>
+                        <button id="submitButton" type="submit" >THÊM</button>
                         <div id="successMessage" style="display: none; color: greenyellow;">Thêm người dùng thành công</div>
                         <div id="errorMessage" style="display: none; color: red;">Vui lòng điền đầy đủ thông tin</div>
                     </td>
@@ -258,38 +148,39 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
         </table>
     </div>
     <div id="khungSuaSanPham" class="overlay">
-                <span class="close" onclick="closeOverlay2()">&times;</span>
-                <table class="overlayTable table-outline table-content table-header table-css">
-                    <tr>
-                        <th colspan="2">Sửa người dùng</th>
-                    </tr>
-                    <form action="" method="post">
-                        <tr>
-                            <td>Tên : </td>
-                            <td><input type="text" name="usernameEdit" id="tenSua" required autocomplete="off"></td>
-                        </tr>
-                        <tr>
-                            <td>Email : </td>
-                            <td><input type="text" name="emailEdit" id="emailSua" required autocomplete="off"></td>
-                        </tr>
-                        <tr>
-                            <td>Mật khẩu : </td>
-                            <td><input type="password" name="passwordEdit" id="matkhauSua" required autocomplete="off"></td>
-                        </tr>
-                    
-                        <tr>
-                            <td colspan="2" class="table-footer">
-                                <input type="hidden" name="userNameEdit" value="">
-                                <?php echo '<script>console.log("ten thay đổi : '.$username.'")</script>';?>
-                                <button id="submitEditButton" type="submit" name="submitEdit" style="font-size:15px;">Sửa</button>
-                                <div id="successMessageExit" style="display: none; color: greenyellow;">Sửa người dùng thành công</div>
-                                <div id="errorMessageExit" style="display: none; color: red;">Vui lòng điền đầy đủ thông tin
-                                </div>
-                            </td>
-                        </tr>
-                    </form>
-                </table>
-            </div>
+        <span class="close" onclick="closeOverlay2()">&times;</span>
+        <table class="overlayTable table-outline table-content table-header table-css">
+            <tr>
+                <th colspan="2">Sửa người dùng</th>
+            </tr>
+            <form method="post" class="formEdit">
+                <tr>
+                    <td>Tên : </td>
+                    <td><input type="text" class="user_name" name="usernameEdit" id="tenSua" required autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td>Email : </td>
+                    <td><input type="text" class="user_email"  name="emailEdit" id="emailSua" required autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td>Mật khẩu : </td>
+                    <td><input type="password" class="user_pass" name="passwordEdit" id="matkhauSua" required autocomplete="off"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="table-footer">
+                        <input type="hidden" name="userNameEdit" value="">
+                        <input type="hidden" name="EmailEdit" value="">
+                        <input type="hidden" name="PassEdit" value="">
+                        <?php echo '<script>console.log("ten thay đổi : ' . $username . '")</script>'; ?>
+                        <button id="submitEditButton" type="submit" name="submitEdit" style="font-size:15px;">Sửa</button>
+                        <div id="successMessageExit" style="display: none; color: greenyellow;">Sửa người dùng thành công</div>
+                        <div id="errorMessageExit" style="display: none; color: red;">Vui lòng điền thông tin cần sửa</div>
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
 </main>
 
 <script>
@@ -302,19 +193,21 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
     }
 
     document.querySelectorAll('.editUserButton').forEach(button => {
-    button.addEventListener('click', function() {
-        const username = this.getAttribute('data-username');
-        const email = this.getAttribute('data-email');
-        const password = this.getAttribute('data-password');
+        button.addEventListener('click', function() {
+            const username = this.getAttribute('data-username');
+            const email = this.getAttribute('data-email');
+            const password = this.getAttribute('data-password');
 
-        // Cập nhật giá trị của input hidden name="userNameEdit"
-        document.querySelector('input[name="userNameEdit"]').value = username;
+            // Cập nhật giá trị của input hidden name="userNameEdit"
+            document.querySelector('input[name="userNameEdit"]').value = username;
+            document.querySelector('input[name="EmailEdit"]').value = email;
+            document.querySelector('input[name="PassEdit"]').value = password;
 
-        document.getElementById('khungSuaSanPham').style.transform = 'scale(1)';
-        document.getElementById('tenSua').value = username;
-        document.getElementById('emailSua').value = email;
-        document.getElementById('matkhauSua').value = password;
-    });
+            document.getElementById('khungSuaSanPham').style.transform = 'scale(1)';
+            document.getElementById('tenSua').value = username;
+            document.getElementById('emailSua').value = email;
+            document.getElementById('matkhauSua').value = password;
+        });
     });
 
     function closeOverlay2() {
@@ -358,16 +251,256 @@ if(isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset(
         }
     });
 
-    // Hàm xác nhận xóa tất cả sản phẩm khỏi giỏ hàng
-    function confirmDelete() {
-        var result = confirm('Bạn có chắc chắn muốn xóa người dùng này không?');
-        if (result) {
-            // Nếu người dùng đồng ý, gửi dữ liệu form
-            return true;
-        } else {
-            // Nếu người dùng hủy, không gửi dữ liệu form
+
+    // hàm khóa/mở tài khoản
+    $(".lockForm").submit( function(event) {
+
+        event.preventDefault(); // Prevent default form submission
+        // Toggle the value of the hidden input to update the checkbox status
+        var lockInput = $(this).find(".lockInput");
+        console.log("trạng thái hiện tại : "+ lockInput.val());
+
+        lockInput.val(lockInput.val() === 'true' ? 'false' : 'true');
+        console.log("trạng thái khi ấn nút : "+lockInput.val());
+
+        // Update the checkbox status
+        var checkbox = $(this).find(".lockCheckbox");
+        checkbox.prop("checked", lockInput.val() === 'true');
+        console.log(checkbox.prop("checked"));
+
+        // Update the tooltip text
+        var tooltip = $(this).find(".lockStatusText");
+        tooltip.textContent = (lockInput.val() === 'true' ? 'Mở' : 'Khóa');
+
+        // Show a message based on the checkbox status
+        var message = checkbox.checked ? "Mở khóa tài khoản của <?php echo $username; ?> thành công" : "Khóa tài khoản của <?php echo $username; ?> thành công";
+        alert(message);
+
+        // Send form data to the server using AJAX
+        var formData = new FormData(this);
+        fetch("../handler/functionHandler.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+
+    $(document).ready(function() {
+    $(".lockForm").each(function() {
+        var lockInput = $(this).find(".lockInput");
+        var checkbox = $(this).find(".lockCheckbox");
+        checkbox.prop("checked", lockInput.val() === 'true');
+        console.log(checkbox.prop("checked"));
+    });
+});
+
+
+    // sửa thông tin người dùng
+    $(document).ready(function() {
+        $('.formEdit').submit(function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
+
+            var tencu = document.querySelector('input[name="userNameEdit"]').value;
+            var emailcu = document.querySelector('input[name="EmailEdit"]').value;
+            var passwordcu = document.querySelector('input[name="PassEdit"]').value;
+
+            var username = document.querySelector('.user_name').value;
+            var email = document.querySelector('.user_email').value;
+            var password = document.querySelector('.user_pass').value;
+            console.log('ten cu : '+tencu);
+            console.log('ten cu : '+emailcu);
+            console.log('ten cu : '+passwordcu);
+            // Serialize form data
+            var formData = $(this).serialize();
+            console.log(formData); // In ra dữ liệu biểu mẫu đã được chuỗi hóa vào console của trình duyệt
+
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                type: 'POST',
+                url: '../handler/functionHandler.php', // Thay 'update_user.php' bằng đường dẫn thực tế tới script PHP của bạn
+                data:   
+                {
+                    userNameEdit: tencu,
+                    emailEdit: email,
+                    passwordEdit: password,
+                    usernameEdit: username,
+
+                },
+                success: function(response) {
+                   
+                    console.log(response.status); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                    // Xử lý phản hồi thành công
+                    if (response.status === 'true') {
+                        
+                        console.log('ten cu : '+tencu);
+                        console.log('ten cu : '+emailcu);
+                        console.log('ten cu : '+passwordcu);
+
+                    console.log('ten moi : '+response.name);
+                    console.log('email moi : '+response.email);
+                    console.log('pass moi : '+response.password);
+                    if(tencu === response.name && emailcu === response.email && passwordcu === response.password){
+                        // Cập nhật hiển thị tin nhắn thành công
+                        $('#errorMessageExit').show();
+                        $('#successMessageExit').hide();
+                    }
+                    else{
+                            
+                        // Cập nhật hiển thị tin nhắn thành công
+                        $('#successMessageExit').show();
+                        $('#errorMessageExit').hide();
+                        
+                        // Cập nhật thông tin người dùng trong bảng
+                        $('td[data-username="' + username + '"]').siblings('.td-email').text(email);
+                        $('td[data-username="' + username + '"]').siblings('.td-password').text(password);
+                        var elementsWithDataUser = $('[data-user="' + response.nameOld + '"]');
+                        elementsWithDataUser.parent().find('[data-user="' + response.nameOld + '"]').attr('data-user', response.name);
+                        elementsWithDataUser.text(response.name);
+                        elementsWithDataUser.parent().find('.email').text(response.email);
+                        elementsWithDataUser.parent().find('.pass').text(response.password);
+                    }
+
+                    } else {
+                        // Xử lý các trường hợp phản hồi khác (ví dụ: thông báo lỗi)
+                        $('#successMessageExit').hide();
+                        $('#errorMessageExit').show().text(response.message);
+                    }
+                }
+            });
+        });
+    });
+
+    // thêm người dùng
+    $(document).ready(function() {
+        $('.formAdd').submit(function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
+
+            // Serialize form data
+            var formData = $(this).serialize();
+            console.log(formData); // In ra dữ liệu biểu mẫu đã được chuỗi hóa vào console của trình duyệt
+
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                type: 'POST',
+                url: '../handler/functionHandler.php', 
+                data: formData,
+                success: function(response) {
+                    console.log(response); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                    console.log(response.status); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                    // Xử lý phản hồi thành công
+                    if (response.status === 'true') {
+                        // Cập nhật hiển thị tin nhắn thành công
+                        $('#successMessage').show();
+                        $('#errorMessage').hide();
+                        console.log(response.email);
+                        console.log(response.name);
+                        console.log(response.password);
+                        // Thêm người dùng mới vào bảng
+                        var stt = $('.table-outline').length + 1;
+                        var html = '<table class="table-outline hideImg">';
+                        html += '<tr data-user="' + stt + '">';
+                        html += '<td style="width: 5%" data-user="' + stt + '">' + stt + '</td>';
+                        html += '<td style="width: 20%" data-user="' + response.email + '" class="email">' + response.email + '</td>';
+                        html += '<td style="width: 43%" data-user="' + response.name + '">' + response.name + '</td>';
+                        html += '<td style="width: 18%" data-user="' + response.password + '" class="pass">' + response.password + '</td>';
+                        html += '<td style="width: 15%">';
+                        html += '<div class="tooltip">';
+                        html += '<form method="post" id="lockForm">';
+                        html += '<input type="hidden" name="userName" value="' + response.name + '">';
+                        html += '<input type="hidden" name="lock" value="true" class="lockInput">';
+                        html += '<label class="switch">';
+                        html += '<button type="submit">';
+                        html += '<input type="checkbox" class="lockCheckbox" checked>';
+                        html += '<span class="slider round"></span>';
+                        html += '</button>';
+                        html += '</label>';
+                        html += '<span class="tooltiptext" class="lockStatusText">Mở</span>';
+                        html += '</form>';
+                        html += '</div>';
+                        html += '<div class="tooltip">';
+                        html += '<form action="" method="post" onsubmit="return confirmDelete()">';
+                        html += '<input type="hidden" name="userName" value="' + response.name + '">';
+                        html += '<input type="hidden" name="delete" value="true">';
+                        html += '<button type="submit" style="border:none;background-color:transparent">';
+                        html += '<i class="fa fa-remove" style="font-size: 20px;"></i>';
+                        html += '<span class="tooltiptext">Xóa</span>';
+                        html += '</button>';
+                        html += '</form>';
+                        html += '</div>';
+                        html += '<div class="tooltip">';
+                        html += '<button type="button" style="border:none;background-color:transparent" class="editUserButton" data-username="' + response.name + '" data-email="' + response.email + '" data-password="' + response.password + '">';
+                        html += '<i class="fa fa-wrench" style="font-size: 20px;"></i>';
+                        html += '<span class="tooltiptext">Sửa</span>';
+                        html += '</button>';
+                        html += '</div>';
+                        html += '</td>';
+                        html += '</tr>';
+                        html += '</table>';
+                        $('.table-content').append(html);
+                    } else {
+                        console.log(response);
+                        console.log(response.status);
+                        // Xử lý các trường hợp phản hồi khác (ví dụ: thông báo lỗi)
+                        $('#successMessage').hide();
+                        $('#errorMessage').show().text(response.message);
+                    }
+                }
+            });
+        });
+    }); 
+
+    // xóa tài khoản
+    $(document).ready(function() {
+        $('.formDelete').submit(function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
+
+             // Lưu trữ phần tử cha của nút xóa để có thể xóa dòng bảng sau khi xóa người dùng thành công
+            var $rowToDelete = $(this).closest('tr');
+
+            // Hiển thị hộp thoại xác nhận
+            var result = confirm('Bạn có chắc chắn muốn xóa người dùng này không?');
+            if (result) {
+                // lấy ra dữ liệu biểu mẫu
+                var formData = $(this).serialize();
+                console.log(formData); // In ra dữ liệu biểu mẫu đã được chuỗi hóa vào console của trình duyệt
+
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '../handler/functionHandler.php', // Thay 'delete_user.php' bằng đường dẫn thực tế tới script PHP của bạn
+                    data: formData,
+                    success: function(response) {
+                        console.log(response); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                        console.log(response.status); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                        // Xử lý phản hồi thành công
+                        if (response.status === 'true') {
+                            // Xóa dòng bảng chứa người dùng đã được xóa
+                            $rowToDelete.remove();
+                            // Hiển thị thông báo thành công
+                            alert(response.message);
+                        } else {
+                            // Xử lý các trường hợp phản hồi khác (ví dụ: thông báo lỗi)
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+            else {
+            // Nếu người dùng hủy, không gửi dữ liệu biểu mẫu
             return false;
         }
-    }
+        });
+    });
 
 </script>

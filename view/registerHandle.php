@@ -13,6 +13,7 @@ function checkRegister()
     $username = $_POST['username'];
     $password = $_POST['password'];
     $pass = $_POST['pass'];
+    $trangthai = 'true';
  
 
     if(!isset($email) && !isset($username) && !isset($password) && !isset($pass)){
@@ -34,6 +35,7 @@ function checkRegister()
 
     $result = $stmt->get_result(); // Lấy kết quả trả về từ câu truy vấn
 
+
     if($result ->num_rows > 0){
         // echo "<script>alert('Tài khoản đã tồn tại')</script>";
         header("Location: register.php?registerFail=1");
@@ -44,7 +46,7 @@ function checkRegister()
             header("Location: register.php?registerFail_pass=1&email=$email&username=$username");
             
         }else{
-            $resultUser = addUser($username, $password,$email);
+            $resultUser = addUser($username, $password,$email,$trangthai);
             if($resultUser){
                 header("Location: login.php?registerSuccessful=1");
 
