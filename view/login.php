@@ -5,6 +5,9 @@ include_once ('../database/userDAL.php');
 if(isset($_REQUEST['errorLogin'])){ // đăng nhập sai nó vô đây
     echo "<script> alert('Sai tên đăng nhập hoặc mật khẩu')</script>";
 }
+if(isset($_REQUEST['lockLogin'])){ // tài khoản bị khóa thì nó vô đây
+    echo "<script> alert('Tài khoản của bạn đã bị khóa')</script>";
+}
 if(isset($_REQUEST['registerSuccessful'])){ // đăng nhập sai nó vô đây
     echo "<script>alert('Đăng ký thành công')</script>";
     

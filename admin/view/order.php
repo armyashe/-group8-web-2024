@@ -8,40 +8,8 @@ $order->store_result();
 $donhang = $order->num_rows;
 
 
-if(isset($_POST['submit'])){
-    $id = $_POST['id'];
-    $trangthai = $_POST['trangthai'];
-    $update = $conn->prepare("UPDATE `orders` SET `status` = ? WHERE `idOrder` = ?");
-    $update->bind_param("ss", $trangthai, $id);
-    $update->execute();
-}
 
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"]) && isset($_POST['delete'])){
 
-    $username = $_POST['username'];
-
-    // Delete product details
-    
-    $deleteProductDetailQuery = "DELETE FROM order_detail WHERE idOrder IN (SELECT idOrder FROM orders WHERE idUser = (SELECT id FROM user WHERE user_name = ?))";
-    $deleteProductDetailStmt = $conn->prepare($deleteProductDetailQuery);
-    $deleteProductDetailStmt->bind_param("s", $username);
-    $deleteProductDetailStmt->execute();
-
-    // Delete orders
-    $deleteOrderQuery = "DELETE FROM orders WHERE idUser = (SELECT id FROM user WHERE user_name = ?)";
-    $deleteOrderStmt = $conn->prepare($deleteOrderQuery);
-    $deleteOrderStmt->bind_param("s", $username);
-    $deleteOrderStmt->execute();
-
-    // Delete user
-    $deleteUserQuery = "DELETE FROM user WHERE user_name = ?";
-    $deleteStmt = $conn->prepare($deleteUserQuery);
-    $deleteStmt->bind_param("s", $username);
-    if($deleteStmt->execute()) 
-    {
-        echo '<script>alert("Xóa đơn hàng của khách hàng '.$username.' thành công")</script>';
-    }   
-}
 
 // tìm kiếm ngày giờ đơn hàng
 if(isset($_POST['fromDate']) && isset($_POST['toDate'])){
@@ -90,8 +58,8 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
     $search = $_POST['searchTerm'];
 
     $searchTerm = '%' . $search . '%';
-    $order = $conn->prepare("SELECT * FROM `orders` WHERE `status` = ?");
-    $order->bind_param("i", $search);
+    $order = $conn->prepare("SELECT * FROM `orders` WHERE `status` LIKE ?");
+    $order->bind_param("s", $searchTerm);
     $order->execute();
     $order->store_result();
     $donhang = $order->num_rows;
@@ -140,28 +108,27 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                 echo '<td style="width: 15%">'.number_format($tongtien, 0, ',', '.').'đ</td>';
                                 echo '<td style="width: 20%">'.$diachi.'</td>';
                                 echo '<td style="width: 11%">'.$ngaygio.'</td>';
-                                if($trangthai == 'active')
-                                {
+                                if($trangthai == 'active'){
                                     $trangthaiText = 'Chờ xác nhận';
-                                    $nextStatus = 'confirm'; // Trạng thái tiếp theo là "Đã xác nhận"
-
-                                } 
-                                else if($trangthai != 'active')
-                                {
+                                    $nextStatus = 'confirm';
+                                } else {
                                     $trangthaiText = 'Đã xác nhận';
-                                    $nextStatus = 'active'; // Không cho phép quay lại trạng thái "Chờ xác nhận"
-                                }  
+                                    $nextStatus = 'active';
+                                }
                                 if($trangthai == 'active') {
-                                    echo '<form action="" method="post">';
-                                    echo '<input type="hidden" name="id" value="'.$id.'">';
-                                    echo '<input type="hidden" name="trangthai" value="'.($trangthaiText == 'Chờ xác nhận' ? 'active' : 'confirm').'">';
+                                    echo '<form method="post" class="statusChange">';
+                                    echo '<input type="hidden" class="id_order" name="idOrder" value="'.$id.'">';
+                                    echo '<input type="hidden" class="status_order" name="status" value="'.($trangthai == 'active' ? 'confirm' : 'active').'">';
                                     $buttonClass = $trangthai == 'Chờ xác nhận' ? '' : 'confirmed-button';
                                     echo '<td style="width: 13%;">
-                                    <button class="button_edit" type="submit" name="submit">' . $trangthaiText . '</button>
-                                    <input type="hidden" name="username" value="'.$username.'">
-                                    <button type="submit" class="delete_edit" name="delete" onclick="submitFormAndReload()" id="submitForm">Xoá</button>
+                                    <button class="button_edit" type="submit" name="submitChange">' .$trangthaiText. '</button>
+                                    </form>
+                                    <form class="delete_order">
+                                    <input type="hidden" class="id_order" name="idOrder" value="'.$id.'">
+                                    <input type="hidden" class="deleteOrder" name="delete" value="true">
+                                    <button type="submit" class="delete_edit" id="submitForm">Xoá</button>
+                                    </form>
                                     </td>';
-                                    echo '</form>';
                                 } else {
                                     echo '<td style="width: 13%"><button class="confirmed-button" type="button" disabled>' . $trangthaiText . '</button></td>';
                                 }
@@ -206,8 +173,73 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
             </div>
 </main>
 <script>
-    function submitFormAndReload() {
-        document.getElementById('submitForm').click();
-        location.reload();
-    }
+
+    $(document).ready(function() {
+    $('.statusChange').submit(function(e) {
+        e.preventDefault();
+        var orderId = document.querySelector('.id_order').value;
+        var nextStatus = document.querySelector('.status_order').value;
+        var formData = $(this).serialize();
+        console.log(formData);
+        
+        console.log(orderId);
+        console.log(nextStatus);
+
+        $.ajax({
+            type: 'POST',
+            url: '../handler/functionHandler.php', 
+            data: {
+                idOrder: orderId,
+                status: nextStatus
+            },
+            success: function(response) {
+                console.log(response);
+                console.log(response.status);
+                // Xử lý phản hồi từ máy chủ (nếu cần)
+                if (response.status === 'true') {
+                    alert('Cập nhật trạng thái đơn hàng thành công.');
+
+                    location.reload();
+                } else {
+                    // Xử lý lỗi (nếu cần)
+                    alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.');
+                }
+            }
+        });
+    });
+});
+
+    $(document).ready(function() {
+    $('.delete_order').submit(function(e) {
+        e.preventDefault();
+
+        var orderId = document.querySelector('.id_order').value;
+        console.log(orderId);
+        var deleteOrder = $('.deleteOrder').val();
+        console.log(deleteOrder);
+        var $rowToDelete = $(this).closest('tr');
+
+        $.ajax({
+            type: 'POST',
+            url: '../handler/functionHandler.php', 
+            data: {
+                idOrder: orderId,
+                delete: deleteOrder
+            },
+            success: function(response) {
+                console.log(response);
+                console.log(response.status);
+                // Xử lý phản hồi từ máy chủ (nếu cần)
+                if (response.status === 'true') {
+                    alert('Xóa đơn hàng thành công.');
+                    $rowToDelete.remove();
+                } else {
+                    // Xử lý lỗi (nếu cần)
+                    alert('Có lỗi xảy ra khi xóa đơn hàng.');
+                }
+            }
+        });
+    });
+});
+
 </script>

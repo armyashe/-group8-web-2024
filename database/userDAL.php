@@ -59,11 +59,11 @@ function checkUserLogin($username, $password)
     }
 }
 
-function addUser($email, $username, $password)
+function addUser($email, $username, $password,$trangthai)
 {
     $conn = connect(); // Kết nối đến CSDL
 
-    $sql = "INSERT INTO `user` (`id`, `user_name`, `password`,`user_email`) VALUES ('" . uniqid() . "','" . $email . "','" . $username . "','" . $password . "') ";
+    $sql = "INSERT INTO `user` (`id`, `user_name`, `password`,`user_email`,`trangthai`) VALUES ('" . uniqid() . "','" . $email . "','" . $username . "','" . $password . "','" . $trangthai . "') ";
 
 
     echo $sql;
