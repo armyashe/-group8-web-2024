@@ -133,7 +133,7 @@
                     <?php echo $detail['id']; ?>
                 </h3>
                 <div class="info">
-                    <?php echo $detail['mota']; ?>
+                    <?php echo $detail['mota']; ?>v
                     <br><?php echo $detail['mota2']; ?>
                     <br><?php echo $detail['mota3']; ?>
                     <br><?php echo $detail['mota4']; ?>

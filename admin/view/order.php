@@ -112,7 +112,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                     $trangthaiText = 'Chờ xác nhận';
                                     $nextStatus = 'confirm';
                                 } else {
-                                    $trangthaiText = 'Đã xác nhận';
+                                    $trangthaiText = 'Đã giao';
                                     $nextStatus = 'active';
                                 }
                                 if($trangthai == 'active') {

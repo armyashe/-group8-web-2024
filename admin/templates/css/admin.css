@@ -823,17 +823,37 @@ input:checked + .slider:before {
     color: wheat;
     border-radius: 0px;
     background-color: rgb(62,70,77);
+    width: 50%;
 }
 .overlayTable input {
     padding: 4px 10px;
     border: none;
     border-radius: 5px;
     background-color: #e7e7e7;
+    
 }
 
 .overlayTable input[type="file"] {
     background-color: transparent;
+    width: 100%;
 }
+.overlayTable .input_describe {
+    padding: 4px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e7e7e7;
+    width: 100%;
+    resize: vertical;
+}
+.overlayTable .describe_input {
+    padding: 4px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e7e7e7;
+    width: 100%;
+    resize: vertical;
+}
+
 
 .close {
     /* nút tắt form */

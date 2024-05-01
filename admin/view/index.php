@@ -151,7 +151,7 @@ $sanpham = $product->num_rows;
 
                                 if($order_status->fetch()) {
                                     if($trangthai == 'active') {
-                                        $trangthaiText = 'Đã xác nhận';
+                                        $trangthaiText = 'Đã giao';
                                     }  
                                 }
                                 echo '<th title="Sắp xếp" style="width: 15%">'.$trangthaiText.'</th> 
@@ -170,7 +170,7 @@ $sanpham = $product->num_rows;
                 <div class="customers">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Khách hàng mới</h3>
+                            <h3>Khách hàng </h3>
                             <a href="customer.php" style="color: rgb(250, 247, 247);"><button>Xem tất cả<span class="las la-arrow-right"></span></a>
 
                                 </span></button>

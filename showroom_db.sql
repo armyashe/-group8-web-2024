@@ -15,6 +15,8 @@ CREATE TABLE `khachhang` (
   `password` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
+
+
 -- --------------------------------------------------------
 
 --
@@ -38,20 +40,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`idOrder`, `idUser`, `nameCustomer`, `phone_number`, `address`, `order_date`, `total_amount`, `status`, `payment`) VALUES
-('66216d8d23721', '', 'a', 'asss', 'sss', '2024-04-18 20:59:25', 2250000, 'hoạt động', ''),
-('6621702f56a7d', '', 'a', 'asss', 'sss', '2024-04-18 21:10:39', 2250000, 'hoạt động', ''),
-('6621712f79435', '', 'a', 'asss', 'sss', '2024-04-18 21:14:55', 2250000, 'hoạt động', ''),
-('66226', '', 'jj', '0123', 'aa', '2024-04-19 15:07:05', 3597000, 'hoạt động', ''),
-('66226c59d82b6', '', 'jj', '0123', 'aa', '2024-04-19 15:06:33', 3597000, 'hoạt động', ''),
-('66226c6ce3fbc', '', 'jj', '0123', 'aa', '2024-04-19 15:06:52', 3597000, 'hoạt động', ''),
-('662278b0f326a', '1', 'g', 'r', 'y', '2024-04-19 15:59:12', 17397000, 'active', ''),
-('662284d69d348', '1', 'jkk', '888', 'yhhh', '2024-04-19 16:51:02', 2250000, 'active', ''),
-('6622b8916b60b', '1', 'jkk', '888', 'yhhh', '2024-04-19 20:31:45', 2250000, 'active', ''),
-('6622b8a2a18ef', '1', 'jkk', '888', 'yhhh', '2024-04-19 20:32:02', 2250000, 'active', ''),
-('6623687835240', '1', 'rrrrr', '0123', '55', '2024-04-20 09:02:16', 2397000, 'active', ''),
-('6623689ea7dd2', '1', 'rrrrr', '0123', '55', '2024-04-20 09:02:54', 2397000, 'active', ''),
-('6623cf556ced9', '1', 'aas', '012', '1', '2024-04-20 16:21:09', 1199000, 'active', ''),
-('6623d5aa311b9', '1', 'aas', '012', '1', '2024-04-20 16:48:10', 1199000, 'active', 'ATM');
+('6630a057d0a27','6630a0067a35a','Triệu lộ tư','09575832121','273 Đ. An Dương Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh 700000','2024-04-30 09:40:07',799000,'active','ATM')
+('6630a17e2cc58','6630a10b6e7ab','Park Jihoon','09782368882','105 Bà Huyện Thanh Quan, Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh','2024-04-30 09:45:02',750000,'active','ATM')
+('6630a28de0b7d','6630a256651bd','Thiên Hân','09326267812','4 Đ. Tôn Đức Thắng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh','2024-04-30 09:49:33',6090000,'active','ATM');
+
 
 -- --------------------------------------------------------
 
@@ -67,6 +59,11 @@ CREATE TABLE `order_detail` (
   `note` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
+INSERT INTO `order_detail` (`idOrder`, `idProduct`, `quantity`, `price`, `note`) VALUES
+('6630a057d0a27', 1, 1, 799000, 'Chất liệu:Gỗ công nghiệp chống ẩm'),
+('6630a17e2cc58', 9, 1, 750000, 'Công dụng:Soi mặt, trang trí decor treo tường'),
+('6630a28de0b7d', 15, 1, 6090000, 'Chất liệu:Kim loại sơn từ tính /Đá');
+
 -- --------------------------------------------------------
 
 --
@@ -80,9 +77,6 @@ CREATE TABLE `sanpham` (
   `gia` int(10) NOT NULL,
   `soluong` int(10) NOT NULL,
   `mota` text NOT NULL,
-  `mota2` text NOT NULL,
-  `mota3` text NOT NULL,
-  `mota4` text NOT NULL,
   `hinhanh` varchar(100) NOT NULL,
   `hinh2` varchar(100) NOT NULL,
   `hinh3` varchar(100) NOT NULL,
@@ -141,16 +135,10 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `user_name`, `password`, `user_email`) VALUES
-('', 'hj', '12345', 'aa'),
-('1', 'tuandeptrai', '12345', 'aaa'),
-('2', 'hj', '12345', 'aa'),
-('661fa0511f1e5', 'avuhv@bjk.com', 'tuandeptraivaii', '12345'),
-('661ffeaaa777b', 'a@a.aS', 'tuandeptrai', '123456'),
-('6620067b4b5f1', 'sa@mska.com', 'e', '12345'),
-('662007abccbd9', 'q@as.com', 'er', '12345'),
-('662012a51a9a8', 'aaaaaaaaaa@as.coa', '  eeeeeeeeeeeeeee ', '  '),
-('662013ccc8fe6', 'a@sl.sa', '  at  ', '1');
+INSERT INTO `user` (`id`, `user_name`, `password`, `user_email`,`trangthai`) VALUES
+('6630a0067a35a','lotu','lotu123','lotu123@gmail.com')
+('6630a10b6e7ab','Jihoon','Jihoon123','Jihoon123@gmail.com')
+('6630a256651bd','thienhan','thienhan123','thienhan123@gmail.com');
 
 --
 -- Indexes for dumped tables

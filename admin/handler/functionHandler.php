@@ -202,17 +202,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idOrder"]) && isset($_
         exit();
     }
 }
+
+
 // sửa sản phẩm
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset($_POST['name_product']) && isset($_POST['price']) && isset($_POST['product_type'])){
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset($_POST['name_product']) && isset($_POST['price_edit']) && isset($_POST['product_type']) && isset($_POST['describe'])){
     header('Content-Type: application/json');
+    
     
     $id = $_POST['id_product'];
     $name = $_POST['name_product'];
-    $price_product = $_POST['price'];
+    $price_product = $_POST['price_edit'];
     $loaisanpham = $_POST['product_type'];
+    $mota = $_POST['describe'];
     
     
-    $update_product = "UPDATE sanpham SET tensanpham = '$name', gia = '$price_product', loaisanpham = '$loaisanpham' WHERE id = '$id'";
+    if (isset($_FILES["img_product"]) && $_FILES["img_product"]["error"] == 0) {
+        $target_dir = "../../IMG/";
+        $target_file = $target_dir . basename($_FILES["img_product"]["name"]);
+    
+        if(move_uploaded_file($_FILES["img_product"]["tmp_name"], $target_file)) {
+            $img_product = $_FILES["img_product"]["name"];
+        }
+    }
+    else{
+        $select_product = "SELECT * FROM sanpham WHERE id = '$id'";
+        $selectStmt = $conn->prepare($select_product);
+        $selectStmt->execute();
+        $result = $selectStmt->get_result();
+        $row = $result->fetch_assoc();
+        $img_product = $row['hinhanh'];
+    }
+    
+    $update_product = "UPDATE sanpham SET tensanpham = '$name', gia = '$price_product', loaisanpham = '$loaisanpham' , mota = '$mota' , hinhanh = '$img_product' WHERE id = '$id'";
     $updateStmt = $conn->prepare($update_product);
 
     if ($updateStmt->execute()) {
@@ -222,6 +243,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset(
             "name_product" => $name,
             "price" => $price_product,
             "loaisanpham" => $loaisanpham,
+            "mota" => $mota,
+            "hinhanh" => $img_product,
             "message" => "Sửa sản phẩm thành công")
         );
         exit();
@@ -235,14 +258,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset(
 }
 
 // thêm sản phẩm
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_POST['name_add']) && isset($_POST['price_add']) && isset($_POST['type_add'])){
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_POST['name_add']) && isset($_POST['price_add']) && isset($_POST['type_add']) && isset($_POST['describeAdd'])){
     header('Content-Type: application/json');
     $id_product = $_POST['id_add'];
     $name_product = $_POST['name_add'];
     $price = $_POST['price_add'];
     $loaisanpham = $_POST['type_add'];
-   
-    $insert_product = "INSERT INTO sanpham (id, tensanpham, gia, loaisanpham) VALUES ('$id_product', '$name_product', '$price', '$loaisanpham')";
+    $mota = $_POST['describeAdd'];
+
+    
+    
+    if (isset($_FILES["img_add"]) && $_FILES["img_add"]["error"] == 0) {
+        $target_dir = "../../IMG/";
+        $target_file = $target_dir . basename($_FILES["img_add"]["name"]);
+        
+        if(move_uploaded_file($_FILES["img_add"]["tmp_name"], $target_file)) {
+            $img_addProduct = $_FILES["img_add"]["name"];
+        }
+    }
+    
+    else
+    {
+        $img_addProduct = "default.png";
+    }
+    
+    $insert_product = "INSERT INTO sanpham (id, tensanpham, gia, loaisanpham, mota, hinhanh) VALUES ('$id_product', '$name_product', '$price', '$loaisanpham','$mota','$img_addProduct')";
     $insertStmt = $conn->prepare($insert_product);
     if ($insertStmt->execute()) {
         echo json_encode(array(
@@ -251,6 +291,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_PO
             "name_product" => $name_product,
             "price" => $price,
             "loaisanpham" => $loaisanpham,
+            "mota" => $mota,
+            "hinhanh" => $img_addProduct,
             "message" => "Thêm sản phẩm thành công")
         );
         exit();
@@ -262,6 +304,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_PO
         exit();
     }
 }
-
 
 ?>

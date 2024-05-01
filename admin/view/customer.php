@@ -254,30 +254,33 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
 
     // hàm khóa/mở tài khoản
     $(".lockForm").submit( function(event) {
-
+        var form = $(this);
         event.preventDefault(); // Prevent default form submission
         // Toggle the value of the hidden input to update the checkbox status
-        var lockInput = $(this).find(".lockInput");
+        var lockInput = form.find(".lockInput");
         console.log("trạng thái hiện tại : "+ lockInput.val());
 
         lockInput.val(lockInput.val() === 'true' ? 'false' : 'true');
         console.log("trạng thái khi ấn nút : "+lockInput.val());
 
         // Update the checkbox status
-        var checkbox = $(this).find(".lockCheckbox");
+        var checkbox = form.find(".lockCheckbox");
         checkbox.prop("checked", lockInput.val() === 'true');
         console.log(checkbox.prop("checked"));
 
         // Update the tooltip text
-        var tooltip = $(this).find(".lockStatusText");
+        var tooltip = form.find(".lockStatusText");
         tooltip.textContent = (lockInput.val() === 'true' ? 'Mở' : 'Khóa');
 
+        var username = form.find("input[name='userName']").val();
+        console.log(username);
+
         // Show a message based on the checkbox status
-        var message = checkbox.checked ? "Mở khóa tài khoản của <?php echo $username; ?> thành công" : "Khóa tài khoản của <?php echo $username; ?> thành công";
+        var message = checkbox.prop("checked") ? "Mở khóa tài khoản của " + username + " thành công" : "Khóa tài khoản của " + username + " thành công";    
         alert(message);
 
         // Send form data to the server using AJAX
-        var formData = new FormData(this);
+        var formData = new FormData(form[0]);
         fetch("../handler/functionHandler.php", {
                 method: "POST",
                 body: formData
@@ -298,8 +301,9 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
 
     $(document).ready(function() {
     $(".lockForm").each(function() {
-        var lockInput = $(this).find(".lockInput");
-        var checkbox = $(this).find(".lockCheckbox");
+        var form = $(this);
+        var lockInput = form.find(".lockInput");
+        var checkbox = form.find(".lockCheckbox");
         checkbox.prop("checked", lockInput.val() === 'true');
         console.log(checkbox.prop("checked"));
     });
