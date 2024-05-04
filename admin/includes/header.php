@@ -98,10 +98,10 @@
             </h2>
 
 
-            <div class="search-wrapper">
+            <!-- <div class="search-wrapper">
                 <input type="search" placeholder="Nhập tên sản phẩm">
-                <a href="productAdmin.html"><span class="las la-search"></span></a>
-            </div>
+                <a href=""><span class="las la-search"></span></a>
+            </div> -->
 
             <div class="dropdown">
                 <span>

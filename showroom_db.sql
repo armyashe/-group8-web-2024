@@ -40,9 +40,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`idOrder`, `idUser`, `nameCustomer`, `phone_number`, `address`, `order_date`, `total_amount`, `status`, `payment`) VALUES
-('6630a057d0a27','6630a0067a35a','Triệu lộ tư','09575832121','273 Đ. An Dương Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh 700000','2024-04-30 09:40:07',799000,'active','ATM')
-('6630a17e2cc58','6630a10b6e7ab','Park Jihoon','09782368882','105 Bà Huyện Thanh Quan, Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh','2024-04-30 09:45:02',750000,'active','ATM')
+('6630a057d0a27','6630a0067a35a','Triệu lộ tư','09575832121','273 Đ. An Dương Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh 700000','2024-04-30 09:40:07',799000,'active','ATM'),
+('6630a17e2cc58','6630a10b6e7ab','Park Jihoon','09782368882','105 Bà Huyện Thanh Quan, Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh','2024-04-30 09:45:02',750000,'active','ATM'),
 ('6630a28de0b7d','6630a256651bd','Thiên Hân','09326267812','4 Đ. Tôn Đức Thắng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh','2024-04-30 09:49:33',6090000,'active','ATM');
+
 
 
 -- --------------------------------------------------------
@@ -136,14 +137,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `user_name`, `password`, `user_email`,`trangthai`) VALUES
-('6630a0067a35a','lotu','lotu123','lotu123@gmail.com')
-('6630a10b6e7ab','Jihoon','Jihoon123','Jihoon123@gmail.com')
-('6630a256651bd','thienhan','thienhan123','thienhan123@gmail.com');
+('6630a0067a35a','lotu','lotu123','lotu123@gmail.com',`true`)
+('6630a10b6e7ab','Jihoon','Jihoon123','Jihoon123@gmail.com',`true`)
+('6630a256651bd','thienhan','thienhan123','thienhan123@gmail.com',`true`);
 
 --
 -- Indexes for dumped tables
 --
-
 --
 -- Indexes for table `orders`
 --
@@ -161,6 +161,8 @@ ALTER TABLE `sanpham`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
+ALTER TABLE `order_detail`
+  ADD PRIMARY KEY (`idOrder`);
 
 --
 -- AUTO_INCREMENT for dumped tables

@@ -53,7 +53,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 <?php
                 if($sanpham > 0){
                     $stt = 1;
-                    $product->bind_result($id, $tensanpham, $loaisanpham, $gia,$soluong,$mota,$mota2,$mota3,$mota4,$hinhanh,$hinhanh2,$hinhanh3,$hinhanh4);
+                    $product->bind_result($id, $tensanpham, $loaisanpham, $gia,$soluong,$mota,$hinhanh,$hinhanh2,$hinhanh3,$hinhanh4);
                     while($product->fetch()){
                         echo '<tr>';
                         echo '<td style="width: 5%">'.$stt.'</td>';
@@ -71,9 +71,9 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                                 </button>
                             </div>';
                         echo '<div class="tooltip" >
-                                <form action="" method="post" onsubmit="return confirmDelete()">
+                                <form class="formDeteleProduct">
                                     <input type="hidden" name="tensanpham" value="'.$tensanpham.'">
-                                    <input type="hidden" name="delete" value="true">
+                                    <input type="hidden" name="deleteproduct" value="true">
                                     <button type="submit" style="border:none;background-color:transparent">
                                         <i class="fa fa-trash" style="font-size: 20px;"></i>
                                         <span class="tooltiptext">Xóa</span>
@@ -451,6 +451,47 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
 
                 }
             });
+        });
+    });
+
+    // xóa sản phẩm
+    $(document).ready(function() {
+        $('.formDeteleProduct').submit(function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
+
+            var $rowToDelete = $(this).closest('tr');
+
+            var result = confirm('Bạn có chắc chắn muốn xóa người dùng này không?');
+            if (result) {
+                var formData = $(this).serialize();
+                console.log(formData);
+
+                console.log(formData);
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '../handler/functionHandler.php', // Thay 'update_user.php' bằng đường dẫn thực tế tới script PHP của bạn
+                    data: formData,
+                    success: function(response) {
+                        console.log(response.status); // In ra phản hồi từ máy chủ của bạn trong console của trình duyệt
+                        // Xử lý phản hồi thành công
+                        if (response.status === 'true') {
+                            
+                            // Xóa sản phẩm khỏi bảng
+                            $rowToDelete.remove();
+                            // Cập nhật hiển thị tin nhắn xóa thành công
+                            alert(response.message);
+
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            } else {
+                // Nếu người dùng không xác nhận xóa, không thực hiện các thao tác xóa
+                return;
+            }
+            
         });
     });
 

@@ -305,4 +305,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_PO
     }
 }
 
+// xóa sản phẩm
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tensanpham"]) && isset($_POST["deleteproduct"])){
+    header('Content-Type: application/json');
+    $nameProduct = $_POST["tensanpham"];
+    $delete_product = "DELETE FROM sanpham WHERE tensanpham = '$nameProduct'";
+    $deleteStmt = $conn->prepare($delete_product);
+    if ($deleteStmt->execute()) {
+        echo json_encode(array(
+            "status" => "true",
+            "message" => "Xóa sản phẩm thành công")
+        );
+        exit();
+    } else {
+        echo json_encode(array(
+            "status" => "false",
+            "message" => "Xóa sản phẩm thất bại")
+        );
+        exit();
+    }
+}
+
 ?>

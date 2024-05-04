@@ -133,10 +133,13 @@
                     <?php echo $detail['id']; ?>
                 </h3>
                 <div class="info">
-                    <?php echo $detail['mota']; ?>v
-                    <br><?php echo $detail['mota2']; ?>
-                    <br><?php echo $detail['mota3']; ?>
-                    <br><?php echo $detail['mota4']; ?>
+                    <?php 
+                        $mota = $detail['mota'];
+                        $danh_sach_dong = explode(".", $mota); // Tách chuỗi thành mảng dựa vào dấu chấm
+                        foreach ($danh_sach_dong as $dong) {
+                            echo $dong . "<br>";
+                    }
+                ?>
 
                 </div>
 

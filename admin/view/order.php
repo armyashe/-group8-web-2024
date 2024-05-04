@@ -91,7 +91,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                 echo '<td style="width: 8%">'.$tenkhachhang.'</td>';
                                 echo '<td style="width: 20%">';
                                 $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ?");
-                                $product->bind_param("i", $id);
+                                $product->bind_param("s", $id);
                                 $product->execute();
                                 $product->store_result();
                                 $product->bind_result($id_sanpham, $soluong);

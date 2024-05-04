@@ -150,7 +150,7 @@ $sanpham = $product->num_rows;
                                 $trangthaiText = '';
 
                                 if($order_status->fetch()) {
-                                    if($trangthai == 'active') {
+                                    if($trangthai == 'confirm') {
                                         $trangthaiText = 'Đã giao';
                                     }  
                                 }
