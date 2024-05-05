@@ -153,7 +153,10 @@
     </div>
     <div class="pagination">
         <button id="prevPage">Trước</button>
+        <span id="pageNumbers"></span>
         <button id="nextPage">Sau</button>
+    </div>
+
     </div>
 
     <script>
@@ -179,29 +182,12 @@
         }
 
 
-        // xử lý nút trước
-        document.getElementById('nextPage').addEventListener('click', () => {
-            if (filteredData && currentPage * itemsPerPage < filteredData.length) {
-                currentPage++;
-                displayProductsOnPage(currentPage);
-                updatePaginationButtons();
-            }
-        });
-
-        //xử lý nút sau
-        document.getElementById('prevPage').addEventListener('click', () => {
-            if (filteredData && currentPage > 1) {
-                currentPage--;
-                displayProductsOnPage(currentPage);
-                updatePaginationButtons();
-            }
-        });
-
         // Hàm cập nhật trạng thái của nút phân trang
         function updatePaginationButtons() {
             // Cập nhật trạng thái của nút "prevPage" và "nextPage"
             const prevPageButton = document.getElementById('prevPage');
             const nextPageButton = document.getElementById('nextPage');
+            const pageNumbersSpan = document.getElementById('pageNumbers');
 
             if (currentPage === 1) {
                 // Tắt "prevPage" nếu ở trang đầu tiên
@@ -218,7 +204,43 @@
                 // Bật "nextPage" nếu có nhiều dữ liệu hơn để hiển thị
                 nextPageButton.disabled = false;
             }
+
+            // Hiển thị số trang
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            const pageNumbers = [];
+            for (let i = 1; i <= totalPages; i++) {
+                pageNumbers.push(`<button class="pageNumber" data-page="${i}">${i}</button>`);
+            }
+            pageNumbersSpan.innerHTML = pageNumbers.join('');
+            // Lắng nghe sự kiện khi nhấp vào số trang
+            document.querySelectorAll('.pageNumber').forEach(button => {
+                button.addEventListener('click', () => {
+                    currentPage = parseInt(button.dataset.page);
+                    displayProductsOnPage(currentPage);
+                    updatePaginationButtons();
+                });
+            });
         }
+
+        // Xử lý nút trước
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayProductsOnPage(currentPage);
+                updatePaginationButtons();
+            }
+        });
+
+        // Xử lý nút sau
+        document.getElementById('nextPage').addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayProductsOnPage(currentPage);
+                updatePaginationButtons();
+            }
+        });
+
 
         // Hàm hiển thị sản phẩm
         function displayItem(products) {

@@ -44,6 +44,7 @@ echo '</script>';
                             $product = getProduct($item['idProduct']);
                             foreach($product as $item_product)
                             {
+                                echo '<a class="order_detail" href="order_details.php?'.$dh['idOrder'].'"> ';
                                 echo '<div class="product">';
                                 echo '<img src="../IMG/'.$item_product['hinhanh'].'" alt="">';
                                 echo '<div class="info">';
@@ -53,6 +54,7 @@ echo '</script>';
                                 echo '<div class="confirm"><i class="bx bxs-truck"></i></div>';
                                 echo '<div style="margin-top: 40px;">Số lượng : '.$item['quantity'].'</div>';
                                 echo '</div>';
+                                echo '</a>';
                             }
                         }
                     }   

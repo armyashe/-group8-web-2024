@@ -36,6 +36,14 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
 ?>
 <main>
     <div class="cards_customer">
+    <?php
+        if(isset($_POST['search'])){
+            echo '<h2>Kết quả tìm kiếm cho "'.$search.'"</h2>';
+        }
+        else{
+            echo '<h2>Danh sách người dùng</h2>';
+        }
+        ?>
         <table class="table-header">
             <tr>
                 <th title="Sắp xếp" style="width: 5%">Stt</th>

@@ -1,0 +1,96 @@
+.box-container{
+    box-shadow: 0 0 10px rgba(0 0 0/15%);
+    border-radius: .5rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 1rem auto;
+}
+.box-container .box{
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow-x: hidden;
+}
+.box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.box-container .box .col{
+    flex: 1 1 auto; /* Sử dụng flex để phân phối không gian một cách linh hoạt */
+    border: 1px solid green;
+    border-radius: .5rem;
+    padding: 1rem;
+    margin-right: 1rem; /* Tạo khoảng cách giữa các sản phẩm */
+    margin-bottom: 1rem; /* Tạo khoảng cách dưới cùng */
+    vertical-align: top;
+}
+.box-container .box .col .image{
+    height: 17rem;
+    width: 90%;
+    object-fit: fill;
+    margin: 1rem 0;
+    
+}
+.box-container .box .col .title{
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    padding: .5rem 2rem;
+    font-size: .8rem;
+    color: green;
+    background: lightgreen;
+    border: 2px solid green;
+    display: inline-block;
+    text-transform: capitalize;
+}
+.box-container .box .col .title i{
+    color: #000;
+}
+.box-container .box .col .price{
+    color: crimson;
+    font-size: 1rem;
+    padding: .5rem 0;
+    margin-top: -3rem;
+} 
+.box-container .box .col .name{
+    font-size: 1.5rem;
+    color: #000;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+.box-container .box .col .user{
+    padding: .5rem 0;
+    font-size: 1.3rem;
+    color: #000;
+}
+.box-container .box .col .user i{
+    margin-right: 1rem;
+    color: #000;
+}
+.box-container .box .col .grand-total{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    flex-wrap: wrap;
+    background: lightgreen;
+    font-size: 1.5rem;
+    color: green;
+    border: 1px solid green;
+    border-radius: .5rem;
+    text-transform: capitalize;
+    margin-top: 2.1rem;
+}
+.box-container .box .col .grand-total span{
+    color: orange;
+}
+.box-container .box .col .status{
+    font-size: 1.4rem;
+    padding: .5rem 0;
+    text-transform: capitalize;
+}
+.box-container .box .col .btn{
+    width: 100%;
+    border-radius: .5rem;
+    border: 1px solid green;
+}

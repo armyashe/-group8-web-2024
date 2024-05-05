@@ -67,27 +67,42 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
 ?>
 <main>
             <div class="cards_customer">
+                <?php
+                    if(isset($_POST['search']) && isset($_POST['kieuTimDonHang']) ){
+                        echo '<h2>Kết quả tìm kiếm cho "'.$search.'"</h2>';
+                    }
+                    else if(isset($_POST['fromDate']) && isset($_POST['toDate'])){
+                        $fromDate = date("d-m-Y", strtotime($fromDate));
+                        $toDate = date("d-m-Y", strtotime($toDate));
+                        echo '<h2>Danh sách đơn hàng từ '.$fromDate.' đến '.$toDate.'</h2>';
+                    }
+                    else{
+                        echo '<h2>Danh sách đơn hàng</h2>';
+                    }
+                    ?>
                 <table class="table-header">
                     <tr>
                         <!-- Theo độ rộng của table content -->
-                        <th title="Sắp xếp" style="width: 5%">Mã</th>
+                        <th title="Sắp xếp" style="width: 5%">Stt</th>
                         <th title="Sắp xếp" style="width: 8%">Khách </th>
                         <th title="Sắp xếp" style="width: 20%">Sản phẩm </th>
                         <th title="Sắp xếp" style="width: 15%">Tổng tiền </th>
                         <th title="Sắp xếp" style="width: 20%">Địa chỉ </th>
                         <th title="Sắp xếp" style="width: 10%">Ngày giờ </th>
                         <th title="Sắp xếp" style="width: 13%">Trạng thái</th>
+                        <th title="Sắp xếp" style="width: 13%">Xem</th>
                     </tr>
                 </table>
                 <div class="table-content" style="box-shadow: 0 0 10px #989a9b;width:99.3%">
                     <table class="table-outline hideImg ">
                         <?php
                         if($donhang > 0){
+                            $stt = 1;
                             $order->bind_result($id, $id_khachhang,$tenkhachhang,$phone,$diachi, $ngaygio, $tongtien, $trangthai,$thanhtoan);
                             
                             while($order->fetch()){
                                 echo '<tr>';
-                                echo '<td style="width: 5%">'.$id.'</td>';
+                                echo '<td style="width: 5%">'.$stt.'</td>';
                                 echo '<td style="width: 8%">'.$tenkhachhang.'</td>';
                                 echo '<td style="width: 20%">';
                                 $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ?");
@@ -96,17 +111,18 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                 $product->store_result();
                                 $product->bind_result($id_sanpham, $soluong);
                                 while($product->fetch()){
-                                    $product_name = $conn->prepare("SELECT `tensanpham` FROM `sanpham` WHERE `id` = ?");
+                                    $product_name = $conn->prepare("SELECT `tensanpham`,`hinhanh` FROM `sanpham` WHERE `id` = ?");
                                     $product_name->bind_param("i", $id_sanpham);
                                     $product_name->execute();
                                     $product_name->store_result();
-                                    $product_name->bind_result($tensanpham);
+                                    $product_name->bind_result($tensanpham,$hinhanh);
                                     $product_name->fetch();
                                     echo $tensanpham.' [ '.$soluong.' ]'.'<br>';
                                 }
                                 echo '</td>';
                                 echo '<td style="width: 15%">'.number_format($tongtien, 0, ',', '.').'đ</td>';
                                 echo '<td style="width: 20%">'.$diachi.'</td>';
+                                $ngaygio = date("d-m-Y H:i:s", strtotime($ngaygio));
                                 echo '<td style="width: 11%">'.$ngaygio.'</td>';
                                 if($trangthai == 'active'){
                                     $trangthaiText = 'Chờ xác nhận';
@@ -132,7 +148,9 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                 } else {
                                     echo '<td style="width: 13%"><button class="confirmed-button" type="button" disabled>' . $trangthaiText . '</button></td>';
                                 }
+                                echo '<td><a href="order_detail.php?'.$id.'" style="text-decoration: none;"><button class="see-button" type="button">Xem</button><a></td>';
                                 echo '</tr>';
+                                $stt++;
                             }
                         }
                         else {
@@ -171,8 +189,11 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                 </div>
 
             </div>
+            
+        </div>
 </main>
 <script>
+
 
     $(document).ready(function() {
     $('.statusChange').submit(function(e) {

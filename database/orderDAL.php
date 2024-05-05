@@ -218,5 +218,57 @@ function getProduct($idProduct)
     return $productID;
 }
 
+// lấy thông tin chi tiết đơn hàng từ idOrder
+function getOrderDetailId($idOrder)
+{
+    $conn = connect();
+    $sql = "SELECT * FROM order_detail WHERE idOrder = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $idOrder);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $orderDetails = [];
+    while ($row = $result->fetch_assoc()) {
+        $orderDetails[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $orderDetails;
+}
+// lấy thông tin đon hàng từ idOrder
+function getOrderById($idOrder)
+{
+    $conn = connect();
+    $sql = "SELECT * FROM orders WHERE idOrder = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $idOrder);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $order = [];
+    while ($row = $result->fetch_assoc()) {
+        $order[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $order;
+}
+// lấy email người dùng từ bảng order
+function getEmail($idOrder)
+{
+    $conn = connect();
+    $sql = "SELECT user.user_email,orders.nameCustomer,orders.phone_number,orders.address,orders.status FROM orders INNER JOIN user ON user.id = orders.idUser WHERE idOrder = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $idOrder);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $email = [];
+    while ($row = $result->fetch_assoc()) {
+        $email[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $email;
+}
+
 
 ?>

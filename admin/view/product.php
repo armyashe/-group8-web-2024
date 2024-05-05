@@ -38,6 +38,14 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
 ?>
 <main>
     <div class="cards_customer">
+        <?php
+        if(isset($_POST['search'])){
+            echo '<h2>Kết quả tìm kiếm cho "'.$search.'"</h2>';
+        }
+        else{
+            echo '<h2>Danh sách sản phẩm</h2>';
+        }
+        ?>
         <table class="table-header">
             <tr>
                 <!-- Theo độ rộng của table content -->

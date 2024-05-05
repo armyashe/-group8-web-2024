@@ -41,12 +41,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_order'])) {
         $userName = $_POST['txtTendangnhap'];
         $phoneNumber = $_POST['txtDienthoai'];
         $address = $_POST['txtDiachi'];
-        $payment = $_POST['radiopayment'];
+        
+        if(!isset($_POST['radiopayment'])){
+            echo '<script>alert("Vui lòng chọn phương thức thanh toán")</script>';
+            echo '<script>window.location.href="checkout.php"</script>';
+        }
+        else{
+            $payment = $_POST['radiopayment'];
+        }
         $cartItems = $_SESSION['cart'];
 
         $userID= $_SESSION['user']['id'];
+        echo '<script>alert("'.$userID.'")</script>';
         // Thêm đơn hàng vào cơ sở dữ liệu và nhận idOrder
         $orderID = insertOrder($userID, $userName,$phoneNumber, $address, $payment,$cartItems);
+
+        echo '<script>alert("'.$orderID.'")</script>';
+        
         if ($orderID) {
             unset($_SESSION['cart']); // Xóa giỏ hàng sau khi đã đặt hàng thành công
             header("Location: historyOrder.php?orderIDSuccessful=$orderID");
