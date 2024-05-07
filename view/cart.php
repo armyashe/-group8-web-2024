@@ -1,9 +1,6 @@
 
-
-<html>
 <?php
 include_once ('layout/header.php');
-include_once ('../database/productDAL.php');
 include_once ('../database/connect.php');
 
 // Xử lý xóa giỏ hàng nếu người dùng yêu cầu
@@ -12,29 +9,34 @@ if (isset($_GET['clear'])) {
 }
 
 // Kiểm tra nếu có sản phẩm được thêm vào giỏ hàng từ trang product_details.php
+// update_cart.php
+
+// Xử lý yêu cầu AJAX và cập nhật giỏ hàng
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    if(isset($_POST['product_id']) && isset($_POST['soluong']))
-    {
-        $product_id = $_POST['product_id'];
-        $quantity = $_POST['soluong'];
+    // Kiểm tra xem có dữ liệu gửi lên từ AJAX không
+    $product_id = $_POST['product_id'] ?? null;
+    $quantity = $_POST['quantity'] ?? null;
+
+    // Thực hiện cập nhật giỏ hàng ở đây
+    // Ví dụ: cập nhật giỏ hàng trong session
+    if ($product_id !== null && $quantity !== null) {
         foreach ($_SESSION['cart'] as &$item) {
-            if ($item['id'] == $product_id) {
+            if ($item['id'] === $product_id) {
                 $item['quantity'] = $quantity;
-                $product_exists = true;
                 break;
             }
         }
-
+        // Trả về phản hồi (ví dụ: có thể là JSON)
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Missing product_id or quantity']);
     }
-
-
 }
+
 
 
 // Hiển thị nội dung giỏ hàng (nếu có)
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-
     echo '<table class="list-cart">';
     echo '<tr>';
     echo '<th>ID</th>';
@@ -47,33 +49,44 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     $total_items = 0;
     $total_amount = 0;
 
-    foreach ($_SESSION['cart'] as $item) {
+    $cart_items = $_SESSION['cart'];
+    echo '<pre>';
+    print_r($cart_items);
+    echo '</pre>';
+    $cart_count = count($cart_items); // Đếm số lượng sản phẩm trong giỏ hàng
+    $i = 0;
+    
+    while ($i < $cart_count) {
+        $item = $cart_items[$i]; // Lấy một sản phẩm từ giỏ hàng
+    
         $price_formatted = number_format($item['price'], 0, ",", ".") . "đ";
         $sum = $item['price'] * $item['quantity'];
         $sum_formatted = number_format($sum, 0, ",", ".") . "đ";
-
-        echo '<form method="post">';
-        echo '<tr>';
-        echo "<input type='hidden' name='product_id' value='" . $item['id'] . "'>" . "</input>";
-        echo '<td>' . $item['id'] . '</td>';
-        echo '<td>' . $item['name'] . '</td>';
-        echo '<td>' . $price_formatted . '</td>';
+    
+        // Bắt đầu form mới cho mỗi sản phẩm
+        echo "<tr data-product='".$item["id"]."'>";
+        echo '<form method="POST">'; 
+        echo "<input type='hidden' class='id_product' name='product_id' value='" . $item['id'] . "' >" ;
+        echo '<td>' . $item['id'] .'</td>';
+        echo '<td>' . $item['name'] .'</td>';
+        echo '<td class="gia">' . $price_formatted . '</td>';
         echo "<td class='soluong'>";
-        echo "<button type='submit' class='quantity-left-minus'><i class='fa fa-minus'></i></button>";
-        echo "<input class='form-control input-number' value='{$item['quantity']}' name='soluong'>";
-        echo "<button type='submit' class='quantity-right-plus'><i class='fa fa-plus'></i></button>";
+        echo "<button type='button' class='quantity-left-minus' data-product-id='".$item["id"]."'><i class='fa fa-minus'></i></button>";
+        echo '<input class="form-control input-number" value="'.$item['quantity'].'" name="soluong" data-product-id="'.$item['id'].'">';
+        echo '<button type="button" class="quantity-right-plus" data-product-id="'.$item['id'].'"><i class="fa fa-plus"></i></button>';
+        echo '</form>';
         echo "</td>";
-        echo '<td>' . $sum_formatted . '</td>';
+        echo '<td class="thanhtien">' . $sum_formatted . '</td>';
         
-
-       // echo'<td>'.date("Y-m-d H:i:sa",$item['date']) .'</td>';
-
         echo '</tr>';
-
+        // Kết thúc form cho mỗi sản phẩm
+    
         $total_items += $item['quantity'];
         $total_amount += $sum;
-        echo '</form>';
+    
+        $i++;
     }
+    
 
     echo '<tr>';
     echo '<td colspan="4">Tổng tiền (' . $total_items . ' sản phẩm):</td>';
@@ -81,10 +94,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     echo '</tr>';
 
     echo '</table>';
-
-
-} 
-else {
+} else {
     echo '<h1 style=color:red;margin-top:2%;>Giỏ hàng của bạn đang trống !!!</h1>';
 }
 ?>
@@ -123,29 +133,45 @@ else {
 </body>
 </html>
 <script>
-    // Sự kiện click nút tăng số lượng
-document.querySelectorAll('.quantity-right-plus').forEach(button => {
+document.querySelectorAll('.quantity-right-plus, .quantity-left-minus').forEach(button => {
     button.addEventListener('click', () => {
-        const input = button.parentElement.querySelector('input');
+        const productID = button.dataset.productId; // Lấy ID sản phẩm từ thuộc tính data
+        const input = document.querySelector(`input[name='soluong'][data-product-id='${productID}']`);
         const currentValue = parseInt(input.value);
-        input.value = currentValue + 1;
-        console.log('Số lượng sau khi tăng:', input.value);
-        updateCart(); // Cập nhật giỏ hàng sau khi thay đổi số lượng
+        const action = button.classList.contains('quantity-right-plus') ? 'increase' : 'decrease';
+        const newValue = action === 'increase' ? currentValue + 1 : Math.max(1, currentValue - 1); // Đảm bảo số lượng không nhỏ hơn 1
+
+        // Gửi dữ liệu qua AJAX
+        updateCart(productID, newValue);
     });
 });
 
-// Sự kiện click nút giảm số lượng
-document.querySelectorAll('.quantity-left-minus').forEach(button => {
-    button.addEventListener('click', () => {
-        const input = button.parentElement.querySelector('input');
-        const currentValue = parseInt(input.value);
-        if (currentValue > 1) {
-            input.value = currentValue - 1;
-            console.log('Số lượng sau khi giảm:', input.value);
-            updateCart(); // Cập nhật giỏ hàng sau khi thay đổi số lượng
+function updateCart(productID, quantity) {
+    // Tạo một đối tượng XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'function.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    // Xử lý khi nhận được phản hồi từ server
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                window.location.reload();
+                
+            } else {
+                // Xử lý lỗi nếu có
+                console.error('Đã xảy ra lỗi:', xhr.status);
+            }
         }
-    });
-});
+    };
+
+
+    // Gửi yêu cầu POST với dữ liệu sản phẩm và số lượng mới
+    xhr.send(`product_id=${productID}&quantity=${quantity}`);
+}
+
+
+
 
 // Hàm xác nhận thanh toán
 function confirmPayment() {
@@ -172,29 +198,6 @@ function confirmDelete() {
     }
 }
 
-// Hàm cập nhật giỏ hàng
-function updateCart() {
-    let totalPrice = 0; 
-    // Lấy danh sách sản phẩm trong giỏ hàng
-    const products = document.querySelectorAll('.list-cart tbody tr');
-    products.forEach(product => {
-        const soluong = parseInt(product.querySelector('.soluong input').value);
-        const gia = parseInt(product.querySelector('td:nth-child(3)').textContent.replace(/\D/g, ''));
-        if (!isNaN(soluong) && !isNaN(gia)) {
-            const thanh_tien = soluong * gia;
 
-            // Cập nhật giá trị mới cho sản phẩm trong bảng giỏ hàng
-            product.querySelector('td:nth-child(5)').textContent = numberWithCommas(thanh_tien) + ' ₫';
-            totalPrice += thanh_tien; 
-            console.log('Tổng giá trị:', totalPrice);
-        }
-    });
-
-    // Cập nhật tổng giá trị của giỏ hàng
-    const totalElement = document.querySelector('.list-cart tbody tr:last-child td:nth-child(2)');
-    if (totalElement) {
-        totalElement.textContent = numberWithCommas(totalPrice) + ' ₫';
-    }
-}
 
 </script>

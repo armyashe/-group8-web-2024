@@ -22,7 +22,7 @@
         <div class="left">
             <div class="search">
                 <div class="list">
-                    <form method="GET" action="" style="display: flex;">
+                    <form method="GET" action="" style="display: flex;">    
                         <input type="text" id="menu-search" placeholder="Nhập từ cần tìm kiếm" name="keyword">
                         <button id="search-btn"><i class='bx bx-search'
                                 style="color: white;margin: 4px 0 0 2px;"></i></button>
