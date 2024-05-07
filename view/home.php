@@ -5,7 +5,12 @@
     include_once ('../database/connect.php');
     include_once ('layout/header.php');
     if(isset($_GET['loginSuccessful'])) // đăng nhập sai nó vô đây
+    {
         echo "<script> alert('Đăng nhập thành công')</script>";
+    }
+        $current_url = $_SERVER['REQUEST_URI'];
+
+        $queryString = parse_url($current_url, PHP_URL_QUERY);
     ?>
 
 
@@ -33,8 +38,7 @@
             </div>
             <div class="price">
                 <h2 style="margin-top: 30px;">Lọc giá sản phẩm</h2>
-                <form id="filter-form" method="GET
-                " action="">
+                <form id="filter-form" method="POST" action="">
                     <section name="price" class="list-price">
                         <input type="radio" name="price" value="0-500000" id="price1"> 0đ — 500.000đ
                         <br><input type="radio" name="price" value="500000-1000000" id="price2"> 500.000đ — 1.000.000đ
@@ -57,7 +61,7 @@
             <div class="result_print">
                 <button type="submit">Xem kết quả tìm kiếm</button>
             </div>
-            <input type="hidden" name="filter" value="1">
+            
             </form>
         </div>
         <div class="right">
@@ -152,9 +156,9 @@
 
     </div>
     <div class="pagination">
-        <button id="prevPage">Trước</button>
+        <button id="prevPage"><</button>
         <span id="pageNumbers"></span>
-        <button id="nextPage">Sau</button>
+        <button id="nextPage">></button>
     </div>
 
     </div>

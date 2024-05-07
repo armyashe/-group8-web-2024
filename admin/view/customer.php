@@ -271,6 +271,13 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
         lockInput.val(lockInput.val() === 'true' ? 'false' : 'true');
         console.log("trạng thái khi ấn nút : "+lockInput.val());
 
+        
+        // Hiển thị hộp thoại xác nhận
+        var result = confirm('Bạn có chắc chắn muốn ' + (lockInput.val() === 'true' ? 'mở khóa' : 'khóa') + ' người dùng này không?');
+        if(result)
+        {
+        
+
         // Update the checkbox status
         var checkbox = form.find(".lockCheckbox");
         checkbox.prop("checked", lockInput.val() === 'true');
@@ -283,10 +290,12 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
         var username = form.find("input[name='userName']").val();
         console.log(username);
 
+        
         // Show a message based on the checkbox status
         var message = checkbox.prop("checked") ? "Mở khóa tài khoản của " + username + " thành công" : "Khóa tài khoản của " + username + " thành công";    
         alert(message);
 
+        
         // Send form data to the server using AJAX
         var formData = new FormData(form[0]);
         fetch("../handler/functionHandler.php", {
@@ -305,6 +314,11 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
+        }
+        else
+        {
+            return false;
+        }
     });
 
     $(document).ready(function() {

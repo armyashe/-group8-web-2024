@@ -251,7 +251,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                 console.log(response);
                 console.log(response.status);
                 // Xử lý phản hồi từ máy chủ (nếu cần)
-                if (response.status === 'true') {
+                if (rnesponse.status === 'true') {
                     alert('Xóa đơn hàng thành công.');
                     $rowToDelete.remove();
                 } else {

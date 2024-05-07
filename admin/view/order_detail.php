@@ -44,7 +44,7 @@ $donhang = $order->num_rows;
                     <table class="table-outline hideImg ">
                         <?php
                         if($donhang > 0){
-                            $order->bind_result($id, $id_donhang,$id_sanpham,$soluong,$gia, $ghichu);
+                            $order->bind_result($id_donhang,$id_sanpham,$soluong,$gia, $ghichu);
                             
                             while($order->fetch()){
                                 echo '<tr>';
