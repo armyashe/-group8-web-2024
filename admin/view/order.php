@@ -104,7 +104,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                 echo '<tr>';
                                 echo '<td style="width: 5%">'.$stt.'</td>';
                                 echo '<td style="width: 8%">'.$tenkhachhang.'</td>';
-                                echo '<td style="width: 20%">';
+                                echo '<td style="width: 21%">';
                                 $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ?");
                                 $product->bind_param("s", $id);
                                 $product->execute();
@@ -241,6 +241,8 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
     $('.delete_order').submit(function(e) {
         e.preventDefault();
 
+        var result = confirm('Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng?');
+        if (result) {
         var orderId = document.querySelector('.id_order').value;
         console.log(orderId);
         var deleteOrder = $('.deleteOrder').val();
@@ -258,7 +260,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                 console.log(response);
                 console.log(response.status);
                 // Xử lý phản hồi từ máy chủ (nếu cần)
-                if (rnesponse.status === 'true') {
+                if (response.status === 'true') {
                     alert('Xóa đơn hàng thành công.');
                     $rowToDelete.remove();
                 } else {
@@ -267,6 +269,9 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                 }
             }
         });
+    } else {
+        return false;
+    }
     });
 });
 
