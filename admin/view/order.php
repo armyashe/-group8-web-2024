@@ -198,6 +198,10 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
     $(document).ready(function() {
     $('.statusChange').submit(function(e) {
         e.preventDefault();
+
+        var result = confirm('Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng?');
+        if (result) {
+
         var orderId = document.querySelector('.id_order').value;
         var nextStatus = document.querySelector('.status_order').value;
         var formData = $(this).serialize();
@@ -227,6 +231,9 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                 }
             }
         });
+    } else {
+        return false;
+    }
     });
 });
 
