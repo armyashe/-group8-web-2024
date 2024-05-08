@@ -51,8 +51,8 @@ echo '</script>';
                                 echo '<p class="name">'.$item_product['tensanpham'].'</p>';
                                 echo '<p>Giá : '.number_format($item['price'], 0, ",", ".") .'₫</p>';
                                 echo '</div>';
-                                echo '<div class="confirm"><i class="bx bxs-truck"></i></div>';
-                                echo '<div style="margin-top: 40px;">Số lượng : '.$item['quantity'].'</div>';
+                          
+                                echo '<div style="margin-top: 40px;    margin-left: 276px;">Số lượng : '.$item['quantity'].'</div>';
                                 echo '</div>';
                                 echo '</a>';
                             }

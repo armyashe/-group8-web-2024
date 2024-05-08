@@ -11,6 +11,7 @@ echo '<script>console.log('.json_encode($order).')</script> ';
 $orderDetails = getOrderDetailId($queryString);
 echo '<script>console.log('.json_encode($orderDetails).')</script> ';
 $user = getEmail($queryString);
+
 ?>
 <head>
     <link rel="stylesheet" href="../css/styleOrderDetail.css">
@@ -19,35 +20,32 @@ $user = getEmail($queryString);
     <h1>Chi tiết đơn hàng</h1>
 </div>
 <div class="box-container">
-    <div class="box">
-            <div class="col">
-                        <?php
-                            foreach ($order as $item) {
-                                $item['order_date'] = date('d-m-Y', strtotime($item['order_date']));
-                                echo '<p class="title"><i class="bi bi-calender-fill"></i> ' . $item['order_date'] . '</p>';
-                            }
-                            foreach ($orderDetails as $item) {
-                                $product = getProduct($item['idProduct']);
-                                foreach ($product as $item_product) {
-                                    echo '<img src="../IMG/' . $item_product['hinhanh'] . '" alt="" class="image">';
-                                }
-                            }
-                            foreach ($orderDetails as $item) {
-                                $product = getProduct($item['idProduct']);
-                                foreach ($product as $item_product) {
-                                    echo '<h3 class="name">' . $item_product['tensanpham'] .' </h3>';
-                                }
-                            }
-                            foreach ($order as $item) {
-                                echo '<p class="grand-total">Total amount payable : <span>' . number_format($item['total_amount'], 0, ",", ".") . '₫</span></p>';
-                            }
+<?php
+foreach ($orderDetails as $item) {
+    $product = getProduct($item['idProduct']);
+    $tongtien = 0;
+    foreach ($product as $item_product) {
+        $tongtien += $item_product['gia'] * $item['quantity'];
+        echo '<script>console.log('.$tongtien.')</script> ';
+        echo '<div class="box">';
+        echo '<div class="col">';
+        foreach ($order as $itemOrder) {
+            $order_date = date('d-m-Y', strtotime($itemOrder['order_date']));
+        }
+        echo '<p class="title"><i class="bi bi-calendar-fill"></i> ' . $order_date . '</p>';
+        echo '<img src="../IMG/' . $item_product['hinhanh'] . '" alt="" class="image">';
+        echo '<h3 class="name">' . $item_product['tensanpham'] .' </h3>';
+        echo '<p class="quantity">Số lượng : ' . $item['quantity'] . '</p>';
+        echo '<p class="price_product">Giá : ' . number_format($item_product['gia'], 0, ",", ".") . '₫</p>';
+        echo '<p class="grand-total">Đơn giá :  <span>  ' .  number_format($tongtien, 0, ",", ".") . '₫</span></p>';
+        echo '</div>';
+        echo '</div>';
+    }
+}
+?>
 
-                        
-                        ?>
-                </div>
-    </div>
     <div class="box">
-        <div class="col">
+        <div class="col" style="width: 94%;">
                         <?php
                         foreach ($user as $item) {
                             echo '<p class="user"><i class="bx bxs-user-check"></i>' . $item['nameCustomer'] . '</p>';
