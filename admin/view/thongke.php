@@ -31,6 +31,11 @@ for ($thang = 1; $thang <= 12; $thang++) {
     $order->fetch();
     $tongtien[] = $tong;
 }
+
+
+
+
+
 ?>
 
 
@@ -52,6 +57,9 @@ for ($thang = 1; $thang <= 12; $thang++) {
         </form>
     </div>
 </div>
+
+
+
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">

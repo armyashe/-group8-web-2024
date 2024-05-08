@@ -64,6 +64,21 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
     $order->store_result();
     $donhang = $order->num_rows;
 }
+
+// Xử lý thống kê 5 khách hàng có mức mua hàng cao nhất trong thời gian và dữ liệu được sắp xếp giảm dần theo tổng tiền mua hàng
+if(isset($_POST['start_date']) && isset($_POST['end_date'])){
+    $start_date = $_POST['start_date'];
+    $end_date = $_POST['end_date'];
+
+    $start_date = date("Y-m-d 00:00:00", strtotime($start_date));
+    $end_date = date("Y-m-d 23:59:59", strtotime($end_date));
+    $order = $conn->prepare("SELECT * FROM `orders` WHERE `order_date` BETWEEN ? AND ? ORDER BY `total_amount` DESC LIMIT 5");
+    $order->bind_param("ss", $start_date, $end_date);
+    $order->execute();
+    $order->store_result();
+    $donhang = $order->num_rows; 
+}
+
 ?>
 <main>
             <div class="cards_customer">
@@ -141,6 +156,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                                     </form>
                                     <form class="delete_order">
                                     <input type="hidden" class="id_order" name="idOrder" value="'.$id.'">
+                                    <script>console.log("'.$id.'")</script>
                                     <input type="hidden" class="deleteOrder" name="delete" value="true">
                                     <button type="submit" class="delete_edit" id="submitForm">Xoá</button>
                                     </form>
@@ -157,6 +173,7 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                             // Hiển thị thông báo nếu không có đơn hàng nào trong khoảng thời gian được chọn
                             echo "<tr><td colspan='7' style='color:red;font-size:20px'>Không có đơn hàng nào trong kết quả tìm kiếm</td></tr>";
                         }
+                        
                         ?>
                     </table>
                 </div>
@@ -186,6 +203,15 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
                         </button>
                     </form>
                     
+                </div>
+                <div class="timtheothongke" style="margin-top: 2%;">
+                    <form method="post">
+                        <label for="start_date">Từ ngày:</label>
+                        <input type="date" id="start_date" name="start_date">
+                        <label for="end_date">Đến ngày:</label>
+                        <input type="date" id="end_date" name="end_date">
+                        <button type="submit"><i class="fa fa-search"></i>Thống kê</button>
+                    </form>
                 </div>
 
             </div>
@@ -241,13 +267,12 @@ if(isset($_POST['kieuTimDonHang']) && $_POST['kieuTimDonHang'] == 'trangThai' &&
     $('.delete_order').submit(function(e) {
         e.preventDefault();
 
-        var result = confirm('Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng?');
+        var result = confirm('Bạn có chắc chắn muốn xóa đơn hàng?');
         if (result) {
-        var orderId = document.querySelector('.id_order').value;
-        console.log(orderId);
-        var deleteOrder = $('.deleteOrder').val();
-        console.log(deleteOrder);
-        var $rowToDelete = $(this).closest('tr');
+            var orderId = $(this).find('.id_order').val();
+            console.log(orderId);
+            var deleteOrder = $(this).find('.deleteOrder').val();
+            var $rowToDelete = $(this).closest('tr');
 
         $.ajax({
             type: 'POST',

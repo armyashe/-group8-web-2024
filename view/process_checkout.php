@@ -52,11 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_order'])) {
         $cartItems = $_SESSION['cart'];
 
         $userID= $_SESSION['user']['id'];
-        echo '<script>alert("'.$userID.'")</script>';
+   
         // Thêm đơn hàng vào cơ sở dữ liệu và nhận idOrder
         $orderID = insertOrder($userID, $userName,$phoneNumber, $address, $payment,$cartItems);
 
-        echo '<script>alert("'.$orderID.'")</script>';
         
         if ($orderID) {
             unset($_SESSION['cart']); // Xóa giỏ hàng sau khi đã đặt hàng thành công

@@ -127,24 +127,24 @@
 <script>
 document.getElementById("choose-address").addEventListener("click", function(event) {
     event.preventDefault();
-    // AJAX request
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-    var responseText = xhr.responseText; // Nhận dữ liệu từ server
-    responseText = responseText.trim(); // Loại bỏ khoảng trắng từ đầu và cuối chuỗi
-
-    // Loại bỏ các ký tự không mong muốn hoặc khoảng trắng từ chuỗi
-    responseText = responseText.replace(/[^\w\s]/gi, ''); // Loại bỏ tất cả ký tự không phải chữ cái, số hoặc dấu gạch dưới và khoảng trắng
-
-    document.getElementById("diachi").value = responseText;
-    
-    console.log(responseText);
-}
-
-
+            // var responseText = xhr.responseText.trim().replace(/<!--[\s\S]*?-->/g, '');
+            var responseText = xhr.responseText.replace(/<!--[\s\S]*?-->/g, '');
+            responseTextReplace = responseText.trim();
+            if(responseText.length > 0){
+                document.getElementById("diachi").value = responseText;
+            } else {
+                alert("Chưa có địa chỉ giao hàng trong tài khoản của bạn");
+            }
+        }
     };
     xhr.open("GET", "function.php", true);
     xhr.send();
 });
+
+
+
+
 </script>
