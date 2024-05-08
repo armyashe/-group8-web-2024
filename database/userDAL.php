@@ -59,11 +59,11 @@ function checkUserLogin($username, $password)
     }
 }
 
-function addUser($email, $username, $password,$trangthai)
+function addUser($email, $username, $password,$trangthai,$diaChi)
 {
     $conn = connect(); // Kết nối đến CSDL
 
-    $sql = "INSERT INTO `user` (`id`, `user_name`, `password`,`user_email`,`trangthai`) VALUES ('" . uniqid() . "','" . $email . "','" . $username . "','" . $password . "','" . $trangthai . "') ";
+    $sql = "INSERT INTO `user` (`id`, `user_name`, `password`,`user_email`,`trangthai`,`diachi`) VALUES ('" . uniqid() . "','" . $email . "','" . $username . "','" . $password . "','" . $trangthai . "','" . $diaChi . "') ";
 
 
     echo $sql;
@@ -101,5 +101,17 @@ function getUserId($username) {
     }
 }
 
+function getUserAddress()
+{
+    $conn = connect();
+    $sql = "SELECT * FROM user WHERE user_name = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['user']['user_name']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $address = $result->fetch_assoc()['diachi'];
+    $stmt->close();
+    $conn->close();
+    return $address;
+}
 
-?>

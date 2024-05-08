@@ -53,6 +53,7 @@ INSERT INTO `orders` (`idOrder`, `idUser`, `nameCustomer`, `phone_number`, `addr
 --
 
 CREATE TABLE `order_detail` (
+  `id` int(50) NOT NULL,
   `idOrder` varchar(255) NOT NULL,
   `idProduct` int(10) DEFAULT NULL,
   `quantity` int(10) DEFAULT NULL,
@@ -60,10 +61,10 @@ CREATE TABLE `order_detail` (
   `note` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
-INSERT INTO `order_detail` (`idOrder`, `idProduct`, `quantity`, `price`, `note`) VALUES
-('6630a057d0a27', 1, 1, 799000, 'Chất liệu:Gỗ công nghiệp chống ẩm'),
-('6630a17e2cc58', 9, 1, 750000, 'Công dụng:Soi mặt, trang trí decor treo tường'),
-('6630a28de0b7d', 15, 1, 6090000, 'Chất liệu:Kim loại sơn từ tính /Đá');
+INSERT INTO `order_detail` (`id`, `idOrder`, `idProduct`, `quantity`, `price`, `note`) VALUES
+(1, '6630a057d0a27', 1, 1, 799000, 'Chất liệu:Gỗ công nghiệp chống ẩm'),
+(2, '6630a17e2cc58', 9, 1, 750000, 'Công dụng:Soi mặt, trang trí decor treo tường'),
+(3, '6630a28de0b7d', 15, 1, 6090000, 'Chất liệu:Kim loại sơn từ tính /Đá'),
 
 -- --------------------------------------------------------
 

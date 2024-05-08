@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="../css/style1.css">
    
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Load font awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../javascripts/search.js"></script>
 </head>

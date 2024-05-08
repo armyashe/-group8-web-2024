@@ -29,7 +29,6 @@
             <h3 style="text-align:center;">KIỂM TRA LẠI ĐƠN HÀNG</h3>
             <div class="row">
                 <table class="list-cart" >
-                    <!-- Bảng hiển thị danh sách sản phẩm trong giỏ hàng (nếu có) -->
                     <?php    // Kiểm tra nếu có sản phẩm được thêm vào giỏ hàng từ trang product_details.php
                     if (isset($_POST['add_to_cart'])) {
                         $product_id = $_POST['product_id'];
@@ -82,10 +81,11 @@
                 </table>
             </div>
         </div>
+        
         <div class="left-checkout">
             <h3 style="text-align:center;">ĐỊA CHỈ GIAO HÀNG</h3>
             <a href="" style="text-decoration: none;">
-            <p style="font-size: 17px; margin: 20px 0;"><i class="fa-solid fa-location-dot" style="margin-right:10px;"></i>Chọn địa chỉ từ tài khoản</p>
+            <p style="font-size: 17px; margin: 20px 0;" id="choose-address"><i class="fa-solid fa-location-dot" style="margin-right:10px;"></i>Chọn địa chỉ từ tài khoản</p>
             </a>
             <form action="process_checkout.php" name="frmDangki" method="POST">
                 <label for="username">Họ và tên người nhận</label><br>
@@ -124,3 +124,27 @@
 </body>
 
 </html>
+<script>
+document.getElementById("choose-address").addEventListener("click", function(event) {
+    event.preventDefault();
+    // AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+    var responseText = xhr.responseText; // Nhận dữ liệu từ server
+    responseText = responseText.trim(); // Loại bỏ khoảng trắng từ đầu và cuối chuỗi
+
+    // Loại bỏ các ký tự không mong muốn hoặc khoảng trắng từ chuỗi
+    responseText = responseText.replace(/[^\w\s]/gi, ''); // Loại bỏ tất cả ký tự không phải chữ cái, số hoặc dấu gạch dưới và khoảng trắng
+
+    document.getElementById("diachi").value = responseText;
+    
+    console.log(responseText);
+}
+
+
+    };
+    xhr.open("GET", "function.php", true);
+    xhr.send();
+});
+</script>

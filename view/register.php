@@ -24,6 +24,7 @@ echo "<script>alert('Mật khẩu không trùng khớp')</script>";
             <input type="text" name="username" placeholder="enter username"  class="username" required autocomplete="off" />
             <input type="password" name="password" placeholder="enter password"  class="password" required autocomplete="off" />
             <input type="password" name="pass" placeholder="enter password again"  class="pass form-control" required autocomplete="off" />
+            <input type="text" name="address" placeholder="enter address"  class="address" required autocomplete="off" />
             <button type="submit" class="btn-primary">Đăng kí</button>
         </form>
         <div class="register">

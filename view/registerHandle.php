@@ -14,6 +14,7 @@ function checkRegister()
     $password = $_POST['password'];
     $pass = $_POST['pass'];
     $trangthai = 'true';
+    $diaChi = $_POST['address'];
  
 
     if(!isset($email) && !isset($username) && !isset($password) && !isset($pass)){
@@ -46,7 +47,7 @@ function checkRegister()
             header("Location: register.php?registerFail_pass=1&email=$email&username=$username");
             
         }else{
-            $resultUser = addUser($username, $password,$email,$trangthai);
+            $resultUser = addUser($username, $password,$email,$trangthai,$diaChi);
             if($resultUser){
                 header("Location: login.php?registerSuccessful=1");
 

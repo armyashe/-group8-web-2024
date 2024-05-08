@@ -58,7 +58,7 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
             <?php
             if ($khachhang > 0) {
                 $stt = 1;
-                $customer->bind_result($id, $username, $password, $email, $trangthai);
+                $customer->bind_result($id, $username, $password, $email, $trangthai,$diachi);
 
                 while ($customer->fetch()) {    
                     echo '<tr data-user="".>';
