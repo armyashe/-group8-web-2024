@@ -103,7 +103,7 @@ if(isset($_POST['start_date']) && isset($_POST['end_date'])){
                         <th title="Sắp xếp" style="width: 20%">Sản phẩm </th>
                         <th title="Sắp xếp" style="width: 15%">Tổng tiền </th>
                         <th title="Sắp xếp" style="width: 20%">Địa chỉ </th>
-                        <th title="Sắp xếp" style="width: 10%">Ngày giờ </th>
+                        <th title="Sắp xếp" style="width: 10%">Ngày</th>
                         <th title="Sắp xếp" style="width: 13%">Trạng thái</th>
                         <th title="Sắp xếp" style="width: 13%">Xem</th>
                     </tr>
@@ -137,7 +137,7 @@ if(isset($_POST['start_date']) && isset($_POST['end_date'])){
                                 echo '</td>';
                                 echo '<td style="width: 15%">'.number_format($tongtien, 0, ',', '.').'đ</td>';
                                 echo '<td style="width: 20%">'.$diachi.'</td>';
-                                $ngaygio = date("d-m-Y H:i:s", strtotime($ngaygio));
+                                $ngaygio = date("d-m-Y", strtotime($ngaygio));
                                 echo '<td style="width: 11%">'.$ngaygio.'</td>';
                                 if($trangthai == 'active'){
                                     $trangthaiText = 'Chờ xác nhận';
