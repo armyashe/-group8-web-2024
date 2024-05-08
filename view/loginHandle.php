@@ -13,7 +13,6 @@ function checkLogin()
     $user_name = $_POST['username'];
     $password = $_POST['password'];
     $results = checkUserLogin($user_name, $password);
-    echo '<script>alert("trang thai :'.$results['trangthai'].'")</script>';
     if ($results == null) {
         // Sau khi xuất thông báo, thực hiện chuyển hướng
         header("Location: login.php?errorLogin=1");// nó chuyển đi lun ( thêm 1 biến đánh dấu là có lỗi đăng nhập) 
@@ -27,7 +26,9 @@ function checkLogin()
     else {
         $_SESSION['user'] = $results;// Lưu thông tin người dùng vào session
         // Chuyển hướng người dùng đến trang chính sau khi đăng nhập thành công
-        header("Location: home.php?loginSuccessful=1");
+        echo "<script> alert('Đăng nhập thành công')</script>";
+        echo "<script> window.location.href = 'home.php'</script>";
+        
 
     }
 

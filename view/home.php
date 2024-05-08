@@ -4,13 +4,9 @@
 
     include_once ('../database/connect.php');
     include_once ('layout/header.php');
-    if(isset($_GET['loginSuccessful'])) // đăng nhập sai nó vô đây
-    {
-        echo "<script> alert('Đăng nhập thành công')</script>";
-    }
-        $current_url = $_SERVER['REQUEST_URI'];
-
-        $queryString = parse_url($current_url, PHP_URL_QUERY);
+    $current_url = $_SERVER['REQUEST_URI'];
+    $queryString = parse_url($current_url, PHP_URL_QUERY);
+    
     ?>
 
 

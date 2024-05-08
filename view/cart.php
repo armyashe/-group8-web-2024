@@ -50,9 +50,6 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     $total_amount = 0;
 
     $cart_items = $_SESSION['cart'];
-    echo '<pre>';
-    print_r($cart_items);
-    echo '</pre>';
     $cart_count = count($cart_items); // Đếm số lượng sản phẩm trong giỏ hàng
     $i = 0;
     
