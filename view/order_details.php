@@ -36,8 +36,8 @@ foreach ($orderDetails as $item) {
         echo '<img src="../IMG/' . $item_product['hinhanh'] . '" alt="" class="image">';
         echo '<h3 class="name">' . $item_product['tensanpham'] .' </h3>';
         echo '<p class="quantity">Số lượng : ' . $item['quantity'] . '</p>';
-        echo '<p class="price_product">Giá : ' . number_format($item_product['gia'], 0, ",", ".") . '₫</p>';
-        echo '<p class="grand-total">Đơn giá :  <span>  ' .  number_format($tongtien, 0, ",", ".") . '₫</span></p>';
+        echo '<p class="price_product">Đơn giá : ' . number_format($item_product['gia'], 0, ",", ".") . '₫</p>';
+        echo '<p class="grand-total">Tổng tiền :  <span>  ' .  number_format($tongtien, 0, ",", ".") . '₫</span></p>';
         echo '</div>';
         echo '</div>';
     }
