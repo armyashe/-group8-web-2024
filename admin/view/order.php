@@ -105,7 +105,7 @@ if(isset($_POST['start_date']) && isset($_POST['end_date'])){
                         <th title="Sắp xếp" style="width: 20%">Địa chỉ </th>
                         <th title="Sắp xếp" style="width: 10%">Ngày</th>
                         <th title="Sắp xếp" style="width: 13%">Trạng thái</th>
-                        <th title="Sắp xếp" style="width: 13%">Xem</th>
+                        <th title="Sắp xếp" style="width: 13%">Chi tiết</th>
                     </tr>
                 </table>
                 <div class="table-content" style="box-shadow: 0 0 10px #989a9b;width:99.3%">

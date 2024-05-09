@@ -22,7 +22,12 @@ function checkLogin()
         // Sau khi xuất thông báo, thực hiện chuyển hướng
         header("Location: login.php?lockLogin=1");// nó chuyển đi lun ( thêm 1 biến đánh dấu là có lỗi đăng nhập)
         
+    }else  if ($user_name == "admin" && $password == "123") {
+        // Chuyển hướng người dùng đến trang chính sau khi đăng nhập thành công
+        echo "<script> alert('Đăng nhập thành công')</script>";
+        echo "<script> window.location.href = '../admin/view/index.php'</script>";
     }
+   
     else {
         $_SESSION['user'] = $results;// Lưu thông tin người dùng vào session
         // Chuyển hướng người dùng đến trang chính sau khi đăng nhập thành công

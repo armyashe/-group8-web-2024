@@ -37,11 +37,6 @@ $product->execute();
 $product->store_result();
 $sanpham = $product->num_rows;
 
-
-
-
-
-
 ?>
 <main>
             <div class="cards">
@@ -126,7 +121,7 @@ $sanpham = $product->num_rows;
                                     <th style="width: 4%">'.$stt.'</th>
                                     <th title="Sắp xếp" style="width: 5%">' . $username. '</th>';
 
-                                $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ?");
+                                $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ? LIMIT 1");
                                 $product->bind_param("s", $id);
                                 $product->execute();
                                 $product->store_result();
@@ -152,8 +147,11 @@ $sanpham = $product->num_rows;
                                 if($order_status->fetch()) {
                                     if($trangthai == 'confirm') {
                                         $trangthaiText = 'Đã giao';
-                                    }  
-                                }
+                                    } 
+                                    else {
+                                        $trangthaiText = 'Chưa giao';
+                                    } 
+                                } 
                                 echo '<th title="Sắp xếp" style="width: 15%">'.$trangthaiText.'</th> 
                                 </table>';
                                 $stt++;
@@ -182,7 +180,6 @@ $sanpham = $product->num_rows;
                                     <img src="../templates/img/feedback1.png" width="40px" height="40px" alt="">
                                     <div>
                                         <h4>Ms Lộ Tư</h4>
-                                        <small>Diễn viên</small>
                                     </div>
                                 </div>
                                 <div class="contact">
@@ -198,7 +195,6 @@ $sanpham = $product->num_rows;
                                     <img src="../templates/img/Park-Jihoon.jpeg" width="40px" height="40px" alt="">
                                     <div>
                                         <h4>Park Jihoon</h4>
-                                        <small>CEO Alibaba</small>
                                     </div>
                                 </div>
                                 <div class="contact">
@@ -213,7 +209,6 @@ $sanpham = $product->num_rows;
                                     <img src="../templates/img/feedback2.png" width="40px" height="40px" alt="">
                                     <div>
                                         <h4>Thiên Hân</h4>
-                                        <small>Tiktoker</small>
                                     </div>
                                 </div>
                                 <div class="contact">

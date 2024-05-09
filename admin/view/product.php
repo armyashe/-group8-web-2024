@@ -8,11 +8,6 @@ $product->store_result();
 $sanpham = $product->num_rows;
 
 
-
-
-
-
-
 // tìm kiếm sản phẩm theo mã
 if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ma' && isset($_POST['kieuTimSanPham'])){
     $search = $_POST['searchTerm'];

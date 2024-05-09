@@ -72,6 +72,12 @@
                         <span>Thống kê</span>
                     </a>
                 </li>
+                <li>
+                    <a href="../../view/login.php">
+                        <span class="las la-sign-out-alt"></span>
+                        <span>Đăng xuất</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
