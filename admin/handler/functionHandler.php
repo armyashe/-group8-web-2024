@@ -205,13 +205,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idOrder"]) && isset($_
 
 
 // sửa sản phẩm
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset($_POST['name_product']) && isset($_POST['price_edit']) && isset($_POST['product_type']) && isset($_POST['describe'])){
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset($_POST['name_product']) && isset($_POST['price_edit']) && isset($_POST['quantity_edit']) && isset($_POST['product_type']) && isset($_POST['describe'])){
     header('Content-Type: application/json');
     
     
     $id = $_POST['id_product'];
     $name = $_POST['name_product'];
     $price_product = $_POST['price_edit'];
+    $quantity = $_POST['quantity_edit'];
     $loaisanpham = $_POST['product_type'];
     $mota = $_POST['describe'];
     
@@ -233,7 +234,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset
         $img_product = $row['hinhanh'];
     }
     
-    $update_product = "UPDATE sanpham SET tensanpham = '$name', gia = '$price_product', loaisanpham = '$loaisanpham' , mota = '$mota' , hinhanh = '$img_product' WHERE id = '$id'";
+    $update_product = "UPDATE sanpham SET tensanpham = '$name', gia = '$price_product',  soluong = '$quantity', loaisanpham = '$loaisanpham' , mota = '$mota' , hinhanh = '$img_product' WHERE id = '$id'";
+    echo $update_product;
     $updateStmt = $conn->prepare($update_product);
 
     if ($updateStmt->execute()) {
@@ -242,6 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset
             "id" => $id,
             "name_product" => $name,
             "price" => $price_product,
+            "soluong" => $quantity,
             "loaisanpham" => $loaisanpham,
             "mota" => $mota,
             "hinhanh" => $img_product,
@@ -258,11 +261,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset
 }
 
 // thêm sản phẩm
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_POST['name_add']) && isset($_POST['price_add']) && isset($_POST['type_add']) && isset($_POST['describeAdd'])){
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_POST['name_add']) && isset($_POST['price_add']) && isset($_POST['quantity_add']) && isset($_POST['type_add']) && isset($_POST['describeAdd'])){
     header('Content-Type: application/json');
     $id_product = $_POST['id_add'];
     $name_product = $_POST['name_add'];
     $price = $_POST['price_add'];
+    $quantity = $_POST['quantity_add'];
     $loaisanpham = $_POST['type_add'];
     $mota = $_POST['describeAdd'];
 
@@ -282,15 +286,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_PO
         $img_addProduct = "default.png";
     }
     
-    $insert_product = "INSERT INTO sanpham (id, tensanpham, gia, loaisanpham, mota, hinhanh) VALUES ('$id_product', '$name_product', '$price', '$loaisanpham','$mota','$img_addProduct')";
+    $insert_product = "INSERT INTO sanpham (id, tensanpham, loaisanpham,gia,soluong, mota, hinhanh) VALUES ('$id_product', '$name_product', '$loaisanpham','$price', '$quantity','$mota','$img_addProduct')";
     $insertStmt = $conn->prepare($insert_product);
     if ($insertStmt->execute()) {
         echo json_encode(array(
             "status" => "true",
             "id" => $id_product,
             "name_product" => $name_product,
-            "price" => $price,
             "loaisanpham" => $loaisanpham,
+            "price" => $price,
+            "soluong" => $quantity,
             "mota" => $mota,
             "hinhanh" => $img_addProduct,
             "message" => "Thêm sản phẩm thành công")

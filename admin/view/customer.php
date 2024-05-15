@@ -61,6 +61,9 @@ if (isset($_POST["search"]) && $_POST["kieuTimKhachHang"] == "taikhoan" && isset
                 $customer->bind_result($id, $username, $password, $email, $trangthai,$diachi);
 
                 while ($customer->fetch()) {    
+                    if($username == 'admin')
+                        continue;
+                    
                     echo '<tr data-user="".>';
                     echo '<td style="width: 5%" data-user="'.$stt.'">' . $stt . '</td>';
                     echo '<td style="width: 20%" data-user="'.$email.'" class="email">' . $email . '</td>';

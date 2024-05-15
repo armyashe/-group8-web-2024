@@ -120,7 +120,7 @@ if(isset($_POST['start_date']) && isset($_POST['end_date'])){
                                 echo '<td style="width: 5%">'.$stt.'</td>';
                                 echo '<td style="width: 8%">'.$tenkhachhang.'</td>';
                                 echo '<td style="width: 21%">';
-                                $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ?");
+                                $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ? LIMIT 1");
                                 $product->bind_param("s", $id);
                                 $product->execute();
                                 $product->store_result();

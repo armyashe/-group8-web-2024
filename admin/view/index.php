@@ -127,13 +127,22 @@ $sanpham = $product->num_rows;
                                 $product->store_result();
                                 $product->bind_result($id_sanpham, $soluong);
                                 while($product->fetch()){
-                                    $product_name = $conn->prepare("SELECT `tensanpham` FROM `sanpham` WHERE `id` = ?");
-                                    $product_name->bind_param("i", $id_sanpham);
-                                    $product_name->execute();
-                                    $product_name->store_result();
-                                    $product_name->bind_result($tensanpham);
-                                    $product_name->fetch();
-                                    echo '<th title="Xem chi tiết" style="width: 20%"> <a href="../../view/product_detail.php?id=1" style="color: blue;">'.$tensanpham.'</a> </th>';
+
+                                    $product = $conn->prepare("SELECT `idProduct`, `quantity` FROM `order_detail` WHERE `idOrder` = ?");
+                                    $product->bind_param("s", $id);
+                                    $product->execute();
+                                    $product->store_result();
+                                    $product->bind_result($id_sanpham, $soluong);
+                                    while($product->fetch()){
+                                        $product_name = $conn->prepare("SELECT `tensanpham`,`hinhanh` FROM `sanpham` WHERE `id` = ?");
+                                        $product_name->bind_param("i", $id_sanpham);
+                                        $product_name->execute();
+                                        $product_name->store_result();
+                                        $product_name->bind_result($tensanpham,$hinhanh);
+                                        $product_name->fetch();
+                                    }
+
+                                    echo '<th title="Xem chi tiết" style="width: 20%"> <a href="order_detail.php?'.$id.'" style="color: blue;">'.$tensanpham.'</a> </th>';
                                 }
                                 $order_status = $conn->prepare("SELECT `status` FROM `orders` WHERE `idOrder` = ?");
                                 $order_status->bind_param("s", $id);

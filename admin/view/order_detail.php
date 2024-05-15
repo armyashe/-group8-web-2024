@@ -27,7 +27,7 @@ $donhang = $order->num_rows;
                         echo '<h2>Danh sách đơn hàng từ '.$fromDate.' đến '.$toDate.'</h2>';
                     }
                     else{
-                        echo '<h2>Danh sách đơn hàng</h2>';
+                        echo '<h2>Chi tiết đơn hàng</h2>';
                     }
                     ?>
                 <table class="table-header">
@@ -36,13 +36,14 @@ $donhang = $order->num_rows;
                         <th title="Sắp xếp" style="width: 20%">Mã đơn hàng</th>
                         <th title="Sắp xếp" style="width: 20%">Sản phẩm </th>
                         <th title="Sắp xếp" style="width: 8%">Số lượng</th>
-                        <th title="Sắp xếp" style="width: 15%">Giá</th>
+                        <th title="Sắp xếp" style="width: 15%">Thành tiền</th>
                         <th title="Sắp xếp" style="width: 13%">Xem</th>
                     </tr>
                 </table>
                 <div class="table-content" style="box-shadow: 0 0 10px #989a9b;width:99.3%">
                     <table class="table-outline hideImg ">
                         <?php
+                        $sum = 0;
                         if($donhang > 0){
                             $order->bind_result($id_donhang,$id_sanpham,$soluong,$gia, $ghichu);
                             
@@ -59,17 +60,24 @@ $donhang = $order->num_rows;
                                 echo $tensanpham;
                                 echo '</td>';
                                 echo '<td style="width: 10%">'.$soluong.'</td>';
-                                echo '<td style="width: 21%">'.number_format($gia, 0, ',', '.').'đ</td>';
+                                $total = $soluong * $gia;
+                                $sum+= $total;
+                                echo '<td style="width: 21%">'.number_format($total, 0, ',', '.').'đ</td>';
                                 echo '<td><button class="see-button" type="button" data-idOrder="'.$id_donhang.'" data-idProduct="'.$id_sanpham.'" data-nameProduct="'.$tensanpham.'" data-price="'.$gia.'" data-quantity="'.$soluong.'" data-img="'.$hinhanh.'" data-describe="'.$mota.'">Xem</button></td>';
                                 echo '</tr>';
+                                
                             }
+                        echo '<tr><td colspan="7" style="font-weight:bold; font-size:20px; ">Tổng tiền: ' . number_format($sum, 0, ',', '.') . 'đ</td></tr>';
+
                         }
                         else {
                             // Hiển thị thông báo nếu không có đơn hàng nào trong khoảng thời gian được chọn
                             echo "<tr><td colspan='7' style='color:red;font-size:20px'>Không có đơn hàng nào trong kết quả tìm kiếm</td></tr>";
                         }
+                        
                         ?>
                     </table>
+
                 </div>
             </div>
             <div id="khungXemDonHang" class="overlay">
@@ -77,7 +85,7 @@ $donhang = $order->num_rows;
             <span class="close" onclick="closeOverlay()">&times;</span>
             <table class="overlayTable table-outline table-content table-header table-css">
                 <tr>
-                    <th colspan="2">Chi Tiết Đơn Hàng</th>
+                    <th colspan="2">Chi Tiết Sản phẩm</th>
                 </tr>
                 <tr>
                     <td>Hình :</td>
@@ -103,18 +111,26 @@ $donhang = $order->num_rows;
                 </tr>
                 
                 <tr>
-                    <td>Giá :</td>
+                    <td>Đơn Giá :</td>
                     <td><input name="price_edit" type="text" id="gia"></td>
                 </tr>
                 <tr>
-                    <th colspan="2">Thông số kĩ thuật</th>
+                    <th colspan="2">Thông số</th>
                 </tr>
                 <tr>
                     <td>Mô tả :</td>
                     <td ><textarea  style="width: 80%; height: 7rem; box-sizing: border-box;" id="mota"></textarea></td>
                 </tr>
             </table>
+       
         </div>
+                <a href="order.php" style="text-decoration: none; float:right; margin-top:20px">
+                    <span>
+                        <img  src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/btn_back.svg?q=10354">
+                    </span>
+                    <span>Danh sách đơn hàng</span>
+                </a>
+            
 </main>
 <script>
     function closeOverlay() {

@@ -47,7 +47,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                 <th title="Sắp xếp" style="width: 5%">Stt </th>
                 <th title="Sắp xếp" style="width: 12%">Mã </th>
                 <th title="Sắp xếp" style="width: 40%">Tên </th>
-                <th title="Sắp xếp" style="width: 15%">Giá </th>
+                <th title="Sắp xếp" style="width: 15%">Đơn Giá </th>
                 <th style="width: 15%">Hành động</th>
             </tr>
         </table>
@@ -68,7 +68,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                         echo '<td style="width: 15%">'.number_format($gia, 0, ',', '.').'₫</td>';
                         echo '<td style="width: 15%">';
                         echo'<div class="tooltip">
-                                <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-id="'.$id.'" data-name="'.$tensanpham.'" data-price="'.$gia.'" data-type="'.$loaisanpham.'"data-describe="'.$mota.'" data-img="'.$hinhanh.'">
+                                <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-id="'.$id.'" data-name="'.$tensanpham.'" data-price="'.$gia.'" data-quantity="'.$soluong.'" data-type="'.$loaisanpham.'"data-describe="'.$mota.'" data-img="'.$hinhanh.'">
                                     <i class="fa fa-wrench" style="font-size: 20px;margin: 0 15px;"></i>
                                     <span class="tooltiptext">Sửa</span>
                                 </button>
@@ -139,8 +139,12 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                     </td>
                 </tr>
                 <tr>
-                    <td>Giá tiền:</td>
+                    <td>Đơn giá:</td>
                     <td><input class="input_price" type="text" name="price_add" required autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td>Số lượng:</td>
+                    <td><input type="number" id="quantity" step="1" name="quantity_add" class="quantity_input_add" required autocomplete="off"></td>
                 </tr>
                 <tr>
                     <td>Loại sản phẩm:</td>
@@ -186,9 +190,12 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                     </td>
                 </tr>
                 <tr>
-                    <td>Giá tiền:</td>
+                    <td>Đơn giá:</td>
                     <td><input class="price_input" name="price_edit" type="text" id="giaSua"></td>
                 </tr>
+                <tr>
+                    <td>Số lượng:</td>
+                    <td><input type="number" id="soluongSua"  step="1" class="quantity_input" name="quantity_edit" required autocomplete="off"></td>
                 <tr>
                     <td>Loại sản phẩm:</td>
                     <td><input type="text" class="product_Type" name="product_type" required autocomplete="off" id="loaiSua"></td>
@@ -205,6 +212,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                         <input type="hidden" name="productName" value="">
                         <input type="hidden" name="productId" value="">
                         <input type="hidden" name="productPrice" value="">
+                        <input type="hidden" name="productQuantity" value="">
                         <input type="hidden" name="productType" value="">
                         <input type="hidden" name="productDescribe" value="">
                         <input type="hidden" name="productImg" value="">
@@ -232,6 +240,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
         const id = this.getAttribute('data-id');
         const name = this.getAttribute('data-name');
         const price = this.getAttribute('data-price');
+        const quantity = this.getAttribute('data-quantity');
         const type = this.getAttribute('data-type');
         const describe = this.getAttribute('data-describe');
         const img = this.getAttribute('data-img');
@@ -240,6 +249,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
         document.querySelector('input[name="productName"]').value = name;
         document.querySelector('input[name="productId"]').value = id;
         document.querySelector('input[name="productPrice"]').value = price;
+        document.querySelector('input[name="productQuantity"]').value= quantity;
         document.querySelector('input[name="productType"]').value = type;
         document.querySelector('input[name="productDescribe"]').value =describe;
         document.querySelector('input[name="productImg"]').value = img; 
@@ -249,6 +259,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
         document.getElementById('maspSua').value = id;
         document.getElementById('tenSua').value = name;
         document.getElementById('giaSua').value = price;
+        document.getElementById('soluongSua').value = quantity;
         document.getElementById('loaiSua').value = type;
         document.getElementById('motaSua').value = describe;
         document.getElementById('anhDaiDienSanPhamSua').src = '../../IMG/' + img;
@@ -267,6 +278,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             var idProduct = document.querySelector('.id_product').value;
             var nameProduct = document.querySelector('.name_product').value;
             var priceProduct = document.querySelector('.price_input').value;
+            var quantity = document.querySelector('.quantity_input').value;
             var type = document.querySelector('.product_Type').value;
             var Describe = document.querySelector('.input_describe').value;
             var imgProduct = document.querySelector('.hinhDaiDienSua').files[0];
@@ -275,20 +287,24 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             formData.append('id_product', idProduct);
             formData.append('name_product', nameProduct);
             formData.append('price_edit', priceProduct);
+            formData.append('quantity_edit', quantity);
             formData.append('product_type', type);
             formData.append('describe', Describe);
             formData.append('img_product', imgProduct);
+            
 
 
             var tencu = document.querySelector('input[name="productName"]').value;
             var idcu = document.querySelector('input[name="productId"]').value;
             var pricecu = document.querySelector('input[name="productPrice"]').value;
+            var quantitycu = document.querySelector('input[name="productQuantity"]').value;
             var loaicu = document.querySelector('input[name="productType"]').value;
             var describecu = document.querySelector('input[name="productDescribe"]').value;
             var imgcu = document.querySelector('input[name="productImg"]').value;
             console.log("gia cu : "+pricecu);
             console.log("ten cu : "+tencu);
             console.log("id cu : "+idcu);
+            console.log("quantity cu : "+quantitycu);
             console.log("loai cu : "+loaicu);
             console.log("describe cu : "+describecu);
             console.log("img cu : "+imgcu);
@@ -313,14 +329,16 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                         console.log("loai moi : "+response.loaisanpham);
                         console.log("describe moi : "+response.mota);
                         console.log("img moi : "+response.hinhanh);
+                        console.log("quantity moi : "+response.soluong);
                         console.log("gia cu : "+pricecu);
                         console.log("ten cu : "+tencu);
                         console.log("id cu : "+idcu);
                         console.log("loai cu : "+loaicu);
                         console.log("describe cu : "+describecu);
                         console.log("img cu : "+imgcu);
+                        console.log("quantity cu : "+quantitycu);
 
-                    if(idcu === response.id && tencu === response.name_product && pricecu === response.price && loaicu === response.loaisanpham && describecu === response.mota && imgcu === response.hinhanh){
+                    if(idcu === response.id && tencu === response.name_product && pricecu === response.price && quantitycu === response.soluong && loaicu === response.loaisanpham && describecu === response.mota && imgcu === response.hinhanh ){
                         // Cập nhật hiển thị tin nhắn thành công
                         $('#errorMessageExit').show();
                         $('#successMessageExit').hide();
@@ -355,14 +373,12 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                                     console.log(row.children[2].children[1]);
                                 }
                                 row.children[3].textContent = formatPrice(priceProduct) + '₫';
+                                
 
+
+                                
                             }
                         });
-
-
-                        
-                        
-
 
 
                     }
@@ -387,6 +403,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             var idProductAdd = document.querySelector('.id_add').value;
             var nameProductAdd = document.querySelector('.name_add').value;
             var priceProductAdd = document.querySelector('.input_price').value;
+            var quantityProductAdd = document.querySelector('.quantity_input_add').value;
             var typeAdd = document.querySelector('.product_type').value;
             var DescribeAdd = document.querySelector('.input_describe').value;
             var imgProductAdd = document.querySelector('.hinhDaiDienThem').files[0];
@@ -395,6 +412,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             formData.append('id_add', idProductAdd);
             formData.append('name_add', nameProductAdd);
             formData.append('price_add', priceProductAdd);
+            formData.append('quantity_add', quantityProductAdd);
             formData.append('type_add', typeAdd);
             formData.append('describeAdd', DescribeAdd);
             formData.append('img_add', imgProductAdd);
@@ -426,9 +444,10 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                                 <img class="product-image" src="../../IMG/${response.hinhanh}"></img>
                             </td>
                             <td style="width: 15%">${formatPrice(response.price)}₫</td>
+                            <td style="width: 15%">${response.soluong}</td>
                             <td style="width: 15%">
                                 <div class="tooltip">
-                                    <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-id="${response.id}" data-name="${response.name}" data-price="${response.price}" data-type="${response.loaisanpham}">
+                                    <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-id="${response.id}" data-name="${response.name}" data-price="${response.price}" data-quantity="${response.soluong}" data-type="${response.loaisanpham}">
                                         <i class="fa fa-wrench" style="font-size: 20px;margin: 0 15px;"></i>
                                         <span class="tooltiptext">Sửa</span>
                                     </button>
