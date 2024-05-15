@@ -210,6 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset
     
     
     $id = $_POST['id_product'];
+    $idcu = $_POST['idcu'];
     $name = $_POST['name_product'];
     $price_product = $_POST['price_edit'];
     $quantity = $_POST['quantity_edit'];
@@ -226,7 +227,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset
         }
     }
     else{
-        $select_product = "SELECT * FROM sanpham WHERE id = '$id'";
+        $select_product = "SELECT * FROM sanpham WHERE id = '$idcu'";
         $selectStmt = $conn->prepare($select_product);
         $selectStmt->execute();
         $result = $selectStmt->get_result();
@@ -234,8 +235,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_product']) && isset
         $img_product = $row['hinhanh'];
     }
     
-    $update_product = "UPDATE sanpham SET tensanpham = '$name', gia = '$price_product',  soluong = '$quantity', loaisanpham = '$loaisanpham' , mota = '$mota' , hinhanh = '$img_product' WHERE id = '$id'";
-    echo $update_product;
+    
+    $update_product = "UPDATE sanpham SET id = '$id', tensanpham = '$name', gia = '$price_product',  soluong = '$quantity', loaisanpham = '$loaisanpham' , mota = '$mota' , hinhanh = '$img_product' WHERE id = '$idcu'";
     $updateStmt = $conn->prepare($update_product);
 
     if ($updateStmt->execute()) {
@@ -286,7 +287,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_add']) && isset($_PO
         $img_addProduct = "default.png";
     }
     
-    $insert_product = "INSERT INTO sanpham (id, tensanpham, loaisanpham,gia,soluong, mota, hinhanh) VALUES ('$id_product', '$name_product', '$loaisanpham','$price', '$quantity','$mota','$img_addProduct')";
+    $insert_product = "INSERT INTO sanpham (id, tensanpham, loaisanpham,gia,soluong, mota,hinhanh) VALUES ('$id_product', '$name_product', '$loaisanpham','$price', '$quantity','$mota','$img_addProduct')";
     $insertStmt = $conn->prepare($insert_product);
     if ($insertStmt->execute()) {
         echo json_encode(array(

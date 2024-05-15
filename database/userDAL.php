@@ -4,36 +4,6 @@ include 'connectDB.php';
 include_once ('../view/registerHandle.php');
 
 
-# cái connectDB vs connect khác nhau gì dị. ko phải nó giống nhau hả. em tưởng có file connect ròi
-# khác nhau cách tổ chức thôi 
-# connect của em là import file là nó auto chạy
-# còn connectDB của anh chỉ khi kêu hàm connect nó mới chạy
-# hiểu ko ?oke
-
-# này anh sẽ viết hàm lấy sản phẩm theo id của anh  
-# chỉ bí kíp cho nè heheh. canh lề nhấn tổ hợp phím alt+shift+f 
-
-
-/* function checkUserLogin($username, $password)
-{
-    $conn = connect();
-    $sql = "select * from user where user_name = '" . $username . "' and password = '" . $password . "'";
-    $result = $conn->query($sql);
-    if ($result == null)
-        return null;
-    if ($result->num_rows > 0) {
-        // output data of each row
-        // while ($row = $result->fetch_assoc()) {
-        //     echo "id: " . $row["id"] . " - Name: " . $row["tensanpham"] . " " . $row["loaisanpham"] . "<br>";
-        // }
-    } else {
-        return null;
-
-    }
-    $conn->close();
-    $row = $result->fetch_assoc();
-    return $row;
-} */
 function checkUserLogin($username, $password)
 {
     $conn = connect(); // Hàm connect() phải được định nghĩa để kết nối vào CSDL

@@ -34,6 +34,7 @@ include_once('../database/orderDAL.php');
 include_once('../database/userDAL.php'); // File kết nối đến cơ sở dữ liệu
 include_once('../database/connectDB.php'); // File kết nối đến cơ sở dữ liệu
 
+
 // Xử lý thông tin đặt hàng khi người dùng gửi biểu mẫu thanh toán
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_order'])) {
     // Kiểm tra giỏ hàng có sản phẩm hay không

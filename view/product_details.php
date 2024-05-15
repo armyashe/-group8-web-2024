@@ -114,15 +114,8 @@
         <div class="top">
             <div class="picture">
                 <!-- Thay đổi src của ảnh sản phẩm để hiển thị từ URL trong cơ sở dữ liệu -->
-
                 <img src="../IMG/<?php echo $detail['hinhanh']; ?>" alt="Product Image" id="productImage">
 
-                <figure class="picture-small">
-                    <!-- Đảm bảo các ảnh nhỏ của sản phẩm cũng được hiển thị từ URL trong cơ sở dữ liệu -->
-                    <img src="../IMG/<?php echo $detail['hinh2']; ?>" alt="Thumbnail Image 1">
-                    <img src="../IMG/<?php echo $detail['hinh3']; ?>" alt="Thumbnail Image 2">
-                    <img src="../IMG/<?php echo $detail['hinh4']; ?>" alt="Thumbnail Image 3">
-                </figure>
             </div>
             <div class="content">
                 <!-- Hiển thị thông tin sản phẩm từ cơ sở dữ liệu -->

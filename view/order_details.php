@@ -24,8 +24,10 @@ $user = getEmail($queryString);
 foreach ($orderDetails as $item) {
     $product = getProduct($item['idProduct']);
     $tongtien = 0;
+    $sumOrder = 0;
     foreach ($product as $item_product) {
         $tongtien += $item_product['gia'] * $item['quantity'];
+        $sumOrder += $tongtien;
         echo '<script>console.log('.$tongtien.')</script> ';
         echo '<div class="box">';
         echo '<div class="col">';
@@ -37,7 +39,7 @@ foreach ($orderDetails as $item) {
         echo '<h3 class="name">' . $item_product['tensanpham'] .' </h3>';
         echo '<p class="quantity">Số lượng : ' . $item['quantity'] . '</p>';
         echo '<p class="price_product">Đơn giá : ' . number_format($item_product['gia'], 0, ",", ".") . '₫</p>';
-        echo '<p class="grand-total">Tổng tiền :  <span>  ' .  number_format($tongtien, 0, ",", ".") . '₫</span></p>';
+        echo '<p class="grand-total">Thành tiền :  <span>  ' .  number_format($tongtien, 0, ",", ".") . '₫</span></p>';
         echo '</div>';
         echo '</div>';
     }
@@ -53,9 +55,17 @@ foreach ($orderDetails as $item) {
                             echo '<p class="user"><i class="bx bxs-map"></i> ' . $item['address'] . '</p>';
                             echo '<p class="user"><i class="bx bxs-envelope"></i> ' . $item['user_email'] . '</p>';
                         }
-                        echo '<p class="title">Trạng thái</p>';
                         foreach ($order as $item) {
-                            echo '<p class="status" style="color:';
+                            if ($item['payment'] == 'cod') {
+                                echo '<h4 style: " font-weight:bold;">Phương thức thanh toán:</h4>Thanh toán khi nhận hàng';
+                            } else {
+                                echo '<h4 style=" font-weight: bold;">Phương thức thanh toán: </h4>Thanh toán qua thẻ';
+                            }
+                        }
+                        echo '<p class="total" style=" font-size:20px; font-weight: bold;">Tổng tiền : <span>' . number_format($sumOrder, 0, ",", ".") . '₫</span></p>';
+                        echo '<p style=" font-size:20px; font-weight: bold;">Trạng thái</p>';
+                        foreach ($order as $item) {
+                            echo '<p class="status" style="color: ';
                             if ($item['status'] == 'active') {
                                 echo 'red';
                             } else {

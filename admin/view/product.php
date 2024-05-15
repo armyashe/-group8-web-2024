@@ -136,6 +136,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                     <td>
                         <img src="" id="anhDaiDienSanPhamThem" style="width:20%;" ><br>
                         <input type="file" name="img_add" class="hinhDaiDienThem">
+
                     </td>
                 </tr>
                 <tr>
@@ -216,6 +217,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                         <input type="hidden" name="productType" value="">
                         <input type="hidden" name="productDescribe" value="">
                         <input type="hidden" name="productImg" value="">
+                        <input type="hidden" name="id_productcu" value="">
                         <button type="submit" name="submitEdit">Sửa</button> 
                         <div id="successMessageExit" style="display: none; color: greenyellow;">Sửa sản phẩm thành công</div>
                         <div id="errorMessageExit" style="display: none; color: red;">Vui lòng điền thông tin cần sửa</div>
@@ -238,6 +240,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
     document.querySelectorAll('.editUserButton').forEach(button => {
     button.addEventListener('click', function() {
         const id = this.getAttribute('data-id');
+        const idcu = document.querySelector('input[name="productId"]').value;
         const name = this.getAttribute('data-name');
         const price = this.getAttribute('data-price');
         const quantity = this.getAttribute('data-quantity');
@@ -276,6 +279,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             e.preventDefault(); // Ngăn chặn hành vi gửi mặc định của biểu mẫu
 
             var idProduct = document.querySelector('.id_product').value;
+            var idcu = document.querySelector('input[name="productId"]').value;
             var nameProduct = document.querySelector('.name_product').value;
             var priceProduct = document.querySelector('.price_input').value;
             var quantity = document.querySelector('.quantity_input').value;
@@ -291,6 +295,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             formData.append('product_type', type);
             formData.append('describe', Describe);
             formData.append('img_product', imgProduct);
+            formData.append('idcu', idcu);
             
 
 
@@ -353,9 +358,9 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                         // Cập nhật thông tin sản phẩm trên bảng
                         document.querySelectorAll('.table-outline tr').forEach(row => {
                             // Tìm hàng có ID sản phẩm tương ứng
-                            if (row.children[1] && row.children[1].textContent === idProduct) {
+                            if (row.children[1] && row.children[1].textContent === idcu) {
                                 // Cập nhật thông tin
-                                row.children[1].textContent = idProduct;
+                                row.children[1].textContent = response.id;
                                 console.log(imgcu);
                                 console.log(response.hinhanh);
                                 if(row.children[2] &&  response.hinhanh !== "undefined")
@@ -407,6 +412,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             var typeAdd = document.querySelector('.product_type').value;
             var DescribeAdd = document.querySelector('.input_describe').value;
             var imgProductAdd = document.querySelector('.hinhDaiDienThem').files[0];
+        
 
             var formData = new FormData();
             formData.append('id_add', idProductAdd);
@@ -416,6 +422,8 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
             formData.append('type_add', typeAdd);
             formData.append('describeAdd', DescribeAdd);
             formData.append('img_add', imgProductAdd);
+
+
 
             console.log(formData);
             // Gửi yêu cầu AJAX
@@ -444,7 +452,6 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
                                 <img class="product-image" src="../../IMG/${response.hinhanh}"></img>
                             </td>
                             <td style="width: 15%">${formatPrice(response.price)}₫</td>
-                            <td style="width: 15%">${response.soluong}</td>
                             <td style="width: 15%">
                                 <div class="tooltip">
                                     <button type="button" style="border:none;background-color:transparent" class="editUserButton" data-id="${response.id}" data-name="${response.name}" data-price="${response.price}" data-quantity="${response.soluong}" data-type="${response.loaisanpham}">
@@ -483,7 +490,7 @@ if(isset($_POST['search']) && $_POST['kieuTimSanPham'] == 'ten' && isset($_POST[
 
             var $rowToDelete = $(this).closest('tr');
 
-            var result = confirm('Bạn có chắc chắn muốn xóa người dùng này không?');
+            var result = confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
             if (result) {
                 var formData = $(this).serialize();
                 console.log(formData);

@@ -9,6 +9,11 @@ include_once ('../database/orderDAL.php');
 $idUser = $_SESSION['user']['id']; // lấy id user từ session
 $donhang = getOrder($idUser); // lấy thông tin đơn hàng
 
+if (isset($_REQUEST['orderIDSuccessful'])) // đăng nhập sai nó vô đây
+    echo "<script>alert('Đơn hàng của bạn đã được đặt thành công!!')</script>";
+if (isset($_REQUEST['orderIDFail'])) // đăng nhập sai nó vô đây
+    echo "<script>alert('Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.')</script>";
+
 echo '<script>console.log('.json_encode($donhang).')</script> ';
 echo '<script>console.log('.json_encode($idUser).')</script> ';
 echo '<script>';
@@ -52,7 +57,7 @@ echo '</script>';
                                 echo '<p>Giá : '.number_format($item['price'], 0, ",", ".") .'₫</p>';
                                 echo '</div>';
                           
-                                echo '<div style="margin-top: 40px;    margin-left: 276px;">Số lượng : '.$item['quantity'].'</div>';
+                                echo '<div style="margin-top: 40px; margin-left: 276px;">Số lượng : '.$item['quantity'].'</div>';
                                 echo '</div>';
                                 echo '</a>';
                             }
